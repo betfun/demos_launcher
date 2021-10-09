@@ -1,0 +1,63 @@
+.full-width-table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.th-right{
+  text-align: right;
+}
+
+// .line_icon {
+//   width: 36px;
+//   height: 36px;
+//   font-size: 36px;
+// }
+
+.mat-column-name {
+  flex: 0 0 40% !important;
+  width: 40% !important;
+}
+
+.fx-spacer {
+  flex: 1 1 auto;
+}
+
+.separator {
+  margin: 25px;
+}
+
+.scrollable {
+  width: 100%;
+  height: calc(100vh - 250px);
+  overflow: auto;
+}
+
+.mat-paginator-sticky {
+  bottom: 0px;
+  position: sticky;
+  z-index: 10;
+}
+
+/* Table header row */
+mat-header-row {
+  /*https://github.com/angular/material2/issues/5885*/
+  position: sticky;
+  top: -.5px;
+  background: white;
+  z-index: 100;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}

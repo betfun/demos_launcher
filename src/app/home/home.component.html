@@ -1,0 +1,92 @@
+<mat-form-field appearance="standard" class="full-width-table">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
+</mat-form-field>
+
+<div class="table-outer mat-elevation-z8 scrollable" style="width: 100%" cdkScrollable>
+  <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width-table" matSort
+    [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" cdkDropList>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon cdkDragHandle>reorder</mat-icon>
+      </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <ng-container matColumnDef="name" class="mat-column-name">
+      <th mat-header-cell *matHeaderCellDef>Names</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      <td mat-footer-cell *matFooterCellDef>Total: {{dataSource.data.length}} environments</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td class="th-right" mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="launch(element)">
+          <mat-icon>launch</mat-icon>
+        </button>
+        <!-- <button mat-icon-button (click)="reinstall(element)"
+        matTooltip="Info about the action"><mat-icon>developer_board</mat-icon></button> -->
+        <button mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
+          <mat-icon *ngIf="expandedElement === element; else elseTemplateName" aria-hidden="false"
+            aria-label="Example home icon">expand_less</mat-icon>
+
+          <ng-template #elseTemplateName>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">expand_more</mat-icon>
+          </ng-template>
+        </button>
+        <span class="separator fx-spacer"><span>&#124;</span>
+        </span>
+        <button mat-icon-button color="primary" (click)="add_new_profile(element)" style="text-align: end">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="add_new_profile(element)" style="text-align: end">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <mat-list role="list" dense>
+            <mat-list-item *ngFor="let profile of element.profiles; last as isLast">
+              <mat-icon class="line_icon" matListAvatar aria-hidden="false" aria-label="Example home icon">person
+              </mat-icon>
+              <h2 matLine>{{ profile.name }}</h2>
+
+              <div>
+                <button mat-button (click)="launchProfile(element, profile);">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon">
+                    power_settings_new
+                  </mat-icon>
+                  <!-- Launch -->
+                </button>
+                <button mat-button (click)="deleteProfile(element, profile);">
+                  <mat-icon color="warn" aria-hidden="false" aria-label="Example home icon">
+                    clear
+                  </mat-icon>
+                  <!-- Launch -->
+                </button>
+              </div>
+              <mat-divider *ngIf="!isLast"></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row  cdkdrag-box"
+      [class.example-expanded-row]="expandedElement === element" cdkDrag [cdkDragData]="row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+  </table>
+
+  <!-- <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+</div>

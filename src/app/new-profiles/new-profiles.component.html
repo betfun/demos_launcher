@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Add new profiler</h2>
+<mat-dialog-content class="mat-typography">
+
+    <mat-selection-list role="list" #shoes> 
+        <mat-list-option *ngFor="let profile of profiles" [value]="profile">
+            <!-- <img matListAvatar [src]="profile.img" > -->
+            <h3 matLine> {{profile.Name}} </h3>
+            <p matLine>
+                <span> {{profile.Email}} </span>
+                <!-- <span class="demo-2"> -- {{profile.AboutMe}} </span> -->
+            </p>
+            <p matLine>
+                <!-- <span> {{profile.Email}} </span> -->
+                <span class="demo-2">{{profile.AboutMe}} </span>
+            </p>
+            <!-- <div>
+                <button mat-button (click)="add(profile)">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">
+                        power_settings_new
+                    </mat-icon>
+                    Add
+                </button>
+            </div> -->
+
+        </mat-list-option>
+
+    </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="shoes.selectedOptions.selected" cdkFocusInitial>Install</button>
+</mat-dialog-actions>

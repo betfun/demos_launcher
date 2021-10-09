@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Add new environment</h2>
+<mat-dialog-content class="container">
+    <form [formGroup]="profileForm">
+
+        <mat-form-field appearance="legacy">
+            <mat-label>Name:</mat-label>
+            <input matInput placeholder="Name" formControlName="name" required>
+            <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+        </mat-form-field>
+ 
+        <div formGroupName="main_user">
+            <h4>Admin User</h4>
+
+            <mat-form-field appearance="legacy">
+                <mat-label>Admin User Name:</mat-label>
+                <input matInput placeholder="Name" formControlName="name" required>
+                <!-- <mat-icon matSuffix>person</mat-icon> -->
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+                <mat-label>Login:</mat-label>
+                <input matInput placeholder="Name" formControlName="login" required>
+                <!-- <mat-icon matSuffix>login</mat-icon> -->
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+                <mat-label>Password:</mat-label>
+                <input type="password" matInput placeholder="Name" formControlName="pwd" required>
+                <!-- <mat-icon matSuffix>password</mat-icon> -->
+            </mat-form-field>
+        </div>
+        <!--     -->
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="profileForm.value" type="submit" [disabled]="!profileForm.valid" cdkFocusInitial>Submit</button>
+
+</mat-dialog-actions>
