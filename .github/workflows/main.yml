@@ -25,18 +25,24 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.jj
         uses: actions/setup-node@v1
-
+        with:
+          node-version: '14'
+          cache: 'npm'
+          
       - name: Install npm
         run: |
           npm install
           
+      - name: Echo
+        run: echo ${{ secrets.GH_TOKEN }}
+        
       - name: Build
         run: npm run electron:build
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}   
-          GITHUB_TOKEN: ${{secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
