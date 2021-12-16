@@ -40,7 +40,7 @@
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "lint": "ng lint"
   },
-  "dependencies": {   
+  "dependencies": {
     "axios": "0.19.2",
     "fs-extra": "9.1.0",
     "jsforce": "1.10.1",
@@ -70,9 +70,9 @@
     "@angular/router": "11.0.3",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
-    "@ngxs/schematics": "^0.0.1-alpha.5",
     "@ngxs/devtools-plugin": "^3.3.2",
-    "@ngxs/logger-plugin": "^3.3.2",
+    "@ngxs/logger-plugin": "3.7.2",
+    "@ngxs/schematics": "^0.0.1-alpha.5",
     "@ngxs/store": "^3.3.2",
     "@types/jasmine": "3.6.2",
     "@types/jasminewd2": "2.0.8",

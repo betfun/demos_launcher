@@ -25,27 +25,42 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
       <td class="th-right" mat-cell *matCellDef="let element">
+        <!-- Launch button -->
         <button mat-icon-button (click)="launch(element)">
           <mat-icon>launch</mat-icon>
         </button>
-        <!-- <button mat-icon-button (click)="reinstall(element)"
-        matTooltip="Info about the action"><mat-icon>developer_board</mat-icon></button> -->
+        <button mat-icon-button (click)="reinstall(element)" matTooltip="Info about the action">
+          <mat-icon>developer_board</mat-icon>
+        </button>
         <button mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
-          <mat-icon *ngIf="expandedElement === element; else elseTemplateName" aria-hidden="false"
-            aria-label="Example home icon">expand_less</mat-icon>
+          <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
 
           <ng-template #elseTemplateName>
-            <mat-icon aria-hidden="false" aria-label="Example home icon">expand_more</mat-icon>
+            <mat-icon>expand_more</mat-icon>
           </ng-template>
         </button>
-        <span class="separator fx-spacer"><span>&#124;</span>
-        </span>
-        <button mat-icon-button color="primary" (click)="add_new_profile(element)" style="text-align: end">
-          <mat-icon>edit</mat-icon>
+
+        <!-- Separator -->
+        <!-- <span class="separator fx-spacer"><span>&#124;</span></span> -->
+
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="add_new_profile(element)" style="text-align: end">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="kill(element)">
+            <mat-icon color="warn">eject</mat-icon>
+            <span>Kill browser</span>
+          </button>
+          <mat-divider [inset]="false"></mat-divider>
+          <button mat-menu-item (click)="add_new_profile(element)">
+            <mat-icon color="primary">edit</mat-icon>
+            <span>Edit org</span>
+          </button>
+          <button mat-menu-item (click)="deleteOrg(element)">
+            <mat-icon color="warn">delete</mat-icon>
+            <span>Delete org</span>
+          </button>
+        </mat-menu>
       </td>
       <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
@@ -60,20 +75,21 @@
               </mat-icon>
               <h2 matLine>{{ profile.name }}</h2>
 
-              <div>
-                <button mat-button (click)="launchProfile(element, profile);">
-                  <mat-icon aria-hidden="false" aria-label="Example home icon">
+                <button mat-icon-button (click)="copyProfile(profile)">
+                  <mat-icon>
+                    content_copy
+                  </mat-icon>
+                </button>
+                <button mat-icon-button (click)="launchProfile(element, profile);">
+                  <mat-icon>
                     power_settings_new
                   </mat-icon>
-                  <!-- Launch -->
                 </button>
-                <button mat-button (click)="deleteProfile(element, profile);">
-                  <mat-icon color="warn" aria-hidden="false" aria-label="Example home icon">
-                    clear
-                  </mat-icon>
-                  <!-- Launch -->
+                <button mat-icon-button [disabled]="element.admin == profile.login"
+                  (click)="deleteProfile(element, profile);">
+                  <mat-icon [color]="element.admin == profile.login ? grey : 'warn'">delete</mat-icon>
                 </button>
-              </div>
+
               <mat-divider *ngIf="!isLast"></mat-divider>
             </mat-list-item>
           </mat-list>

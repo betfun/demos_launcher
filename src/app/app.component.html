@@ -305,13 +305,13 @@
     <button mat-icon-button class="example-icon favorite-icon" (click)="add_new_org()" aria-label="Example icon-button with heart icon">
         <mat-icon>add</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <button mat-icon-button class="example-icon favorite-icon" (click)="open_config()" aria-label="Example icon-button with heart icon">
         <mat-icon>settings</mat-icon>
     </button>
 </div>
 
 <div class="content" role="main">
-    <router-outlet></router-outlet>
+    <app-home></app-home>
 </div>
 
 <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
