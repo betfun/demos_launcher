@@ -87,7 +87,7 @@
                 </button>
                 <button mat-icon-button [disabled]="element.admin == profile.login"
                   (click)="deleteProfile(element, profile);">
-                  <mat-icon [color]="element.admin == profile.login ? grey : 'warn'">delete</mat-icon>
+                  <mat-icon [color]="element.admin == profile.login ? 'grey' : 'warn'">delete</mat-icon>
                 </button>
 
               <mat-divider *ngIf="!isLast"></mat-divider>
