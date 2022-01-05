@@ -1,13 +1,13 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { NewOrgComponent } from "./new-org/new-org.component";
+import { MatDialog } from "@angular/material/dialog";
 import { Store } from "@ngxs/store";
 import { GetConfig, SaveConfig } from "./store/config/actions";
 import { ConfigComponent } from "./config/config.component";
 import { Config } from "../app/store/config/model";
 import { OrgSave } from './store/orgs/actions';
 import { org_model } from "./store/orgs/model";
+import { NewProfilesComponent } from "./new-profiles/new-profiles.component";
 
 @Component({
   selector: "app-root",
@@ -43,8 +43,9 @@ export class AppComponent {
   }
 
   add_new_org(): void {
-    const dialogRef = this.dialog.open(NewOrgComponent, {
+    const dialogRef = this.dialog.open(NewProfilesComponent, {
       width: "500px",
+      data: null
     });
 
     dialogRef.afterClosed().subscribe((result) => {

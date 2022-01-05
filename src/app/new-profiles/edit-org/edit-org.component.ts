@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { OrgHelper, org_model } from '../../store/orgs/model';
 
@@ -9,9 +9,31 @@ import { OrgHelper, org_model } from '../../store/orgs/model';
 })
 export class EditOrgComponent implements OnInit {
 
-  @Input() org: org_model;
+  @Input()
+  public org: org_model;
+
+  public getOrg() : org_model{
+    const result = this.profileForm.value;
+
+    const org = new org_model(this.org);
+
+    const admin = OrgHelper.getAdmin(this.org);
+    admin.name = result.main_user.name;
+    admin.login = result.main_user.login;
+    admin.pwd = result.main_user.pwd;
+    if(admin.innerName === '') {
+      admin.innerName = admin.name;
+    }
+
+    org.name = result.name;
+    org.admin = result.main_user.name;
+
+    return org;
+  }
 
   profileForm: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
 
@@ -27,6 +49,4 @@ export class EditOrgComponent implements OnInit {
       })
     });
   }
-
-  constructor(private fb: FormBuilder) { }
 }

@@ -5,17 +5,30 @@ export interface profile_model {
   pwd: string
 }
 
-export interface org_model {
+export class org_model {
   name: string;
   description: string;
   domain: string;
   admin: string;
   profiles: profile_model[];
+
+  constructor(ref: Partial<org_model>) {
+    Object.assign(this, ref);
+  }
 }
 
 export class OrgHelper {
-  static getAdmin(org : org_model): profile_model {
-    return org.profiles.find(p => p.name === org.admin);
+  static getAdmin(org: org_model): profile_model {
+    try{    return org.profiles.find(p => p.name === org.admin);
+    }
+    catch{
+      return {
+        name: '',
+        innerName: '',
+        login: '',
+        pwd: ''
+      };
+    }
   }
 }
 

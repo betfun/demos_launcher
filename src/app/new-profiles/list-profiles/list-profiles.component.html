@@ -1,9 +1,9 @@
-<span>
-  Here!
-</span><mat-selection-list role="list" #shoes>
-  <mat-list-option *ngFor="let profile of profiles" [value]="profile">
+<mat-selection-list dense role="list" #list>
+  <h2 *ngIf="loading">Loading users... (please wait)</h2>
+  <h2 *ngIf="error !== ''">{{error}}</h2>
+  <mat-list-option *ngFor="let profile of profiles" [value]="profile" style="padding-top: 10px;">
     <!-- <img matListAvatar [src]="profile.img" > -->
-    <h3 matLine>{{ profile.Name }}</h3>
+    <h3 matLine><strong>{{ profile.Name }}</strong></h3>
     <!-- <h3 matLine><input class="demo-2" matInput [(ngModel)]="profile.Name" /></h3> -->
     <p matLine>
       <span> {{ profile.Username }} </span>
@@ -14,12 +14,13 @@
       <span> {{profile.Email}} </span>
       <span class="demo-2">{{ profile.AboutMe }} </span>
     </p> -->
-    <!-- <p matLine>
-      <mat-form-field appearance="legacy">
-        <mat-label>Name:</mat-label>
-        <input class="demo-2" matInput [(ngModel)]="profile.pwd" />
+    <p matLine>
+      <mat-form-field>
+        <!-- <mat-label>Pwd:</mat-label> -->
+        <input matInput [(ngModel)]="profile.pwd" />
       </mat-form-field>
-    </p> -->
+    </p>
+    <mat-divider></mat-divider>
     <!-- <div>
           <button mat-button (click)="add(profile)">
               <mat-icon aria-hidden="false" aria-label="Example home icon">

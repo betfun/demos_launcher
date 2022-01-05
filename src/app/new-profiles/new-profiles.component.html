@@ -1,26 +1,23 @@
-<h2 mat-dialog-title>Add new profiler</h2>
+<h2 mat-dialog-title>Org Editor</h2>
 <mat-dialog-content class="mat-typography">
-  <mat-horizontal-stepper linear="true" #stepper>
-    <mat-step label="choose the users">
-      <app-edit-org [org]="org"></app-edit-org>
+  <mat-horizontal-stepper #stepper (selectionChange)="changeSelection($event)" linear="true">
+    <mat-step #first label="Org Properties">
+      <app-edit-org #editOrg [org]="org"></app-edit-org>
     </mat-step>
-    <mat-step label="Override password">
-      <ng-template matStepLabel>Step 2</ng-template>
-      <ng-template matStepContent>
-        <app-list-profiles [org]="org"></app-list-profiles>
-      </ng-template>
+    <mat-step #step2 label="Choose users">
+      <app-list-profiles #newProfiles>
+      </app-list-profiles>
     </mat-step>
-    <mat-step #final label="Final Review">
-      <app-final-review [org]="org"></app-final-review>
+    <mat-step #final label="Review">
+      <app-final-review #orgReview>
+      </app-final-review>
     </mat-step>
   </mat-horizontal-stepper>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close [mat-dialog-close]="null">Cancel</button>
-  <div *ngIf="stepper.selected != final">
-    <button mat-button (click)="stepper.next()">Next</button>
-  </div>
-  <!-- <button mat-button [mat-dialog-close]="shoes.selectedOptions.selected" cdkFocusInitial>
-    Install
-  </button> -->
+  <button mat-button *ngIf="stepper.selected != first" (click)="stepper.previous()">Previous</button>
+  <button mat-button *ngIf="stepper.selected != final" (click)="stepper.next()">Next</button>
+  <button mat-button *ngIf="stepper.selected == final"
+    mat-dialog-close [mat-dialog-close]="org">Done</button>
 </mat-dialog-actions>

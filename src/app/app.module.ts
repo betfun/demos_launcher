@@ -28,7 +28,6 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { HomeComponent } from "./home/home.component";
 import { NewProfilesComponent } from "./new-profiles/new-profiles.component";
-import { NewOrgComponent } from "./new-org/new-org.component";
 
 import { NgxsModule } from "@ngxs/store";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
@@ -50,7 +49,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppComponent,
     HomeComponent,
     NewProfilesComponent,
-    NewOrgComponent,
     ConfigComponent,
     ListProfilesComponent,
     EditOrgComponent,

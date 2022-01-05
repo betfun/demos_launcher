@@ -8,9 +8,11 @@ import { org_model } from '../../store/orgs/model';
 })
 export class FinalReviewComponent implements OnInit {
 
-  @Input() org: org_model;
+  public org : org_model;
 
-  constructor() { }
+  constructor() {
+    this.org = new org_model({});
+  }
 
   ngOnInit(): void {
   }
