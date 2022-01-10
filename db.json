@@ -1,0 +1,246 @@
+{
+  "orgs": [
+    {
+      "name": "Vlocity for HubOne",
+      "description": "Vlocity for HubOne ",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "demo.org@communications.1613474281768",
+          "pwd": "Vlocity6653602902024986"
+        }
+      ]
+    },
+    {
+      "name": "Bouygues for HubOne",
+      "description": "Bouygues for HubOne ",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "rtordjman@comstech.org",
+          "pwd": "salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Orange IDO",
+      "description": "Orange IDO",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "rtordjman@orange-ido2.demo",
+          "pwd": "salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Linxis",
+      "description": "Autodistribution - Doyen",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@linxis-20210624.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Ted Data",
+          "login": "tdata@linxis-20210624.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Autodistribution - Doyen",
+      "description": "Autodistribution - Doyen",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login1": "dappiano@project-doyen.demo",
+          "login": "dappiano@dappiano-20210617.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Dounia",
+          "login": "dounia.laal@doyen.demo",
+          "pwd": "Salesforce2021!!"
+        }
+      ]
+    },
+    {
+      "name": "RFP HubOne",
+      "description": "RFP HubOne",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "jverbecque@hubone-rfi.demo",
+          "pwd": "salesforce1"
+        },
+        {
+          "name": "Gérard Client",
+          "login": "gclient@hubone-rfi.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Quentin Engineer",
+          "login": "qengineer@hubone-rfi.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Stéphane Manager",
+          "login": "eexec.9cqkeeyedn3w.cz5nxqjyzkbf@hubone-rfi.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Yannick Commercial",
+          "login": "ycommercial@hubone-rfi.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Paul Service N1",
+          "login": "tservice@hubone-rfi.demo",
+          "pwd": "salesforce1"
+        },
+        {
+          "name": "Jacques Service N2",
+          "login": "bservice@hubone-rfi.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Chris Cloud",
+          "login": "ccloud@hubone-rfi.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Valeo",
+      "description": "Valeo",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "vdesaintemaresville@valeoservices-20201228.demo",
+          "pwd": "Salesforce1!"
+        },
+        {
+          "name": "Julien Hamon",
+          "login": "vdesaintemaresville@valeoservices-20201228.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "MicroPort - CRM",
+      "description": "Microport - CRM",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "ebertin@microport-202005.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Lauren Bailey",
+          "login": "lbaileyg2qzwghsa4nq@microport-202005.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Tim Service",
+          "login": "tservice96aasm0r53a1@microport-202005.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "RFP Socoda",
+      "description": "RFP Socoda",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "ebertin@socoda-202003.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Damien Grands Comptes",
+          "login": "eexec.gjmo4cfd20zg.utspd5c4mttd@socoda-202003.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Philippe Direction",
+          "login": "tservice@socoda-202003.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Claire Marketing",
+          "login": "cmarketing@socoda-202003.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Sophie Adherents",
+          "login": "ccentral@socoda-202003.demo",
+          "pwd": "Salesforce1"
+        },
+        {
+          "name": "Lauren Fournisseurs",
+          "login": "vcentral@socoda-202003.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Geoxia",
+      "description": "Geoxia Deal",
+      "domain": "https://geoxia-20210222-demo.my.salesforce.com",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "admin@geoxia-20210222.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Manuf Prat",
+      "description": "Manufacturing Pratictionner (IDO)",
+      "domain": "https://dappiano-20210215-demo.my.salesforce.com",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@dappianomanuf.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Dassault Peer Cert",
+      "description": "",
+      "domain": "https://dassault-peer-demo.my.salesforce.com",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@dassault-peer.demo",
+          "pwd": "Salesforce1"
+        }
+      ]
+    },
+    {
+      "name": "Schlinder",
+      "description": "",
+      "domain": "mcanal-20210111.demo",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "mcanal@mcanal-20210111.demo",
+          "pwd": "Salesforce1demo"
+        }
+      ]
+    }
+  ]
+}
