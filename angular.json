@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-electron": {
+    "demos-launcher": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -82,24 +82,24 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "angular-electron:build"
+            "browserTarget": "demos-launcher:build"
           },
           "configurations": {
             "dev": {
-              "browserTarget": "angular-electron:build:dev"
+              "browserTarget": "demos-launcher:build:dev"
             },
             "web": {
-              "browserTarget": "angular-electron:build:web"
+              "browserTarget": "demos-launcher:build:web"
             },
             "production": {
-              "browserTarget": "angular-electron:build:production"
+              "browserTarget": "demos-launcher:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-electron:build"
+            "browserTarget": "demos-launcher:build"
           }
         },
         "test": {
@@ -133,7 +133,7 @@
         }
       }
     },
-    "angular-electron-e2e": {
+    "demos-launcher-e2e": {
       "root": "e2e",
       "projectType": "application",
       "architect": {
@@ -149,7 +149,7 @@
       }
     }
   },
-  "defaultProject": "angular-electron",
+  "defaultProject": "demos-launcher",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
