@@ -1,17 +1,21 @@
 import { State, Action, Selector, StateContext } from "@ngxs/store";
-import { Config } from "./model";
+import { Config, SupportedBrowsers } from "./model";
 import { GetConfig, SaveConfig } from "./actions";
 import { DbConfigService } from "../../core/services/db/config.service";
 import { Injectable } from "@angular/core";
 
 @State<Config>({
-  name: "config"
+  name: "config",
+  defaults: {
+    browser: SupportedBrowsers.Chrome,
+    defaultPassword: 'salesforce123'
+  }
 })
 @Injectable({
   providedIn: "root",
 })
 export class ConfigState {
-  constructor(private dbConfig: DbConfigService) {}
+  constructor(private dbConfig: DbConfigService) { }
 
   @Selector()
   public static getState(state: Config): Config {
@@ -20,20 +24,18 @@ export class ConfigState {
 
   @Action(SaveConfig)
   public add(ctx: StateContext<Config>, { payload }: SaveConfig): void {
-    // const stateModel = ctx.getState();
     this.dbConfig.save(payload);
 
     ctx.dispatch(new GetConfig());
-    // this.dbConfig.save(payload).then((_) => {
-    //   // stateModel.items = [...stateModel.items, payload];
-    //   ctx.setState(payload);
-    // });
   }
 
   @Action(GetConfig)
   getNovels(ctx: StateContext<Config>): any {
     const config = this.dbConfig.get();
-
-    ctx.setState(config);
+    if (config === undefined) {
+      this.dbConfig.save(ctx.getState());
+    } else {
+      ctx.setState(config);
+    }
   }
 }

@@ -19,7 +19,12 @@ export class OrgsState {
 
   @Action(OrgsLoadAll)
   getOrgs(ctx: StateContext<OrgsStateModel>): any {
-    const orgs = this.db.getOrgs();
+    let orgs = this.db.getOrgs();
+
+    if(orgs === undefined) {
+      orgs = [];
+    }
+
     const stateModel = ctx.getState();
 
     stateModel.orgs = orgs;

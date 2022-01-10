@@ -40,7 +40,7 @@ export class DbService {
       .value();
   }
 
-  getOrgs(): any[] {
+  getOrgs(): org_model[] {
     return this.db.get('orgs').value();
   }
 
