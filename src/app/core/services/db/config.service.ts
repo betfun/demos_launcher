@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as lowdb from "lowdb";
+import * as fs from "fs";
 import { Config, SupportedBrowsers } from "../../../store/config/model";
 
 @Injectable({
@@ -7,11 +8,21 @@ import { Config, SupportedBrowsers } from "../../../store/config/model";
 })
 export class DbConfigService {
   db: any;
+  fs: typeof fs;
 
   constructor() {
+    this.fs = window.require("fs");
+
+    const dir = process.env["HOME"] + "/.demos_launcher";
+    if (!this.fs.existsSync(dir)) {
+      this.fs.mkdir(dir, { recursive: true }, (err) => {
+        if (err) throw err;
+      });
+    }
+
     const FileSync = window.require("lowdb/adapters/FileSync");
     const adapter = new FileSync(
-      process.env["HOME"] + "/.demos_launcher/config.json"
+      dir + "/config.json"
     );
 
     this.db = lowdb(adapter);

@@ -1,40 +1,30 @@
 import { Injectable } from '@angular/core';
 import * as lowdb from 'lowdb';
 import { org_model, profile_model } from '../../../store/orgs/model';
+import * as fs from "fs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class DbService {
   db: any;
+  fs: typeof fs;
 
   constructor() {
+
+    this.fs = window.require("fs");
+
+    const dir = process.env["HOME"] + "/.demos_launcher";
+    if (!this.fs.existsSync(dir)) {
+      this.fs.mkdir(dir, { recursive: true }, (err) => {
+        if (err) throw err;
+      });
+    }
+
     const FileSync = window.require('lowdb/adapters/FileSync');
-    const adapter = new FileSync(process.env['HOME'] + '/db.json');
+    const adapter = new FileSync(dir + '/db.json');
 
     this.db = lowdb(adapter);
-
-    this.migrate();
-  }
-
-  migrate(): void {
-    const version = this.db.get('version').value();
-    console.log(version);
-
-    if (version == '1') {
-      const orgs = this.db.get('orgs').value();
-
-      for (let i = 0; i < orgs.length; i++) {
-        const c_org = orgs[i];
-        const profiles = c_org.profiles;
-        for (let j = 0; j < profiles.length; j++) {
-          profiles[j].innerName = profiles[j].name;
-        }
-      }
-
-      this.db.set('orgs', orgs).set('version', 2).write();
-      console.log(orgs);
-    }
   }
 
   newOrg(neworg: org_model): any {
