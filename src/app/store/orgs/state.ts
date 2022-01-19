@@ -28,18 +28,13 @@ export class OrgsState {
     ctx.setState(patch({
       orgs: orgs
     }));
-
-    // const stateModel = ctx.getState()z;
-
-    // stateModel.orgs = orgs;
-    // ctx.setState(stateModel);
   }
 
   @Action(OrgLaunchChrome)
   public launch(ctx: StateContext<OrgsStateModel>, { payload }: OrgLaunchChrome): void {
-    const stateModel = ctx.getState();
+    // const stateModel = ctx.getState();
 
-    stateModel.orgs.find(payload.org_name);
+    // stateModel.orgs.find(payload.org_name);
 
     this.service.launch(payload.org_name, {
       headless: false,
@@ -47,26 +42,19 @@ export class OrgsState {
       profile: payload.profile
     });
 
-    // stateModel.items = [...stateModel.items, payload];
-    ctx.setState(stateModel);
+    // ctx.setState(stateModel);
   }
 
   @Action(OrgSave)
   public org_save(ctx: StateContext<OrgsStateModel>, { payload }: OrgSave): void {
 
-    const stateModel = ctx.getState();
+    let stateModel = ctx.getState();
 
     const org_idx = stateModel.orgs.findIndex(org => org.name === payload.name);
-    if (org_idx === -1) {
-      ctx.setState(patch({
-        orgs: insertItem<org_model>(payload)
-      }));
-    }
-    else {
-      ctx.setState(patch({
-        orgs: updateItem<org_model>(o => o.name === payload.name, payload)
-      }));
-    }
+
+    stateModel = (org_idx === -1) ?
+      ctx.setState(patch({orgs: insertItem<org_model>(payload)})) :
+      ctx.setState(patch({orgs: updateItem<org_model>(o => o.name === payload.name, payload)}));
 
     this.db.save(stateModel.orgs);
   }
@@ -79,8 +67,6 @@ export class OrgsState {
         orgs: removeItem<org_model>((org) => org.name === name),
       })
     );
-
-    // const stateModel = ctx.getState();
 
     this.db.save(stateModel.orgs);
   }
