@@ -51,23 +51,7 @@ export class AppComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === undefined || result === null) return;
 
-      // TODO : Da rifare
-      const neworg : org_model = {
-        name: result.name,
-        description: "",
-        domain: "",
-        admin: result.main_user.name,
-        profiles: [
-          {
-            name: result.main_user.name,
-            innerName: result.main_user.name,
-            login: result.main_user.login,
-            pwd: result.main_user.pwd,
-          },
-        ]
-      };
-
-      this.store.dispatch(new OrgSave(neworg));
+      this.store.dispatch(new OrgSave(result));
     });
   }
 }

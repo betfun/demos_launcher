@@ -4,7 +4,7 @@ import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as fse from "fs-extra";
 import { Config, SupportedBrowsers } from "../../../store/config/model";
-import { OrgsStateModel, profile_model } from "../../../store/orgs/model";
+import { OrgHelper, OrgsStateModel, profile_model } from "../../../store/orgs/model";
 
 export interface launch_options {
   profile: profile_model | null,
@@ -47,7 +47,7 @@ export class ElectronService {
     const global_config = this.store.selectSnapshot<Config>(state => state.config);
     const org_obj = store.orgs.find(o => o.name === org);
 
-    const admin = org_obj.profiles.find(p => p.name === org_obj.admin);
+    const admin = OrgHelper.getAdmin(org_obj); // org_obj.profiles.find(p => p.name === org_obj.admin);
 
     opts = opts ?? {
       profile: admin,
@@ -102,7 +102,7 @@ export class ElectronService {
     const config = this.local_config(org);
     const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
 
-    for (let i = 1; i < profiles.length; i++) {
+    for (let i = 0; i < profiles.length; i++) {
 
       await sleep(5000);
 
@@ -112,7 +112,7 @@ export class ElectronService {
 
       this.launch(org, {
         profile: profile,
-        headless: true,
+        headless: false,
         use_homepage: false
       });
 
@@ -124,7 +124,7 @@ export class ElectronService {
       const obj = JSON.parse(this.fs.readFileSync(fn, "utf8"));
       const infoCache = obj.profile.info_cache;
 
-      for (let i = 1; i < profiles.length; i++) {
+      for (let i = 0; i < profiles.length; i++) {
 
         const profile = profiles[i];
 

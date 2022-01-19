@@ -21,7 +21,7 @@ import { NewProfilesComponent } from "../new-profiles/new-profiles.component";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { Store } from "@ngxs/store";
-import { OrgDelete, OrgsLoadAll } from "../store/orgs/actions";
+import { OrgDelete, OrgSave, OrgsLoadAll } from "../store/orgs/actions";
 import { org_model, profile_model } from "../store/orgs/model";
 
 @Component({
@@ -120,19 +120,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === undefined || result === null) return;
-
-      const new_profiles : profile_model[] = result
-        .map((res) => res.value)
-        .map((p) => {
-          return {
-            name: p.Name,
-            innerName: p.Name,
-            login: p.Username,
-            pwd: p.pwd,
-          };
-        });
-
-      this.dbService.newProfiles(org.name, new_profiles);
+      this.store.dispatch(new OrgSave(result));
     });
     // this.electronService.install(element.name, element.profiles[0])
   }

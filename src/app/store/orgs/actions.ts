@@ -1,3 +1,5 @@
+import { org_model } from "./model";
+
 export class OrgLaunchChrome {
   public static readonly type = "[Orgs] Launch Chrome";
   constructor(public payload: any) { }
@@ -5,7 +7,7 @@ export class OrgLaunchChrome {
 
 export class OrgSave {
   public static readonly type = "[Orgs] Save Org in db";
-  constructor(public payload: any) { }
+  constructor(public payload: org_model) { }
 }
 
 

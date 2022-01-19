@@ -3,7 +3,7 @@ import { OrgDelete, OrgLaunchChrome, OrgSave, OrgsLoadAll } from './actions';
 import { OrgsStateModel, org_model } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
-import { patch, removeItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 
 @State<OrgsStateModel>({
   name: 'orgs',
@@ -21,14 +21,18 @@ export class OrgsState {
   getOrgs(ctx: StateContext<OrgsStateModel>): any {
     let orgs = this.db.getOrgs();
 
-    if(orgs === undefined) {
+    if (orgs === undefined) {
       orgs = [];
     }
 
-    const stateModel = ctx.getState();
+    ctx.setState(patch({
+      orgs: orgs
+    }));
 
-    stateModel.orgs = orgs;
-    ctx.setState(stateModel);
+    // const stateModel = ctx.getState()z;
+
+    // stateModel.orgs = orgs;
+    // ctx.setState(stateModel);
   }
 
   @Action(OrgLaunchChrome)
@@ -52,25 +56,32 @@ export class OrgsState {
 
     const stateModel = ctx.getState();
 
-    stateModel.orgs = [payload, ...stateModel.orgs];
+    const org_idx = stateModel.orgs.findIndex(org => org.name === payload.name);
+    if (org_idx === -1) {
+      ctx.setState(patch({
+        orgs: insertItem<org_model>(payload)
+      }));
+    }
+    else {
+      ctx.setState(patch({
+        orgs: updateItem<org_model>(o => o.name === payload.name, payload)
+      }));
+    }
 
-    const out = this.db
-      .newOrg(payload);
-
-    console.log(out);
-
-    ctx.setState(stateModel);
+    this.db.save(stateModel.orgs);
   }
 
   @Action(OrgDelete)
   public org_delete(ctx: StateContext<OrgsStateModel>, { name }: OrgDelete): void {
 
-    const removed = this.db.delete_org(name);
-
-    ctx.setState(
+    const stateModel = ctx.setState(
       patch({
-        orgs: removeItem<org_model>((org) => org.name === removed.name),
+        orgs: removeItem<org_model>((org) => org.name === name),
       })
     );
+
+    // const stateModel = ctx.getState();
+
+    this.db.save(stateModel.orgs);
   }
 }

@@ -85,9 +85,9 @@
                     power_settings_new
                   </mat-icon>
                 </button>
-                <button mat-icon-button [disabled]="element.admin == profile.login"
+                <button mat-icon-button [disabled]="element.admin == profile.innerName"
                   (click)="deleteProfile(element, profile);">
-                  <mat-icon [color]="element.admin == profile.login ? 'grey' : 'warn'">delete</mat-icon>
+                  <mat-icon [color]="element.admin == profile.innerName ? 'grey' : 'warn'">delete</mat-icon>
                 </button>
 
               <mat-divider *ngIf="!isLast"></mat-divider>

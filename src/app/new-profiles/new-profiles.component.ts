@@ -1,6 +1,6 @@
 import { Component, Inject, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { org_model } from "../store/orgs/model";
+import { org_model, profile_model } from "../store/orgs/model";
 import { EditOrgComponent } from "./edit-org/edit-org.component";
 import { ListProfilesComponent } from "./list-profiles/list-profiles.component";
 import { FinalReviewComponent } from "./final-review/final-review.component";
@@ -34,8 +34,8 @@ export class NewProfilesComponent {
     }
 
     if(previousIndex == 1){
-      const new_profiles = this.newProfilesEditor.selectedProfiles;
-      this.org.profiles = [...this.org.profiles, ...new_profiles];
+      const new_profiles : profile_model[] = this.newProfilesEditor.selectedProfiles;
+      this.org.profiles.push(...new_profiles);
       this.orgReview.org = this.org;
     }
   }

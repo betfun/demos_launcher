@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as lowdb from 'lowdb';
-import { org_model, profile_model } from '../../../store/orgs/model';
+import { org_model } from '../../../store/orgs/model';
 import * as fs from "fs";
 
 @Injectable({
@@ -27,10 +27,6 @@ export class DbService {
     this.db = lowdb(adapter);
   }
 
-  newOrg(neworg: org_model): any {
-    return this.db.get('orgs').unshift(neworg).write();
-  }
-
   getAdmin(org: string): any {
     return this.db
       .get('orgs')
@@ -44,16 +40,8 @@ export class DbService {
     return this.db.get('orgs').value();
   }
 
-
-  newProfiles(org_name: string, profiles: profile_model[]): void {
-    let org = this.db
-      .get('orgs')
-      .find({ name: org_name })
-      .get('profiles');
-
-    profiles.forEach((p) => (org = org.push(p)));
-
-    org.write();
+  save(orgs: org_model[]) : void{
+    this.db.set('orgs', orgs).write();
   }
 
   delete(org_name: string, profile: any): void {
@@ -66,7 +54,7 @@ export class DbService {
       .write();
   }
 
-  delete_org(org_name: string) : any {
+  delete_org(org_name: string): any {
     return this.db
       .get('orgs')
       .remove({ name: org_name })
