@@ -1,14 +1,15 @@
 import { State, Action, StateContext } from '@ngxs/store';
-import { OrgDelete, OrgLaunchChrome, OrgSave, OrgsLoadAll } from './actions';
-import { OrgsStateModel, org_model } from './model';
+import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsLoadAll } from './actions';
+import { OrgsStateModel, org_model, profile_model } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { parseLazyRoute } from '@angular/compiler/src/aot/lazy_routes';
 
 @State<OrgsStateModel>({
   name: 'orgs',
   defaults: {
-    // version: 2,
+    version: 2,
     orgs: []
   }
 })
@@ -21,7 +22,8 @@ export class OrgsState {
   getOrgs(ctx: StateContext<OrgsStateModel>): any {
     let orgs = this.db.getOrgs();
 
-    if (orgs === undefined) {
+    if (orgs === undefined || !Array.isArray(orgs)) {
+      console.log("Reset orgs");
       orgs = [];
     }
 
@@ -32,42 +34,45 @@ export class OrgsState {
 
   @Action(OrgLaunchChrome)
   public launch(ctx: StateContext<OrgsStateModel>, { payload }: OrgLaunchChrome): void {
-    // const stateModel = ctx.getState();
-
-    // stateModel.orgs.find(payload.org_name);
-
     this.service.launch(payload.org_name, {
       headless: false,
       use_homepage: true,
       profile: payload.profile
     });
+  }
 
-    // ctx.setState(stateModel);
+  @Action(OrgDeleteProfile)
+  public org_delete_profile(ctx: StateContext<OrgsStateModel>, { name, profile }: OrgDeleteProfile): void {
+    ctx.setState(patch<OrgsStateModel>({
+      orgs: updateItem<org_model>(org => org.name === name, patch<org_model>({
+        profiles: removeItem<profile_model>(p => p.innerName == profile.innerName)
+      }))
+    }));
+
+    this.db.save(ctx.getState().orgs);
   }
 
   @Action(OrgSave)
   public org_save(ctx: StateContext<OrgsStateModel>, { payload }: OrgSave): void {
 
-    let stateModel = ctx.getState();
+    const stateModel = ctx.getState();
 
     const org_idx = stateModel.orgs.findIndex(org => org.name === payload.name);
 
-    stateModel = (org_idx === -1) ?
-      ctx.setState(patch({orgs: insertItem<org_model>(payload)})) :
-      ctx.setState(patch({orgs: updateItem<org_model>(o => o.name === payload.name, payload)}));
+    ctx.setState((org_idx === -1) ?
+      patch({ orgs: insertItem<org_model>(payload) }) :
+      patch({ orgs: updateItem<org_model>(o => o.name === payload.name, payload) }));
 
-    this.db.save(stateModel.orgs);
+    this.db.save(ctx.getState().orgs);
   }
 
   @Action(OrgDelete)
   public org_delete(ctx: StateContext<OrgsStateModel>, { name }: OrgDelete): void {
 
-    const stateModel = ctx.setState(
-      patch({
-        orgs: removeItem<org_model>((org) => org.name === name),
-      })
-    );
+    ctx.setState(patch<OrgsStateModel>({
+      orgs: removeItem<org_model>((org) => org.name === name)
+    }));
 
-    this.db.save(stateModel.orgs);
+    this.db.save(ctx.getState().orgs);
   }
 }

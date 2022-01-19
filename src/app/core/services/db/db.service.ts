@@ -27,37 +27,11 @@ export class DbService {
     this.db = lowdb(adapter);
   }
 
-  getAdmin(org: string): any {
-    return this.db
-      .get('orgs')
-      .find({ name: org })
-      .get('profiles')
-      .find({ name: 'Admin' })
-      .value();
-  }
-
   getOrgs(): org_model[] {
     return this.db.get('orgs').value();
   }
 
   save(orgs: org_model[]) : void{
     this.db.set('orgs', orgs).write();
-  }
-
-  delete(org_name: string, profile: any): void {
-    // Add a post
-    this.db
-      .get('orgs')
-      .find({ name: org_name })
-      .get('profiles')
-      .pull(profile)
-      .write();
-  }
-
-  delete_org(org_name: string): any {
-    return this.db
-      .get('orgs')
-      .remove({ name: org_name })
-      .write();
   }
 }

@@ -1,6 +1,131 @@
 {
   "orgs": [
     {
+      "profiles": [
+        {
+          "name": "Autodistrib ",
+          "login": "ffaure@vialocation.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Autodistrib "
+        }
+      ],
+      "name": "Autoddistribution - Fred",
+      "description": "",
+      "domain": "",
+      "admin": "Autodistrib "
+    },
+    {
+      "name": "Guerbet - Manuf Cloud",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "Admin",
+          "login": "dappiano@guerbet-211122-912.demo",
+          "pwd": "salesforce123"
+        },
+        {
+          "name": "Elliot Executive",
+          "innerName": "Elliot Executive",
+          "login": "eexec.aqqaplejjwkt@guerbet-211122-912.demo",
+          "pwd": "salesforce123"
+        }
+      ]
+    },
+    {
+      "name": "CG CLoud",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Sophie - Manager Commercial",
+          "login": "dappiano@dappiano-211121-941.demo",
+          "pwd": "salesforce123",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Philippe RSC",
+          "login": "philippe-rsc@ad.demo",
+          "pwd": "salesforce123",
+          "innerName": "Philippe RSC"
+        },
+        {
+          "name": "Gustavo Manager",
+          "login": "gustavomanager.psvs2ewokf4m.tqvdndsivmmk.rqxzlvsxkspb@dappiano-211121-941.demo",
+          "pwd": "salesforce123",
+          "innerName": "Gustavo Manager"
+        },
+        {
+          "name": "Claire Centre Appel",
+          "login": "tim.service@dappiano-211121-941-demo.com",
+          "pwd": "salesforce123",
+          "innerName": "Claire Centre Appel"
+        },
+        {
+          "name": "Fabien - Directeur Commercial",
+          "innerName": "Elliot Executive",
+          "login": "eexec.gjmo4cfd20zg.hu5rievk4tb3.l89zyquotr.rbq8ftnvzbdk@dappiano-211121-941.demo",
+          "pwd": "salesforce123"
+        },
+        {
+          "name": "Camille Point vente",
+          "innerName": "Camille Point vente",
+          "login": "adrianservice.2du0wsb4lzms.1ccvxyasuw7o.z6qtwmrvmtwf@dappiano-211121-941.demo",
+          "pwd": "salesforce123"
+        }
+      ]
+    },
+    {
+      "name": "Autodistribution",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@autodistrib-211111-943.demo",
+          "pwd": "Salesforce123",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Vanessa Central",
+          "login": "vanessa.central@autodistrib-211111-943-demo.com",
+          "pwd": "salesforce123",
+          "innerName": "Vanessa Central"
+        }
+      ]
+    },
+    {
+      "name": "La ferme digitale",
+      "description": "La ferme digitale",
+      "domain": "",
+      "admin": "dappiano@fermedigit-211026-569.demo",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@fermedigit-211026-569.demo",
+          "pwd": "salesforce1",
+          "innerName": "Admin"
+        }
+      ]
+    },
+    {
+      "name": "Fruits",
+      "description": "Fruits",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "jkohnen@capfruit-20210915.demo",
+          "pwd": "Capfruit09",
+          "innerName": "Admin"
+        }
+      ]
+    },
+    {
       "name": "Vlocity for HubOne",
       "description": "Vlocity for HubOne ",
       "domain": "",
@@ -8,7 +133,8 @@
         {
           "name": "Admin",
           "login": "demo.org@communications.1613474281768",
-          "pwd": "Vlocity6653602902024986"
+          "pwd": "Vlocity6653602902024986",
+          "innerName": "Admin"
         }
       ]
     },
@@ -20,7 +146,8 @@
         {
           "name": "Admin",
           "login": "rtordjman@comstech.org",
-          "pwd": "salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Admin"
         }
       ]
     },
@@ -32,7 +159,8 @@
         {
           "name": "Admin",
           "login": "rtordjman@orange-ido2.demo",
-          "pwd": "salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Admin"
         }
       ]
     },
@@ -40,16 +168,19 @@
       "name": "Linxis",
       "description": "Autodistribution - Doyen",
       "domain": "",
+      "admin": "Admin",
       "profiles": [
         {
           "name": "Admin",
           "login": "dappiano@linxis-20210624.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         },
         {
           "name": "Ted Data",
           "login": "tdata@linxis-20210624.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Ted Data"
         }
       ]
     },
@@ -62,12 +193,14 @@
           "name": "Admin",
           "login1": "dappiano@project-doyen.demo",
           "login": "dappiano@dappiano-20210617.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         },
         {
           "name": "Dounia",
           "login": "dounia.laal@doyen.demo",
-          "pwd": "Salesforce2021!!"
+          "pwd": "Salesforce2021!!",
+          "innerName": "Dounia"
         }
       ]
     },
@@ -79,59 +212,44 @@
         {
           "name": "Admin",
           "login": "jverbecque@hubone-rfi.demo",
-          "pwd": "salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Admin"
         },
         {
           "name": "Gérard Client",
           "login": "gclient@hubone-rfi.demo",
-          "pwd": "Salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Gérard Client"
         },
         {
           "name": "Quentin Engineer",
           "login": "qengineer@hubone-rfi.demo",
-          "pwd": "Salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Quentin Engineer"
         },
         {
           "name": "Stéphane Manager",
           "login": "eexec.9cqkeeyedn3w.cz5nxqjyzkbf@hubone-rfi.demo",
-          "pwd": "Salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Stéphane Manager"
         },
         {
           "name": "Yannick Commercial",
           "login": "ycommercial@hubone-rfi.demo",
-          "pwd": "Salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Yannick Commercial"
         },
         {
           "name": "Paul Service N1",
           "login": "tservice@hubone-rfi.demo",
-          "pwd": "salesforce1"
+          "pwd": "salesforce1",
+          "innerName": "Paul Service N1"
         },
         {
           "name": "Jacques Service N2",
           "login": "bservice@hubone-rfi.demo",
-          "pwd": "Salesforce1"
-        },
-        {
-          "name": "Chris Cloud",
-          "login": "ccloud@hubone-rfi.demo",
-          "pwd": "Salesforce1"
-        }
-      ]
-    },
-    {
-      "name": "Valeo",
-      "description": "Valeo",
-      "domain": "",
-      "profiles": [
-        {
-          "name": "Admin",
-          "login": "vdesaintemaresville@valeoservices-20201228.demo",
-          "pwd": "Salesforce1!"
-        },
-        {
-          "name": "Julien Hamon",
-          "login": "vdesaintemaresville@valeoservices-20201228.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Jacques Service N2"
         }
       ]
     },
@@ -143,54 +261,64 @@
         {
           "name": "Admin",
           "login": "ebertin@microport-202005.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         },
         {
           "name": "Lauren Bailey",
           "login": "lbaileyg2qzwghsa4nq@microport-202005.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Lauren Bailey"
         },
         {
           "name": "Tim Service",
           "login": "tservice96aasm0r53a1@microport-202005.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Tim Service"
         }
       ]
     },
     {
       "name": "RFP Socoda",
       "description": "RFP Socoda",
+      "admin": "Admin",
       "domain": "",
       "profiles": [
         {
           "name": "Admin",
           "login": "ebertin@socoda-202003.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         },
         {
           "name": "Damien Grands Comptes",
           "login": "eexec.gjmo4cfd20zg.utspd5c4mttd@socoda-202003.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Damien Grands Comptes"
         },
         {
           "name": "Philippe Direction",
           "login": "tservice@socoda-202003.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Philippe Direction"
         },
         {
           "name": "Claire Marketing",
           "login": "cmarketing@socoda-202003.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Claire Marketing"
         },
         {
           "name": "Sophie Adherents",
           "login": "ccentral@socoda-202003.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Sophie Adherents"
         },
         {
           "name": "Lauren Fournisseurs",
           "login": "vcentral@socoda-202003.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Lauren Fournisseurs"
         }
       ]
     },
@@ -202,7 +330,8 @@
         {
           "name": "Admin",
           "login": "admin@geoxia-20210222.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         }
       ]
     },
@@ -214,7 +343,8 @@
         {
           "name": "Admin",
           "login": "dappiano@dappianomanuf.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         }
       ]
     },
@@ -226,7 +356,8 @@
         {
           "name": "Admin",
           "login": "dappiano@dassault-peer.demo",
-          "pwd": "Salesforce1"
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
         }
       ]
     },
@@ -238,7 +369,27 @@
         {
           "name": "Admin",
           "login": "mcanal@mcanal-20210111.demo",
-          "pwd": "Salesforce1demo"
+          "pwd": "Salesforce1demo",
+          "innerName": "Admin"
+        }
+      ]
+    },
+    {
+      "name": "Latecoere",
+      "description": "",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@latecoere-20211017.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Elliot Executive",
+          "login": "eexecutive@latecoere-20211017.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Elliot Executive"
         }
       ]
     }

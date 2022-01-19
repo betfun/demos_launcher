@@ -9,7 +9,6 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
 import { ElectronService } from "../core/services";
-import { DbService } from "../core/services";
 import {
   animate,
   state,
@@ -21,7 +20,7 @@ import { NewProfilesComponent } from "../new-profiles/new-profiles.component";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { Store } from "@ngxs/store";
-import { OrgDelete, OrgSave, OrgsLoadAll } from "../store/orgs/actions";
+import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsLoadAll } from "../store/orgs/actions";
 import { org_model, profile_model } from "../store/orgs/model";
 
 @Component({
@@ -55,7 +54,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   constructor(
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
-    private dbService: DbService,
     private clipboard: Clipboard,
     private electronService: ElectronService,
     private store: Store
@@ -91,7 +89,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   }
 
   deleteProfile(org, profile): void {
-    this.dbService.delete(org.name, profile);
+    this.store.dispatch(new OrgDeleteProfile(org.name, profile));
   }
 
   deleteOrg(org) : void {

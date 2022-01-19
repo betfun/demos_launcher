@@ -20,3 +20,8 @@ export class OrgDelete {
   public static readonly type = "[Orgs] Delete org";
   constructor(public name: string) { }
 }
+
+export class OrgDeleteProfile {
+  public static readonly type = "[Orgs] Delete profile";
+  constructor(public name: string, public profile : any) { }
+}
