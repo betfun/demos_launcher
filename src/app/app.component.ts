@@ -1,13 +1,13 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Store } from "@ngxs/store";
+import { Select, Store } from "@ngxs/store";
 import { GetConfig, SaveConfig } from "./store/config/actions";
 import { ConfigComponent } from "./config/config.component";
 import { Config } from "../app/store/config/model";
-import { OrgSave } from './store/orgs/actions';
-import { org_model } from "./store/orgs/model";
+import { OrgSave, OrgsInstallChrome } from './store/orgs/actions';
 import { NewProfilesComponent } from "./new-profiles/new-profiles.component";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -15,6 +15,9 @@ import { NewProfilesComponent } from "./new-profiles/new-profiles.component";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+
+  @Select(state => state.orgs.loading) isLoading$: Observable<boolean>;
+
   constructor(
     private store: Store,
     public dialog: MatDialog,
@@ -22,6 +25,10 @@ export class AppComponent {
   ) {
     this.translate.setDefaultLang("en");
     this.store.dispatch(new GetConfig());
+    // this.store.select(state => state.orgs.loading)
+    //   .subscribe(isLoading => {
+    //     this.isLoading = isLoading;
+    //   });
   }
 
   open_config(): void {

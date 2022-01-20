@@ -1,5 +1,5 @@
 <mat-selection-list dense role="list" #list>
-  <h2 *ngIf="loading">Loading users... (please wait)</h2>
+  <h2 *ngIf="loading$ | async">Loading users... (please wait)</h2>
   <h2 *ngIf="error !== ''">{{error}}</h2>
   <mat-list-option *ngFor="let profile of profiles" [value]="profile" style="padding-top: 10px;">
     <!-- <img matListAvatar [src]="profile.img" > -->

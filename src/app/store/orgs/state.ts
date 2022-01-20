@@ -1,16 +1,16 @@
-import { State, Action, StateContext } from '@ngxs/store';
-import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsLoadAll } from './actions';
+import { State, Action, StateContext, actionMatcher } from '@ngxs/store';
+import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsInstallChrome, OrgsLoadAll } from './actions';
 import { OrgsStateModel, org_model, profile_model } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { parseLazyRoute } from '@angular/compiler/src/aot/lazy_routes';
 
 @State<OrgsStateModel>({
   name: 'orgs',
   defaults: {
     version: 2,
-    orgs: []
+    orgs: [],
+    loading: false
   }
 })
 @Injectable({ providedIn: "root" })
@@ -74,5 +74,13 @@ export class OrgsState {
     }));
 
     this.db.save(ctx.getState().orgs);
+  }
+
+  @Action(OrgsInstallChrome)
+  public install_org(ctx: StateContext<OrgsStateModel>, {name, profiles} : OrgsInstallChrome) : void {
+    ctx.patchState({ loading: true });
+
+    this.service.install(name, profiles).then(() =>
+      ctx.patchState({ loading: false }));
   }
 }

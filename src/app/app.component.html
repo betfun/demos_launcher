@@ -310,6 +310,10 @@
     </button>
 </div>
 
+<span *ngIf="isLoading$ | async">
+  Loading...
+</span>
+
 <div class="content" role="main">
     <app-home></app-home>
 </div>

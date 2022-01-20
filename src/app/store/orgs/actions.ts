@@ -1,4 +1,10 @@
-import { org_model } from "./model";
+import { org_model, profile_model } from "./model";
+
+export class OrgsInstallChrome {
+  public static readonly type = "[Orgs] Install Chrome";
+  constructor(public name: string, public profiles: profile_model[]) { }
+}
+
 
 export class OrgLaunchChrome {
   public static readonly type = "[Orgs] Launch Chrome";

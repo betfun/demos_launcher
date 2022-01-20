@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { org_model, profile_model } from "../store/orgs/model";
 import { EditOrgComponent } from "./edit-org/edit-org.component";
@@ -7,6 +7,7 @@ import { FinalReviewComponent } from "./final-review/final-review.component";
 
 @Component({
   selector: "app-new-profiles",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./new-profiles.component.html",
   styleUrls: ["./new-profiles.component.scss"],
 })

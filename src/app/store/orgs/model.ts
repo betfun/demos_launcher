@@ -48,4 +48,5 @@ export class OrgHelper {
 export interface OrgsStateModel {
   version: number,
   orgs: org_model[];
+  loading: boolean
 }

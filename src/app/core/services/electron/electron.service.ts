@@ -59,7 +59,8 @@ export class ElectronService {
 
     opts.profile.innerName = opts.profile.innerName
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
 
     const browser_path =
       global_config.browser == SupportedBrowsers.Chromium
@@ -68,22 +69,21 @@ export class ElectronService {
 
     const homepage = `https://login.salesforce.com/login.jsp?un=${opts.profile.login}&pw=${opts.profile.pwd}`;
 
-    const launch_path = `open -n "${browser_path}" \
+    const launch_path = `open -n -a "${browser_path}" \
       --args --user-data-dir=${config.orgs_base}/${config.org_name}/Chrome \
       --profile-directory="${opts.profile.innerName}" \
       --no-first-run \
-      --no-default-browser-check \
-      --start-fullscreen`;
+      --no-default-browser-check`;
 
     const launch_command =
       launch_path +
-      (opts.use_homepage ? ` '${homepage}'` : "") +
-      (opts.headless ? " --headless --disable-gpu" : "");
+      (opts.use_homepage ? ` '${homepage}'` : "");
+      // + (!opts.headless ? " -gj" : "");
 
     this.childProcess.execSync(launch_command);
   }
 
-  async kill(org: string): Promise<void> {
+  kill(org: string): void {
     const org_chrome = org.replace(/\s/g, "");
 
     try {
@@ -92,12 +92,10 @@ export class ElectronService {
     catch (err) {
       // No need to take care of the error
     }
-
-    await sleep(2000);
   }
 
   async install(org: string, profiles: profile_model[]): Promise<void> {
-    await this.kill(org);
+    this.kill(org);
 
     const config = this.local_config(org);
     const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
@@ -117,7 +115,8 @@ export class ElectronService {
       });
 
       await sleep(5000);
-      await this.kill(org);
+
+      this.kill(org);
     }
 
     try {
@@ -129,7 +128,7 @@ export class ElectronService {
         const profile = profiles[i];
 
         infoCache[profile.innerName] = JSON.parse(
-          JSON.stringify(infoCache[profile.innerName])
+          JSON.stringify(infoCache[profile.innerName.trim()])
         );
         infoCache[profile.innerName].name = profile.name;
       }

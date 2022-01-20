@@ -20,7 +20,7 @@ import { NewProfilesComponent } from "../new-profiles/new-profiles.component";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { Store } from "@ngxs/store";
-import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsLoadAll } from "../store/orgs/actions";
+import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll } from "../store/orgs/actions";
 import { org_model, profile_model } from "../store/orgs/model";
 
 @Component({
@@ -97,7 +97,8 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   }
 
   reinstall(element): void {
-    this.electronService.install(element.name, element.profiles);
+    this.store.dispatch(new OrgsInstallChrome(element.name, element.profiles));
+    //  this.electronService.install(element.name, element.profiles);
   }
 
   copyProfile(profile: { login: string; pwd: string; }): void {
