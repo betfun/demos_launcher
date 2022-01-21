@@ -40,7 +40,6 @@ export class ElectronService {
     return config;
   }
 
-  // = { profile : null, headless: false, use_homepage: false}
   launch(org: string, opts?: launch_options): void {
 
     const store = this.store.selectSnapshot<OrgsStateModel>(state => state.orgs);
@@ -69,7 +68,7 @@ export class ElectronService {
 
     const homepage = `https://login.salesforce.com/login.jsp?un=${opts.profile.login}&pw=${opts.profile.pwd}`;
 
-    const launch_path = `open -n -a "${browser_path}" \
+    const launch_path = `open -n "${browser_path}" \
       --args --user-data-dir=${config.orgs_base}/${config.org_name}/Chrome \
       --profile-directory="${opts.profile.innerName}" \
       --no-first-run \
@@ -77,8 +76,8 @@ export class ElectronService {
 
     const launch_command =
       launch_path +
-      (opts.use_homepage ? ` '${homepage}'` : "");
-      // + (!opts.headless ? " -gj" : "");
+      (opts.use_homepage ? ` '${homepage}'` : "") +
+      (opts.headless ? "  --window-position=0,0 --window-size=1,1" : "");
 
     this.childProcess.execSync(launch_command);
   }
@@ -97,12 +96,14 @@ export class ElectronService {
   async install(org: string, profiles: profile_model[]): Promise<void> {
     this.kill(org);
 
+    await sleep(2000);
+
     const config = this.local_config(org);
-    const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
+    const dir = `${config.orgs_base}/${config.org_name}`;
+    this.fs.rmdirSync(dir, { recursive: true });
 
-    for (let i = 0; i < profiles.length; i++) {
-
-      await sleep(5000);
+    // const config = this.local_config(org);
+    for (let i = 0; i < 1; i++) {
 
       const profile = profiles[i];
 
@@ -119,63 +120,32 @@ export class ElectronService {
       this.kill(org);
     }
 
+    const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
+
     try {
       const obj = JSON.parse(this.fs.readFileSync(fn, "utf8"));
       const infoCache = obj.profile.info_cache;
+
+      const reference_profile = infoCache[profiles[0].innerName];
+
+      const new_infoCache = {};
 
       for (let i = 0; i < profiles.length; i++) {
 
         const profile = profiles[i];
 
-        infoCache[profile.innerName] = JSON.parse(
-          JSON.stringify(infoCache[profile.innerName.trim()])
-        );
-        infoCache[profile.innerName].name = profile.name;
+        new_infoCache[profile.innerName] = {};
+        Object.assign(new_infoCache[profile.innerName], reference_profile);
+        new_infoCache[profile.innerName].name = profile.name;
       }
+
+      obj.profile.info_cache = new_infoCache;
+
+      await sleep(3000);
 
       this.fs.writeFileSync(fn, JSON.stringify(obj), "utf8");
     } catch (err) {
       console.log(err);
     }
   }
-
-  // async install(org: string, profiles: profile_model[]): Promise<void> {
-
-  //   await this.kill(org);
-
-  //   profiles.forEach(profile =>
-  //     this.launch(org, {
-  //       profile: profile,
-  //       headless: true,
-  //       use_homepage: false
-  //     })
-  //   );
-
-  //   console.log("sleep " + (5 * profiles.length).toString());
-  //   await sleep(5000 * profiles.length);
-
-  //   await this.kill(org);
-
-  //   const config = this.local_config(org);
-  //   const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
-  //   try {
-  //     const obj = JSON.parse(this.fs.readFileSync(fn, "utf8"));
-  //     const infoCache = obj.profile.info_cache;
-
-  //     for (let i = 0; i < profiles.length; i++) {
-  //       const profile = profiles[i];
-
-  //       infoCache[profile.innerName] = JSON.parse(
-  //         JSON.stringify(infoCache[profile.innerName])
-  //       );
-  //       infoCache[profile.innerName].name = profile.name;
-  //     }
-
-  //     this.fs.writeFileSync(fn, JSON.stringify(obj), "utf8");
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-
-  //   await sleep(2000);
-  // }
 }

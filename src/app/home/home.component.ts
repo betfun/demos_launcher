@@ -70,7 +70,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
     this.store.select<org_model[]>(state => state.orgs.orgs)
       .subscribe(orgs => {
-        console.log(orgs);
         this.dataSource.data = orgs;
       });
   }

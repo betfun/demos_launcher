@@ -1,13 +1,8 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClient } from "@angular/common/http";
-
-// NG Translate
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
-// import { HomeModule } from './hxome/home.module';
+import { HttpClientModule } from "@angular/common/http";
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AppComponent } from "./app.component";
 import { MatTableModule } from "@angular/material/table";
@@ -37,12 +32,6 @@ import { ConfigComponent } from "./config/config.component";
 import { ListProfilesComponent } from './new-profiles/list-profiles/list-profiles.component';
 import { EditOrgComponent } from './new-profiles/edit-org/edit-org.component';
 import { FinalReviewComponent } from './new-profiles/final-review/final-review.component';
-
-// TODO: Remove all httpclient
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
-}
 
 @NgModule({
   declarations: [
@@ -77,14 +66,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MatInputModule,
     DragDropModule,
     ReactiveFormsModule,
-
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],

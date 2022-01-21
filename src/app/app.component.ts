@@ -1,34 +1,40 @@
-import { Component } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
+import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Select, Store } from "@ngxs/store";
+import { Store } from "@ngxs/store";
 import { GetConfig, SaveConfig } from "./store/config/actions";
 import { ConfigComponent } from "./config/config.component";
 import { Config } from "../app/store/config/model";
-import { OrgSave, OrgsInstallChrome } from './store/orgs/actions';
+import { OrgSave } from './store/orgs/actions';
 import { NewProfilesComponent } from "./new-profiles/new-profiles.component";
-import { Observable } from "rxjs";
+import { NgxSpinnerService } from "ngx-spinner";
+import { version } from '../../package.json';
+import { timer } from "rxjs";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  @Select(state => state.orgs.loading) isLoading$: Observable<boolean>;
-
+  public version = version;
   constructor(
+    private spinner: NgxSpinnerService,
     private store: Store,
-    public dialog: MatDialog,
-    private translate: TranslateService
+    private dialog: MatDialog
   ) {
-    this.translate.setDefaultLang("en");
     this.store.dispatch(new GetConfig());
-    // this.store.select(state => state.orgs.loading)
-    //   .subscribe(isLoading => {
-    //     this.isLoading = isLoading;
-    //   });
+  }
+
+  ngOnInit(): void {
+    this.store.select(state => state.orgs.loading).subscribe(isLoading => {
+      if (isLoading) {
+        this.spinner.show();
+      }
+      else {
+        this.spinner.hide();
+      }
+    });
   }
 
   open_config(): void {

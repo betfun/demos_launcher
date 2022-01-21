@@ -45,6 +45,7 @@
     "fs-extra": "9.1.0",
     "jsforce": "1.10.1",
     "lowdb": "1.0.0",
+    "ngx-spinner": "11.0.2",
     "stream": "0.0.2"
   },
   "devDependencies": {
@@ -68,8 +69,6 @@
     "@angular/platform-browser": "11.0.3",
     "@angular/platform-browser-dynamic": "11.0.3",
     "@angular/router": "11.0.3",
-    "@ngx-translate/core": "13.0.0",
-    "@ngx-translate/http-loader": "6.0.0",
     "@ngxs/devtools-plugin": "^3.3.2",
     "@ngxs/logger-plugin": "3.7.2",
     "@ngxs/schematics": "^0.0.1-alpha.5",

@@ -12,8 +12,6 @@ import { FinalReviewComponent } from "./final-review/final-review.component";
   styleUrls: ["./new-profiles.component.scss"],
 })
 export class NewProfilesComponent {
-  profiles: any[];
-
   public org: org_model;
 
   @ViewChild('editOrg') private orgEditor: EditOrgComponent;
@@ -26,6 +24,7 @@ export class NewProfilesComponent {
       new org_model({});
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   changeSelection(event: any): void {
     const previousIndex: number = event.previouslySelectedIndex;
 
