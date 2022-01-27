@@ -10,6 +10,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { version } from '../../package.json';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IpcRenderer } from 'electron';
 
 @Component({
   selector: "app-root",
@@ -17,8 +18,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
+  private ipc: IpcRenderer;
+
   private readonly relasesUrl = 'https://github.com/davideappiano/demos_launcher/releases';
   private readonly apiUrl = 'https://api.github.com/repos/davideappiano/demos_launcher/releases';
+  private readonly scUrl = 'https://solutionscentral.io/posts/5de95f70-72e7-11ec-9e6d-f1bf609be4ef/managing-personas-for-demos/';
 
   public version = version;
 
@@ -30,6 +34,7 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.store.dispatch(new GetConfig());
+    this.ipc = (<any>window).require('electron').ipcRenderer;
   }
 
   private isNewerVersion(oldVer, newVer): boolean {
@@ -93,5 +98,15 @@ export class AppComponent implements OnInit {
 
       this.store.dispatch(new OrgSave(result));
     });
+  }
+
+  open_github() : void {
+    this.ipc.send('open_ext', [this.relasesUrl]);
+    // require('electron').shell.openExternal(this.relasesUrl);
+  }
+
+  open_solution_central() : void {
+    this.ipc.send('open_ext', [this.scUrl]);
+    // require('electron').shell.openExternal(this.relasesUrl);
   }
 }

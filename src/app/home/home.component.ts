@@ -97,7 +97,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
   reinstall(element): void {
     this.store.dispatch(new OrgsInstallChrome(element.name, element.profiles));
-    //  this.electronService.install(element.name, element.profiles);
   }
 
   copyProfile(profile: { login: string; pwd: string; }): void {
@@ -120,7 +119,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
       if (result === undefined || result === null) return;
       this.store.dispatch(new OrgSave(result));
     });
-    // this.electronService.install(element.name, element.profiles[0])
   }
 
   applyFilter(event: Event): void {

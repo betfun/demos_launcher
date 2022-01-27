@@ -1,5 +1,6 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, ipcMain, screen, shell} from 'electron';
 import * as path from 'path';
+import { electron } from 'process';
 import * as url from 'url';
 
 let win: BrowserWindow = null;
@@ -17,12 +18,12 @@ function createWindow(): BrowserWindow {
     y: 0,
     width: size.width,
     height: size.height,
-    title: 'demos launcher',    
+    title: 'demos launcher',
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
       contextIsolation: false,  // false if you want to run 2e2 test with Spectron
-      enableRemoteModule : true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
+      enableRemoteModule: true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
     },
   });
 
@@ -56,6 +57,10 @@ function createWindow(): BrowserWindow {
 
 try {
   console.log(app.getPath('logs'));
+
+  ipcMain.on('open_ext', (event, arg) => {
+    shell.openExternal(arg[0]);
+  });
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
