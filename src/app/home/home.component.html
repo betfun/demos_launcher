@@ -26,10 +26,10 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td class="th-right" mat-cell *matCellDef="let element">
         <!-- Launch button -->
-        <button mat-icon-button (click)="launch(element)">
+        <button mat-icon-button (click)="launch(element)" matTooltip="Launch default user (Admin)">
           <mat-icon>launch</mat-icon>
         </button>
-        <button mat-icon-button (click)="reinstall(element)" matTooltip="Info about the action">
+        <button mat-icon-button (click)="reinstall(element)" matTooltip="Install all Chrome profiles in a new Chrome">
           <mat-icon>developer_board</mat-icon>
         </button>
         <button mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
@@ -75,7 +75,7 @@
               </mat-icon>
               <h2 matLine>{{ profile.name }}</h2>
 
-                <button mat-icon-button (click)="copyProfile(profile)">
+                <button mat-icon-button (click)="copyProfile(profile)" matTooltip='Copy credential to clipboard'>
                   <mat-icon>
                     content_copy
                   </mat-icon>

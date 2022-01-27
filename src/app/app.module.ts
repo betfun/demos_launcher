@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { HomeComponent } from "./home/home.component";
@@ -64,6 +65,7 @@ import { FinalReviewComponent } from './new-profiles/final-review/final-review.c
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     DragDropModule,
     ReactiveFormsModule,
     NgxSpinnerModule

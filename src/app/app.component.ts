@@ -8,7 +8,8 @@ import { OrgSave } from './store/orgs/actions';
 import { NewProfilesComponent } from "./new-profiles/new-profiles.component";
 import { NgxSpinnerService } from "ngx-spinner";
 import { version } from '../../package.json';
-import { timer } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: "app-root",
@@ -16,14 +17,31 @@ import { timer } from "rxjs";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
+  private readonly relasesUrl = 'https://github.com/davideappiano/demos_launcher/releases';
+  private readonly apiUrl = 'https://api.github.com/repos/davideappiano/demos_launcher/releases';
 
   public version = version;
+
   constructor(
     private spinner: NgxSpinnerService,
+    private snackBar: MatSnackBar,
     private store: Store,
+    private http: HttpClient,
     private dialog: MatDialog
   ) {
     this.store.dispatch(new GetConfig());
+  }
+
+  private isNewerVersion(oldVer, newVer): boolean {
+    const oldParts = oldVer.split('.');
+    const newParts = newVer.split('.');
+    for (let i = 0; i < newParts.length; i++) {
+      const a = ~~newParts[i]; // parse int
+      const b = ~~oldParts[i]; // parse int
+      if (a > b) return true;
+      if (a < b) return false;
+    }
+    return false;
   }
 
   ngOnInit(): void {
@@ -33,6 +51,15 @@ export class AppComponent implements OnInit {
       }
       else {
         this.spinner.hide();
+      }
+    });
+
+    this.http.get(this.apiUrl).subscribe(result => {
+
+      const latest_version = result[0];
+
+      if (this.isNewerVersion(this.version, latest_version.tag_name.substring(1))) {
+        this.snackBar.open('New release available', 'OK');
       }
     });
   }
