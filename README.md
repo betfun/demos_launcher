@@ -15,13 +15,13 @@ As a solution engineer at Salesforce I have to build and run demos all the time.
 
 One of the question I often asked myself was about finding the best wasy to organise my work and I finally came out with this project. 
 
-For more information please check: 
-
-This project is based on the awesome work done in [angular-electron](https://github.com/maximegris/angular-electron)
+You can *download* the lastest version [here](https://github.com/davideappiano/demos_launcher/releases)
 
 ## Contribute
 
 Plase feel free to contribute with a pull request or by raising any issue you may find.
+
+This project is based on the awesome work done in [angular-electron](https://github.com/maximegris/angular-electron)
 
 
 ## To build for development

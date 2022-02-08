@@ -1,5 +1,5 @@
 import { State, Action, StateContext, actionMatcher } from '@ngxs/store';
-import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsInstallChrome, OrgsLoadAll } from './actions';
+import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from './actions';
 import { OrgsStateModel, org_model, profile_model } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
@@ -71,6 +71,16 @@ export class OrgsState {
 
     ctx.setState(patch<OrgsStateModel>({
       orgs: removeItem<org_model>((org) => org.name === name)
+    }));
+
+    this.db.save(ctx.getState().orgs);
+  }
+
+  @Action(OrgsReorder)
+  public reorder(ctx: StateContext<OrgsStateModel>, {updatedList} : OrgsReorder) : void {
+    // const stateModel = ctx.getState();
+    ctx.setState(patch<OrgsStateModel>({
+      orgs: updatedList
     }));
 
     this.db.save(ctx.getState().orgs);

@@ -5,6 +5,10 @@ export class OrgsInstallChrome {
   constructor(public name: string, public profiles: profile_model[]) { }
 }
 
+export class OrgsReorder {
+  public static readonly type = "[Orgs] Reorder";
+  constructor(public updatedList: org_model[]) { }
+}
 
 export class OrgLaunchChrome {
   public static readonly type = "[Orgs] Launch Chrome";

@@ -17,7 +17,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ClipboardModule } from '@angular/cdk/clipboard';
@@ -58,7 +58,7 @@ import { FinalReviewComponent } from './new-profiles/final-review/final-review.c
     MatStepperModule,
     MatMenuModule,
     ClipboardModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     MatIconModule,
     MatDialogModule,
     MatTooltipModule,

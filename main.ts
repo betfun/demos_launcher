@@ -1,6 +1,5 @@
 import { app, BrowserWindow, ipcMain, screen, shell} from 'electron';
 import * as path from 'path';
-import { electron } from 'process';
 import * as url from 'url';
 
 let win: BrowserWindow = null;

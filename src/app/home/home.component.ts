@@ -1,5 +1,6 @@
 import {
   AfterViewChecked,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
@@ -20,7 +21,7 @@ import { NewProfilesComponent } from "../new-profiles/new-profiles.component";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { Store } from "@ngxs/store";
-import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll } from "../store/orgs/actions";
+import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from "../store/orgs/actions";
 import { org_model, profile_model } from "../store/orgs/model";
 
 @Component({
@@ -28,18 +29,14 @@ import { org_model, profile_model } from "../store/orgs/model";
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
   host: { style: "width:100%" },
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("detailExpand", [
-      state(
-        "collapsed",
-        style({ height: "0px", minHeight: "0", visibility: "collapse" })
-      ),
+      state("collapsed, void", style({ height: "0px", maxHeight: "0", visibility: "collapse" })),
       state("expanded", style({ height: "*", visibility: "visible" })),
-      transition(
-        "expanded <=> collapsed",
-        animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")
-      ),
+      // transition("* => void", state("collapsed")),
+      transition("collapsed <=> expanded", animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ]),
   ],
 })
@@ -59,8 +56,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     private store: Store
   ) { }
 
-  // @Select(state => state.orgs.orgs) orgs$: Observable<Org[]>;
-
   ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
   }
@@ -70,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
     this.store.select<org_model[]>(state => state.orgs.orgs)
       .subscribe(orgs => {
-        this.dataSource.data = orgs;
+        this.dataSource.data = [...orgs];
       });
   }
 
@@ -132,7 +127,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
       event.previousIndex,
       event.currentIndex
     );
-    this.table.renderRows();
-    // this.cdRef.detectChanges();
+
+    this.store.dispatch(new OrgsReorder(this.dataSource.data));
   }
 }
