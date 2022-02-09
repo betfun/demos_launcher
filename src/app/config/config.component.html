@@ -14,12 +14,13 @@
       </mat-select>
     </mat-form-field>
 
-    <!--     -->
+    <mat-checkbox matTooltip="Feature allowing auto-login through a middleware" formControlName="useMiddleware">Autologin (Experimental)</mat-checkbox>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button  mat-dialog-close [mat-dialog-close]="null">Cancel</button>
-  <button mat-button [mat-dialog-close]="configForm.value" type="submit" [disabled]="!configForm.valid" cdkFocusInitial>Submit</button>
+  <button mat-button mat-dialog-close [mat-dialog-close]="null">Cancel</button>
+  <button mat-button [mat-dialog-close]="configForm.value" type="submit" [disabled]="!configForm.valid"
+    cdkFocusInitial>Submit</button>
 
 </mat-dialog-actions>

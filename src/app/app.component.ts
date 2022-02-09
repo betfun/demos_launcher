@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
         const config: Config = {
           browser: result.browser,
           defaultPassword: result.pwd,
+          useMiddleware: result.useMiddleware
         };
 
         this.store.dispatch(new SaveConfig(config));

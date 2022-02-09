@@ -3,12 +3,14 @@ import { Config, SupportedBrowsers } from "./model";
 import { GetConfig, SaveConfig } from "./actions";
 import { DbConfigService } from "../../core/services/db/config.service";
 import { Injectable } from "@angular/core";
+import { patch } from "@ngxs/store/operators";
 
 @State<Config>({
   name: "config",
   defaults: {
     browser: SupportedBrowsers.Chrome,
-    defaultPassword: 'salesforce123'
+    defaultPassword: 'salesforce123',
+    useMiddleware: true
   }
 })
 @Injectable({
@@ -35,7 +37,7 @@ export class ConfigState {
     if (config === undefined) {
       this.dbConfig.save(ctx.getState());
     } else {
-      ctx.setState(config);
+      ctx.setState(patch(config));
     }
   }
 }

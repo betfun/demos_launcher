@@ -66,7 +66,11 @@ export class ElectronService {
         ? "/Applications/Google Chrome Canary.app"
         : "/Applications/Google Chrome.app";
 
-    const homepage = `https://login.salesforce.com/login.jsp?un=${opts.profile.login}&pw=${opts.profile.pwd}`;
+    const loginPage =  global_config.useMiddleware ?
+      'https://clicktologin.herokuapp.com/' :
+      'https://login.salesforce.com/login.jsp';
+
+    const homepage = `${loginPage}?un=${opts.profile.login}&pw=${opts.profile.pwd}`;
 
     const launch_path = `open -n "${browser_path}" \
       --args --user-data-dir=${config.orgs_base}/${config.org_name}/Chrome \

@@ -29,6 +29,7 @@ export class DbConfigService {
     this.db.defaults = {
       defaultPassword: "",
       browser: SupportedBrowsers.Chrome,
+      useMiddleware: true
     };
 
     // };
