@@ -31,8 +31,6 @@ export class DbConfigService {
       browser: SupportedBrowsers.Chrome,
       useMiddleware: true
     };
-
-    // };
   }
 
   get(): Config {
