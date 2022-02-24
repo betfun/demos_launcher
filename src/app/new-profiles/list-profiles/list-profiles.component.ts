@@ -35,10 +35,12 @@ export class ListProfilesComponent implements OnInit {
     this.sfdc.getDbUsers(OrgHelper.getAdmin(theOrg))
       .then(profiles => {
 
+        profiles = profiles.sort((a, b) => a.Name >= b.Name  ? 1 : -1);
+
         profiles.forEach(element => element.pwd = default_pwd);
 
         this.profiles = profiles.filter(e =>
-          !theOrg.profiles.some((profile) => profile.login == e.Username)
+          !theOrg.profiles.some((profile) => profile.login === e.Username)
         );
       }).catch(err => {
         this.error = err;

@@ -36,11 +36,16 @@ export class SalesforceService {
     const conn = new this.jsforce.Connection({});
     await conn.login(adminProfile.login, adminProfile.pwd);
 
+    const md = await conn.metadata.read("CustomObject", ['User', 'Opportunity']);
+
+    const conditions = md[0].fields.some(x => x.fullName === 'Key_User__c') ?
+      { Key_User__c: true } : {};
+
     return conn
       .sobject("User")
       .find(
         // conditions in JSON object
-        { Key_User__c: true }
+        conditions
       )
       .execute({}, function (err, records) {
         if (err) {
