@@ -11,6 +11,7 @@ export class DbConfigService {
   fs: typeof fs;
 
   constructor() {
+
     this.fs = window.require("fs");
 
     const dir = process.env["HOME"] + "/.demos_launcher";

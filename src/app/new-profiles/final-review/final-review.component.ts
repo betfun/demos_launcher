@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { org_model } from '../../store/orgs/model';
 
 @Component({
@@ -8,14 +8,34 @@ import { org_model } from '../../store/orgs/model';
 })
 export class FinalReviewComponent implements OnInit {
 
-  public org : org_model;
+  displayedColumns: string[] = ["name", "pwd", "login"];
+  communities: any[];
+
+  private _org : org_model;
+
+  public get org() : org_model  {
+    return this._org;
+  }
+
+  public set org(value: org_model) {
+    this._org  = value;
+    for (let index = 0; index < this._org.profiles.length; index++) {
+      const element = this._org.profiles[index];
+      if(element.loginType === undefined) element.loginType = 'Standard';
+    }
+  }
+
+  public setAvailableCommunities(communities : any[]) : void {
+    console.log(communities);
+    this.communities = communities;
+  }
 
   constructor() {
     this.org = new org_model({});
   }
 
-  ngOnInit(): void {
-  }
+  async ngOnInit(): Promise<void> {
 
+  }
 }
 

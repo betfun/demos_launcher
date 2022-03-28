@@ -9,6 +9,7 @@
   },
   "include": [
     "main.ts",
+    "src/os/*.ts",
     "polyfill.ts"
   ],
   "exclude": [

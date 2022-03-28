@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngxs/store";
 import * as childProcess from "child_process";
+import { profile } from "console";
 import * as fs from "fs";
 import * as fse from "fs-extra";
 import { Config, SupportedBrowsers } from "../../../store/config/model";
@@ -66,11 +67,29 @@ export class ElectronService {
         ? "/Applications/Google Chrome Canary.app"
         : "/Applications/Google Chrome.app";
 
-    const loginPage =  global_config.useMiddleware ?
+    const loginPage = global_config.useMiddleware ?
       'https://clicktologin.herokuapp.com/' :
       'https://login.salesforce.com/login.jsp';
 
-    const homepage = `${loginPage}?un=${opts.profile.login}&pw=${opts.profile.pwd}`;
+
+    // // TODO : Repoace with community
+    // if(opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') {
+    //   loginPage  = org_obj.domain + '/' + opts.profile.loginType;
+    // }
+
+    const siteUser = opts.profile.login.toString();
+
+    let login = opts.profile.login;
+    let pwd = opts.profile.pwd;
+
+    if(opts.profile.login !== undefined && opts.profile.loginType !== 'Standard'){
+      login = admin.login;
+      pwd = admin.pwd;
+    }
+    const site = (opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') ?
+      `&siteuser=${siteUser}&site=${opts.profile.loginType}` : '';
+
+    const homepage = `${loginPage}?un=${login}&pw=${pwd}` + site;
 
     const launch_path = `open -n "${browser_path}" \
       --args --user-data-dir=${config.orgs_base}/${config.org_name}/Chrome \

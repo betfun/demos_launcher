@@ -103,11 +103,9 @@ export class AppComponent implements OnInit {
 
   open_github() : void {
     this.ipc.send('open_ext', [this.relasesUrl]);
-    // require('electron').shell.openExternal(this.relasesUrl);
   }
 
   open_solution_central() : void {
     this.ipc.send('open_ext', [this.scUrl]);
-    // require('electron').shell.openExternal(this.relasesUrl);
   }
 }

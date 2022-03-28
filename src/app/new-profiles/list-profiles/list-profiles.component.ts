@@ -35,6 +35,7 @@ export class ListProfilesComponent implements OnInit {
     this.sfdc.getDbUsers(OrgHelper.getAdmin(theOrg))
       .then(profiles => {
 
+        console.log(profiles.map(x => x.UserType));
         profiles = profiles.sort((a, b) => a.Name >= b.Name  ? 1 : -1);
 
         profiles.forEach(element => element.pwd = default_pwd);
@@ -59,6 +60,7 @@ export class ListProfilesComponent implements OnInit {
           innerName: p.Name,
           login: p.Username,
           pwd: p.pwd,
+          loginType: 'Standard'
         };
       });
 

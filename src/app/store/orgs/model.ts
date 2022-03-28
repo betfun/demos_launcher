@@ -2,7 +2,8 @@ export interface profile_model {
   name: string;
   innerName: string;
   login: string;
-  pwd: string
+  pwd: string;
+  loginType: string;
 }
 
 export class org_model {
@@ -24,7 +25,8 @@ export class OrgHelper {
       name: '',
       innerName: 'admin',
       login: '',
-      pwd: ''
+      pwd: '',
+      loginType: 'Standard'
     };
 
     if(org.admin === undefined){

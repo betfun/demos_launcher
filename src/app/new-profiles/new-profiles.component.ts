@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { org_model, profile_model } from "../store/orgs/model";
+import { OrgHelper, org_model, profile_model } from "../store/orgs/model";
 import { EditOrgComponent } from "./edit-org/edit-org.component";
 import { ListProfilesComponent } from "./list-profiles/list-profiles.component";
 import { FinalReviewComponent } from "./final-review/final-review.component";
+import { SalesforceService } from "../core/services";
 
 @Component({
   selector: "app-new-profiles",
@@ -18,9 +19,9 @@ export class NewProfilesComponent {
   @ViewChild('newProfiles') private newProfilesEditor: ListProfilesComponent;
   @ViewChild('orgReview') private orgReview: FinalReviewComponent;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public referenceOrg: org_model) {
+  constructor(@Inject(MAT_DIALOG_DATA) public referenceOrg: org_model, private sfService: SalesforceService) {
     this.org = referenceOrg !== null ?
-      new org_model(referenceOrg):
+      new org_model(referenceOrg) :
       new org_model({});
   }
 
@@ -31,12 +32,20 @@ export class NewProfilesComponent {
     if (previousIndex == 0) {
       this.org = this.orgEditor.getOrg();
       this.newProfilesEditor.org = this.org;
+
+      this.sfService.getDomain(OrgHelper.getAdmin(this.org)).then(domain => this.org.domain = domain);
+
     }
 
-    if(previousIndex == 1){
-      const new_profiles : profile_model[] = this.newProfilesEditor.selectedProfiles;
+    if (previousIndex == 1) {
+      const new_profiles: profile_model[] = this.newProfilesEditor.selectedProfiles;
       this.org.profiles.push(...new_profiles);
-      this.orgReview.org = this.org;
+
+      this.sfService.getCommunities(OrgHelper.getAdmin(this.org))
+        .then(communities => {
+          this.orgReview.setAvailableCommunities(communities);
+          this.orgReview.org = this.org;
+        });
     }
   }
 }

@@ -22,6 +22,9 @@
   },
   "files": [
     "src/main.ts",
+    "src/os/OsFactory.ts",
+    "src/os/OsMechanics.ts",
+    "src/os/MacOsMechanics.ts",
     "src/polyfills.ts"
   ],
   "include": [
