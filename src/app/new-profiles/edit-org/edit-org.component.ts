@@ -21,18 +21,7 @@ export class EditOrgComponent implements OnInit {
     admin.name = result.main_user.name;
     admin.login = result.main_user.login;
     admin.pwd = result.main_user.pwd;
-    // if(admin.innerName === '') {
-    //   admin.innerName = admin.name;
-    // }
-
     org.name = result.name;
-    // org.admin = result.main_user.innerName;
-    // org.profiles.find(p => p.innerName === result.main_user.name){
-    //   org.profiles[admin.innerName] = admin;
-    // }
-    // else{
-
-    // }
 
     return org;
   }
