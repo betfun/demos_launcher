@@ -42,7 +42,7 @@ import { org_model, profile_model } from "../store/orgs/model";
 })
 export class HomeComponent implements OnInit, AfterViewChecked {
   dataSource: MatTableDataSource<org_model>;
-  displayedColumns: string[] = ["position", "name", "actions"];
+  displayedColumns: string[] = ["position", "id", "name", "actions"];
   expandedElement: any | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

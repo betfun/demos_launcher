@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "axios": "0.19.2",
-    "fs-extra": "9.1.0",
+    "guid-typescript": "1.0.9",
     "jsforce": "1.10.1",
     "lowdb": "1.0.0",
     "ngx-spinner": "11.0.2",

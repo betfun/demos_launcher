@@ -12,4 +12,8 @@ export class MacOsMechanics extends OsMechanics {
       // Ignore error
     }
   }
+
+  launchRaw(launch_command : string) : void {
+    childProcess.execSync(launch_command);
+  }
 }

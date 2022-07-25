@@ -7,6 +7,7 @@ export interface profile_model {
 }
 
 export class org_model {
+  id: string;
   name: string;
   description: string;
   domain: string;

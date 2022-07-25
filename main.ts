@@ -3,7 +3,8 @@ import { OsFactory } from "./src/os/OsFactory";
 import * as path from 'path';
 import * as url from 'url';
 
-let win: BrowserWindow = null;
+let win: BrowserWindow | null = null;
+
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
@@ -28,7 +29,6 @@ function createWindow(): BrowserWindow {
   });
 
   if (serve) {
-
     win.webContents.openDevTools();
 
     require('electron-reload')(__dirname, {
@@ -69,6 +69,7 @@ try {
   app.dock.setMenu(dockMenu);
 
   ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
+  ipcMain.on('launch', (event, arg) => osBridge.launchRaw(arg));
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.

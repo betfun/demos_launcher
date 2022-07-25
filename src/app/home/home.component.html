@@ -16,6 +16,12 @@
       <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
+    <ng-container matColumnDef="id" class="mat-column-name">
+      <th mat-header-cell *matHeaderCellDef hidden>Ids</th>
+      <td mat-cell *matCellDef="let element" hidden>{{ element.id }}</td>
+      <td mat-footer-cell *matFooterCellDef hidden></td>
+    </ng-container>
+
     <ng-container matColumnDef="name" class="mat-column-name">
       <th mat-header-cell *matHeaderCellDef>Names</th>
       <td mat-cell *matCellDef="let element">{{ element.name }}</td>

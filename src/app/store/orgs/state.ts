@@ -1,9 +1,10 @@
-import { State, Action, StateContext, actionMatcher } from '@ngxs/store';
+import { State, Action, StateContext } from '@ngxs/store';
 import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from './actions';
 import { OrgsStateModel, org_model, profile_model } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { Guid } from 'guid-typescript';
 
 @State<OrgsStateModel>({
   name: 'orgs',
@@ -25,6 +26,14 @@ export class OrgsState {
     if (orgs === undefined || !Array.isArray(orgs)) {
       console.log("Reset orgs");
       orgs = [];
+    }
+
+    // Check ids
+    for (let index = 0; index < orgs.length; index++) {
+      const org = orgs[index];
+      if (org.id == null) {
+        org.id = Guid.create().toString();
+      }
     }
 
     ctx.setState(patch({
@@ -57,11 +66,11 @@ export class OrgsState {
 
     const stateModel = ctx.getState();
 
-    const org_idx = stateModel.orgs.findIndex(org => org.name === payload.name);
+    const org_idx = stateModel.orgs.findIndex(org => org.id === payload.id);
 
     ctx.setState((org_idx === -1) ?
       patch({ orgs: insertItem<org_model>(payload) }) :
-      patch({ orgs: updateItem<org_model>(o => o.name === payload.name, payload) }));
+      patch({ orgs: updateItem<org_model>(o => o.id === payload.id, payload) }));
 
     this.db.save(ctx.getState().orgs);
   }
@@ -77,7 +86,7 @@ export class OrgsState {
   }
 
   @Action(OrgsReorder)
-  public reorder(ctx: StateContext<OrgsStateModel>, {updatedList} : OrgsReorder) : void {
+  public reorder(ctx: StateContext<OrgsStateModel>, { updatedList }: OrgsReorder): void {
     // const stateModel = ctx.getState();
     ctx.setState(patch<OrgsStateModel>({
       orgs: updatedList
@@ -87,7 +96,7 @@ export class OrgsState {
   }
 
   @Action(OrgsInstallChrome)
-  public install_org(ctx: StateContext<OrgsStateModel>, {name, profiles} : OrgsInstallChrome) : void {
+  public install_org(ctx: StateContext<OrgsStateModel>, { name, profiles }: OrgsInstallChrome): void {
     ctx.patchState({ loading: true });
 
     this.service.install(name, profiles).then(() =>
