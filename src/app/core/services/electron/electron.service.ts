@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngxs/store";
-import * as childProcess from "child_process";
-import { profile } from "console";
+import { IpcRenderer } from "electron";
 import * as fs from "fs";
-import * as fse from "fs-extra";
 import { Config, SupportedBrowsers } from "../../../store/config/model";
 import { OrgHelper, OrgsStateModel, profile_model } from "../../../store/orgs/model";
 
@@ -20,14 +18,12 @@ const sleep = (waitTimeInMs: number) =>
   providedIn: "root",
 })
 export class ElectronService {
-  childProcess: typeof childProcess;
+  private ipc: IpcRenderer;
   fs: typeof fs;
-  fse: typeof fse;
 
   constructor(private store: Store) {
-    this.childProcess = window.require("child_process");
+    this.ipc = (<any>window).require('electron').ipcRenderer;
     this.fs = window.require("fs");
-    this.fse = window.require("fs-extra");
   }
 
   private local_config(org: string): { orgs_base: string; org_name: string; } {
@@ -82,16 +78,16 @@ export class ElectronService {
     let login = opts.profile.login;
     let pwd = opts.profile.pwd;
 
-    if(opts.profile.login !== undefined && opts.profile.loginType !== 'Standard'){
+    if (opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') {
       login = admin.login;
       pwd = admin.pwd;
     }
     const site = (opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') ?
       `&siteuser=${siteUser}&site=${opts.profile.loginType}` : '';
 
-    const homepage = `${loginPage}?un=${login}&pw=${pwd}` + site;
+    const homepage = `${loginPage}?un=${login}&pw=${pwd}`;
 
-    const launch_path = `open -n "${browser_path}" \
+    const launch_path = `open -j -n "${browser_path}" \
       --args --user-data-dir=${config.orgs_base}/${config.org_name}/Chrome \
       --profile-directory="${opts.profile.innerName}" \
       --no-first-run \
@@ -102,14 +98,14 @@ export class ElectronService {
       (opts.use_homepage ? ` '${homepage}'` : "") +
       (opts.headless ? "  --window-position=0,0 --window-size=1,1" : "");
 
-    this.childProcess.execSync(launch_command);
+    this.ipc.send('launch', launch_command);
   }
 
   kill(org: string): void {
     const org_chrome = org.replace(/\s/g, "");
 
     try {
-      this.childProcess.execSync(`pkill -f '${org_chrome}'`, { stdio: 'ignore' });
+      this.ipc.send('launch', `pkill -f '${org_chrome}'`);
     }
     catch (err) {
       // No need to take care of the error
@@ -125,23 +121,21 @@ export class ElectronService {
     const dir = `${config.orgs_base}/${config.org_name}`;
     this.fs.rmdirSync(dir, { recursive: true });
 
-    // const config = this.local_config(org);
-    for (let i = 0; i < 1; i++) {
 
-      const profile = profiles[i];
+    // Install first Chrome profile
+    const profile = profiles[0];
 
-      console.log("install profile: " + profile.name);
+    console.log("install profile: " + profile.name);
 
-      this.launch(org, {
-        profile: profile,
-        headless: false,
-        use_homepage: false
-      });
+    this.launch(org, {
+      profile: profile,
+      headless: false,
+      use_homepage: false
+    });
 
-      await sleep(5000);
+    await sleep(5000);
 
-      this.kill(org);
-    }
+    this.kill(org);
 
     const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
 
