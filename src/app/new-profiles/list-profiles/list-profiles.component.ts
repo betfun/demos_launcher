@@ -11,34 +11,32 @@ import { OrgHelper, org_model, profile_model } from '../../store/orgs/model';
   templateUrl: './list-profiles.component.html',
   styleUrls: ['./list-profiles.component.scss']
 })
-export class ListProfilesComponent implements OnInit {
+export class ListProfilesComponent {
+  @ViewChild('list') private list: MatSelectionList;
 
   public error = '';
   public loading$ = new BehaviorSubject<boolean>(true);
 
   profiles: any[];
 
-  @ViewChild('list') private list: MatSelectionList;
-
   constructor(private sfdc: SalesforceService, private store: Store) { }
 
   set org(theOrg: org_model) {
     this.profiles = [];
     this.loading$.next(true);
-    this.error = "";
+    this.error = '';
 
-    const default_pwd = this.store
+    const defaultPassword = this.store
       .selectSnapshot<string>(state => state.config.defaultPassword);
 
-    console.log("Loading...");
+    console.log('Loading...');
 
     this.sfdc.getDbUsers(OrgHelper.getAdmin(theOrg))
       .then(profiles => {
 
-        console.log(profiles.map(x => x.UserType));
         profiles = profiles.sort((a, b) => a.Name >= b.Name  ? 1 : -1);
 
-        profiles.forEach(element => element.pwd = default_pwd);
+        profiles.forEach(element => element.pwd = defaultPassword);
 
         this.profiles = profiles.filter(e =>
           !theOrg.profiles.some((profile) => profile.login === e.Username)
@@ -52,22 +50,16 @@ export class ListProfilesComponent implements OnInit {
   }
 
   get selectedProfiles(): any[] {
-    const new_profiles: profile_model[] = this.list.selectedOptions.selected
+    const newProfiles: profile_model[] = this.list.selectedOptions.selected
       .map(res => res.value)
-      .map(p => {
-        return {
+      .map(p => ({
           name: p.Name,
           innerName: p.Name,
           login: p.Username,
           pwd: p.pwd,
           loginType: 'Standard'
-        };
-      });
+        }));
 
-    return new_profiles;
-  }
-
-  ngOnInit(): void {
-
+    return newProfiles;
   }
 }

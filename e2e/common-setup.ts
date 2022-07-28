@@ -3,7 +3,7 @@ const electronPath = require('electron'); // Require Electron from the binaries 
 const path = require('path');
 
 export default function setup(): void {
-  beforeEach(async function () {
+  beforeEach(async function() {
     this.app = new Application({
       // Your electron path can be any binary
       // i.e for OSX an example path could be '/Applications/MyApp.app/Contents/MacOS/MyApp'
@@ -30,7 +30,7 @@ export default function setup(): void {
     await this.app.start();
   });
 
-  afterEach(async function () {
+  afterEach(async function() {
     if (this.app && this.app.isRunning()) {
       await this.app.stop();
     }

@@ -22,7 +22,7 @@ export class org_model {
 
 export class OrgHelper {
   static getAdmin(org: org_model): profile_model {
-    const empty_profile = {
+    const empty = {
       name: '',
       innerName: 'admin',
       login: '',
@@ -35,21 +35,21 @@ export class OrgHelper {
     }
 
     try{
-      const p = org.profiles.find(p => p.innerName === org.admin);
-      if(p === undefined){
-        org.profiles.unshift(empty_profile);
-        return empty_profile;
+      const profile = org.profiles.find(p => p.innerName === org.admin);
+      if(profile === undefined){
+        org.profiles.unshift(empty);
+        return empty;
       }
-      return p;
+      return profile;
     }
     catch{
-      return empty_profile;
+      return empty;
     }
   }
 }
 
 export interface OrgsStateModel {
-  version: number,
+  version: number;
   orgs: org_model[];
-  loading: boolean
+  loading: boolean;
 }

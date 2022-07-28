@@ -1,52 +1,52 @@
 import {
   AfterViewChecked,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
   ViewChild,
-} from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTable, MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
-import { ElectronService } from "../core/services";
+} from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { ElectronService } from '../core/services';
 import {
   animate,
   state,
   style,
   transition,
   trigger,
-} from "@angular/animations";
-import { NewProfilesComponent } from "../new-profiles/new-profiles.component";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
-import { Clipboard } from "@angular/cdk/clipboard";
-import { Store } from "@ngxs/store";
-import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from "../store/orgs/actions";
-import { org_model, profile_model } from "../store/orgs/model";
+} from '@angular/animations';
+import { NewProfilesComponent } from '../new-profiles/new-profiles.component';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Store } from '@ngxs/store';
+import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from '../store/orgs/actions';
+import { org_model, profile_model } from '../store/orgs/model';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"],
-  host: { style: "width:100%" },
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger("detailExpand", [
-      state("collapsed, void", style({ height: "0px", maxHeight: "0", visibility: "collapse" })),
-      state("expanded", style({ height: "*", visibility: "visible" })),
+    trigger('detailExpand', [
+      state('collapsed, void', style({ height: '0px', maxHeight: '0', visibility: 'collapse' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
       // transition("* => void", state("collapsed")),
-      transition("collapsed <=> expanded", animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")),
+      transition('collapsed <=> expanded', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
       transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ]),
   ],
 })
-export class HomeComponent implements OnInit, AfterViewChecked {
-  dataSource: MatTableDataSource<org_model>;
-  displayedColumns: string[] = ["position", "id", "name", "actions"];
-  expandedElement: any | null;
-
+export class HomeComponent implements OnInit, AfterViewChecked, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild("table") table: MatTable<any>;
+  @ViewChild('table') table: MatTable<any>;
+
+  dataSource: MatTableDataSource<org_model>;
+  displayedColumns: string[] = ['position', 'id', 'name', 'actions'];
+  expandedElement: any | null;
 
   constructor(
     public dialog: MatDialog,
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource();
 
-    this.store.select<org_model[]>(state => state.orgs.orgs)
+    this.store.select<org_model[]>(s => s.orgs.orgs)
       .subscribe(orgs => {
         this.dataSource.data = [...orgs];
       });
@@ -79,14 +79,14 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   }
 
   launchProfile(org, profile: profile_model): void {
-    this.electronService.launch(org.name, { profile: profile, headless: false, use_homepage: true });
+    this.electronService.launch(org.name, { profile, headless: false, useHomepage: true });
   }
 
   deleteProfile(org, profile): void {
     this.store.dispatch(new OrgDeleteProfile(org.name, profile));
   }
 
-  deleteOrg(org) : void {
+  deleteOrg(org): void {
     this.store.dispatch(new OrgDelete(org.name));
   }
 
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(new OrgsInstallChrome(element.name, element.profiles));
   }
 
-  copyProfile(profile: { login: string; pwd: string; }): void {
+  copyProfile(profile: { login: string; pwd: string }): void {
     console.log(profile);
     const copy = `login: ${profile.login} \n pwd: ${profile.pwd}`;
     this.clipboard.copy(copy);
@@ -104,14 +104,14 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.electronService.kill(element.name);
   }
 
-  add_new_profile(org): void {
+  addNewProfiles(org): void {
     const dialogRef = this.dialog.open(NewProfilesComponent, {
-      width: "650px",
+      width: '650px',
       data: org,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === null) return;
+      if (result === undefined || result === null) {return;}
       this.store.dispatch(new OrgSave(result));
     });
   }
@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  dropTable(event: CdkDragDrop<any[]>): void {
+  dropTable(event: CdkDragDrop<any>): void {
     moveItemInArray(
       this.dataSource.data,
       event.previousIndex,

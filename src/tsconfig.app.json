@@ -1,16 +1,18 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "resolveJsonModule": true,
     "outDir": "../out-tsc/app",
-    "module": "es2015",
     "baseUrl": "",
-    "types": []
+    "types": [
+      "node"
+    ]
   },
-  "include": [
+  "files": [
     "main.ts",
-    "src/os/*.ts",
-    "polyfill.ts"
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.d.ts"
   ],
   "exclude": [
     "**/*.spec.ts"

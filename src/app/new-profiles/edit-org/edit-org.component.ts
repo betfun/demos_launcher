@@ -12,7 +12,11 @@ export class EditOrgComponent implements OnInit {
   @Input()
   public org: org_model;
 
-  public getOrg() : org_model{
+  profileForm: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
+
+  public getOrg(): org_model {
     const result = this.profileForm.value;
 
     const org = new org_model(this.org);
@@ -26,21 +30,17 @@ export class EditOrgComponent implements OnInit {
     return org;
   }
 
-  profileForm: FormGroup;
-
-  constructor(private fb: FormBuilder) { }
-
   ngOnInit(): void {
 
-    const admin_profil = OrgHelper.getAdmin(this.org);
+    const adminProfile = OrgHelper.getAdmin(this.org);
 
     this.profileForm = this.fb.group({
       // eslint-disable-next-line @typescript-eslint/unbound-method
       name: [this.org.name, Validators.required],
-      main_user: this.fb.group({
-        name: admin_profil.name,
-        login: admin_profil.login,
-        pwd: admin_profil.pwd
+      mainUser: this.fb.group({
+        name: adminProfile.name,
+        login: adminProfile.login,
+        pwd: adminProfile.pwd
       })
     });
   }

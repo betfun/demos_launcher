@@ -1,20 +1,20 @@
-import { State, Action, Selector, StateContext } from "@ngxs/store";
-import { Config, SupportedBrowsers } from "./model";
-import { GetConfig, SaveConfig } from "./actions";
-import { DbConfigService } from "../../core/services/db/config.service";
-import { Injectable } from "@angular/core";
-import { patch } from "@ngxs/store/operators";
+import { State, Action, Selector, StateContext } from '@ngxs/store';
+import { Config, SupportedBrowsers } from './model';
+import { GetConfig, SaveConfig } from './actions';
+import { DbConfigService } from '../../core/services/db/config.service';
+import { Injectable } from '@angular/core';
+import { patch } from '@ngxs/store/operators';
 
 @State<Config>({
-  name: "config",
+  name: 'config',
   defaults: {
-    browser: SupportedBrowsers.Chrome,
+    browser: SupportedBrowsers.chrome,
     defaultPassword: 'salesforce123',
     useMiddleware: true
   }
 })
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ConfigState {
   constructor(private dbConfig: DbConfigService) { }

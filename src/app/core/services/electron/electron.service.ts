@@ -1,69 +1,58 @@
-import { Injectable } from "@angular/core";
-import { Store } from "@ngxs/store";
-import { IpcRenderer } from "electron";
-import * as fs from "fs";
-import { Config, SupportedBrowsers } from "../../../store/config/model";
-import { OrgHelper, OrgsStateModel, profile_model } from "../../../store/orgs/model";
+import { Injectable } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { IpcRenderer } from 'electron';
+import * as fs from 'fs';
+import { Config, SupportedBrowsers } from '../../../store/config/model';
+import { OrgHelper, OrgsStateModel, profile_model } from '../../../store/orgs/model';
 
-export interface launch_options {
-  profile: profile_model | null,
-  headless: boolean | false,
-  use_homepage: boolean | true
+export interface LaunchOptions {
+  profile: profile_model | null;
+  headless: boolean | false;
+  useHomepage: boolean | true;
 }
 
 const sleep = (waitTimeInMs: number) =>
   new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ElectronService {
   private ipc: IpcRenderer;
-  fs: typeof fs;
+  private fs: typeof fs;
 
   constructor(private store: Store) {
-    this.ipc = (<any>window).require('electron').ipcRenderer;
-    this.fs = window.require("fs");
+    this.ipc = (window as any).require('electron').ipcRenderer;
+    this.fs = window.require('fs');
   }
 
-  private local_config(org: string): { orgs_base: string; org_name: string; } {
-    const org_chrome = org.replace(/\s/g, "");
-
-    const config = {
-      orgs_base: process.env["HOME"] + "/.demos_launcher/Orgs",
-      org_name: org_chrome,
-    };
-
-    return config;
-  }
-
-  launch(org: string, opts?: launch_options): void {
+  launch(org: string, opts?: LaunchOptions): void {
 
     const store = this.store.selectSnapshot<OrgsStateModel>(state => state.orgs);
-    const global_config = this.store.selectSnapshot<Config>(state => state.config);
-    const org_obj = store.orgs.find(o => o.name === org);
+    const globalConfig = this.store.selectSnapshot<Config>(state => state.config);
+    const orgObj = store.orgs.find(o => o.name === org);
 
-    const admin = OrgHelper.getAdmin(org_obj); // org_obj.profiles.find(p => p.name === org_obj.admin);
+    const admin = OrgHelper.getAdmin(orgObj); // org_obj.profiles.find(p => p.name === org_obj.admin);
 
     opts = opts ?? {
       profile: admin,
-      use_homepage: true,
+      useHomepage: true,
       headless: false,
     };
 
-    const config = this.local_config(org);
+    const config = this.localConfig(org);
 
-    opts.profile.innerName = opts.profile.innerName
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+    const innerName = opts.profile.innerName
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       .trim();
 
-    const browser_path =
-      global_config.browser == SupportedBrowsers.Chromium
-        ? "/Applications/Google Chrome Canary.app"
-        : "/Applications/Google Chrome.app";
+    const browserPath =
+      globalConfig.browser === SupportedBrowsers.chromium
+        ? '/Applications/Google Chrome Canary.app'
+        : '/Applications/Google Chrome.app';
 
-    const loginPage = global_config.useMiddleware ?
+    const loginPage = globalConfig.useMiddleware ?
       'https://clicktologin.herokuapp.com/' :
       'https://login.salesforce.com/login.jsp';
 
@@ -87,25 +76,24 @@ export class ElectronService {
 
     const homepage = `${loginPage}?un=${login}&pw=${pwd}`;
 
-    const launch_path = `open -j -n "${browser_path}" \
-      --args --user-data-dir=${config.orgs_base}/${config.org_name}/Chrome \
-      --profile-directory="${opts.profile.innerName}" \
+    const path = `open -j -n "${browserPath}" \
+      --args --user-data-dir=${config.base}/${config.name}/Chrome \
+      --profile-directory="${innerName}" \
       --no-first-run \
       --no-default-browser-check`;
 
-    const launch_command =
-      launch_path +
-      (opts.use_homepage ? ` '${homepage}'` : "") +
-      (opts.headless ? "  --window-position=0,0 --window-size=1,1" : "");
+    const command = path +
+      (opts.useHomepage ? ` '${homepage}'` : '') +
+      (opts.headless ? '  --window-position=0,0 --window-size=1,1' : '');
 
-    this.ipc.send('launch', launch_command);
+    this.ipc.send('launch', command);
   }
 
   kill(org: string): void {
-    const org_chrome = org.replace(/\s/g, "");
+    const orgChrome = org.replace(/\s/g, '');
 
     try {
-      this.ipc.send('launch', `pkill -f '${org_chrome}'`);
+      this.ipc.send('launch', `pkill -f '${orgChrome}'`);
     }
     catch (err) {
       // No need to take care of the error
@@ -117,52 +105,64 @@ export class ElectronService {
 
     await sleep(2000);
 
-    const config = this.local_config(org);
-    const dir = `${config.orgs_base}/${config.org_name}`;
+    const config = this.localConfig(org);
+    const dir = `${config.base}/${config.name}`;
     this.fs.rmdirSync(dir, { recursive: true });
 
-
     // Install first Chrome profile
-    const profile = profiles[0];
+    const adminProfile = profiles[0];
 
-    console.log("install profile: " + profile.name);
+    console.log('install profile: ' + adminProfile.name);
 
     this.launch(org, {
-      profile: profile,
+      profile: adminProfile,
       headless: false,
-      use_homepage: false
+      useHomepage: false
     });
 
     await sleep(5000);
 
     this.kill(org);
 
-    const fn = `${config.orgs_base}/${config.org_name}/Chrome/Local State`;
+    await sleep(3000);
+
+    const fn = `${config.base}/${config.name}/Chrome/Local State`;
 
     try {
-      const obj = JSON.parse(this.fs.readFileSync(fn, "utf8"));
+      const obj = JSON.parse(this.fs.readFileSync(fn, 'utf8'));
       const infoCache = obj.profile.info_cache;
 
-      const reference_profile = infoCache[profiles[0].innerName];
+      const referenceProfile = infoCache[profiles[0].innerName];
 
-      const new_infoCache = {};
+      const newInfoCache = {};
 
-      for (let i = 0; i < profiles.length; i++) {
-
-        const profile = profiles[i];
-
-        new_infoCache[profile.innerName] = {};
-        Object.assign(new_infoCache[profile.innerName], reference_profile);
-        new_infoCache[profile.innerName].name = profile.name;
+      for (const profile of profiles) {
+        newInfoCache[profile.innerName] = {};
+        Object.assign(newInfoCache[profile.innerName], referenceProfile);
+        newInfoCache[profile.innerName].name = profile.name;
       }
 
-      obj.profile.info_cache = new_infoCache;
+      obj.profile.info_cache = newInfoCache;
 
       await sleep(3000);
 
-      this.fs.writeFileSync(fn, JSON.stringify(obj), "utf8");
+      this.fs.writeFileSync(fn, JSON.stringify(obj), 'utf8');
     } catch (err) {
       console.log(err);
     }
+  }
+
+
+  private localConfig(org: string): { base: string; name: string } {
+    const orgChrome = org.replace(/\s/g, '');
+
+    const dir: string = this.ipc.sendSync('getHomeDir');
+
+    const config = {
+      base: `${dir}/.demos_launcher/Orgs`,
+      name: orgChrome,
+    };
+
+    return config;
   }
 }

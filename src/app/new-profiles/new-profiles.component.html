@@ -16,8 +16,8 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close [mat-dialog-close]="null">Cancel</button>
-  <button mat-button *ngIf="stepper.selected != first" (click)="stepper.previous()">Previous</button>
-  <button mat-button *ngIf="stepper.selected != final" (click)="stepper.next()">Next</button>
-  <button mat-button *ngIf="stepper.selected == final"
+  <button mat-button *ngIf="stepper.selected !== first" (click)="stepper.previous()">Previous</button>
+  <button mat-button *ngIf="stepper.selected !== final" (click)="stepper.next()">Next</button>
+  <button mat-button *ngIf="stepper.selected === final"
     mat-dialog-close [mat-dialog-close]="org">Done</button>
 </mat-dialog-actions>

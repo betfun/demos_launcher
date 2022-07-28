@@ -1,10 +1,12 @@
+/* eslint-disable no-shadow */
+
 export enum SupportedBrowsers {
-  Chrome = "chrome",
-  Chromium = "chromium",
+  chrome = 'chrome',
+  chromium = 'chromium',
 }
 
 export interface Config {
   browser: SupportedBrowsers;
   defaultPassword: string;
-  useMiddleware: boolean
+  useMiddleware: boolean;
 }

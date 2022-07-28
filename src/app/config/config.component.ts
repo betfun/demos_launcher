@@ -1,20 +1,20 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Config } from "../store/config/model";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Config } from '../store/config/model';
 
 @Component({
-  templateUrl: "./config.component.html",
-  styleUrls: ["./config.component.scss"],
+  templateUrl: './config.component.html',
+  styleUrls: ['./config.component.scss'],
 })
 export class ConfigComponent implements OnInit {
-  supportedBrowsers = ["chrome", "chromium"];
+  supportedBrowsers = ['chrome', 'chromium'];
 
   configForm = this.fb.group({
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    browser: ["chrome", Validators.required],
+    browser: ['chrome', Validators.required],
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    pwd: ["", Validators.required],
+    pwd: ['', Validators.required],
     // eslint-disable-next-line @typescript-eslint/unbound-method
     useMiddleware: true
   });

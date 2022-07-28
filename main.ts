@@ -1,12 +1,12 @@
 import { app, BrowserWindow, ipcMain, screen, Menu } from 'electron';
-import { OsFactory } from "./src/os/OsFactory";
+import { OsFactory } from './src/os/OsFactory';
 import * as path from 'path';
 import * as url from 'url';
 
 let win: BrowserWindow | null = null;
 
-const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+const args = process.argv.slice(1);
+const serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
 
@@ -23,17 +23,12 @@ function createWindow(): BrowserWindow {
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
-      contextIsolation: false,  // false if you want to run 2e2 test with Spectron
-      enableRemoteModule: true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
+      contextIsolation: false  // false if you want to run 2e2 test with Spectron
     },
   });
 
   if (serve) {
     win.webContents.openDevTools();
-
-    require('electron-reload')(__dirname, {
-      electron: require(`${__dirname}/node_modules/electron`)
-    });
     win.loadURL('http://localhost:4200');
 
   } else {
@@ -56,7 +51,7 @@ function createWindow(): BrowserWindow {
 }
 
 try {
-  const osBridge = OsFactory.Create();
+  const osBridge = OsFactory.create();
 
   const dockMenu = Menu.buildFromTemplate([
     {
@@ -70,11 +65,13 @@ try {
 
   ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
   ipcMain.on('launch', (event, arg) => osBridge.launchRaw(arg));
+  ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
+  // Added 400 ms to fix the black background issue while using transparent window.
+  // More detais at https://github.com/electron/electron/issues/15947
   app.whenReady()
     .then(() => app.dock.setMenu(dockMenu))
     .then(() => setTimeout(createWindow, 400));

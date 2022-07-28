@@ -4,17 +4,17 @@
   <img width="60" alt="Angular Logo" src="assets/ilauncher.svg" style="mix-blend-mode: add" />
   <span>Demos Launcher - {{version}}</span>
   <div class="spacer"></div>
-  <button mat-icon-button class="example-icon favorite-icon" (click)="add_new_org()">
+  <button mat-icon-button class="example-icon favorite-icon" (click)="addNewOrg()">
     <mat-icon>add</mat-icon>
   </button>
-  <button mat-icon-button class="example-icon favorite-icon" (click)="open_config()">
+  <button mat-icon-button class="example-icon favorite-icon" (click)="openConfig()">
     <mat-icon>settings</mat-icon>
   </button>
   <mat-divider [vertical]="true" style="height: 50%; border-color:white;"></mat-divider>
-  <button mat-icon-button class="example-icon favorite-icon" (click)="open_solution_central()" matTooltip="Go to the Solution Central article">
+  <button mat-icon-button class="example-icon favorite-icon" (click)="openSolutionCentral()" matTooltip="Go to the Solution Central article">
     <mat-icon>help_outline</mat-icon>
   </button>
-  <button mat-icon-button class="example-icon favorite-icon" (click)="open_github()" matTooltip="Go to Github relases">
+  <button mat-icon-button class="example-icon favorite-icon" (click)="openGithub()" matTooltip="Go to Github relases">
     <mat-icon>cloud_download</mat-icon>
   </button>
 </div>
@@ -26,7 +26,7 @@
 
 <!-- Main content -->
 <div class="content" role="main">
-  <app-home></app-home>
+  <app-home style="width: 100%;"></app-home>
 </div>
 
 <!-- Background -->

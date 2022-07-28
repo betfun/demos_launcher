@@ -1,13 +1,13 @@
-import { MacOsMechanics } from "./MacOsMechanics";
-import { OsMechanics } from "./OsMechanics";
+import { MacOsMechanics } from './MacOsMechanics';
+import { OsMechanics } from './OsMechanics';
 
 
 export class OsFactory {
-  public static Create(): OsMechanics {
+  public static create(): OsMechanics {
     if (process.platform === 'darwin') {
       return new MacOsMechanics();
     }
 
-    throw new Error("UnSupported OS");
+    throw new Error('UnSupported OS');
   }
 }

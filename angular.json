@@ -48,7 +48,6 @@
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
-              "extractCss": true,
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
@@ -126,7 +125,8 @@
           "options": {
             "eslintConfig": ".eslintrc.json",
             "lintFilePatterns": [
-              "src/**.ts",
+              "src/**/*.ts",
+              "src/**/*.html",
               "main.ts"
             ]
           }
@@ -149,7 +149,6 @@
       }
     }
   },
-  "defaultProject": "demos-launcher",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
@@ -160,6 +159,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ngxs/schematics"
+    "schematicCollections": [
+      "@ngxs/schematics"
+    ]
   }
 }

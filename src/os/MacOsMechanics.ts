@@ -1,5 +1,5 @@
-import { OsMechanics } from "./OsMechanics";
-import * as childProcess from "child_process";
+import { OsMechanics } from './OsMechanics';
+import * as childProcess from 'child_process';
 
 
 export class MacOsMechanics extends OsMechanics {
@@ -13,7 +13,7 @@ export class MacOsMechanics extends OsMechanics {
     }
   }
 
-  launchRaw(launch_command : string) : void {
-    childProcess.execSync(launch_command);
+  launchRaw(command: string): void {
+    childProcess.execSync(command);
   }
 }

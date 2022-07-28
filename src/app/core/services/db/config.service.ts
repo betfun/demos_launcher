@@ -1,35 +1,37 @@
-import { Injectable } from "@angular/core";
-import * as lowdb from "lowdb";
-import * as fs from "fs";
-import { Config, SupportedBrowsers } from "../../../store/config/model";
-
+import { Injectable } from '@angular/core';
+import * as lowdb from 'lowdb';
+import * as fs from 'fs';
+import { Config, SupportedBrowsers } from '../../../store/config/model';
+import { IpcRenderer } from 'electron';
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class DbConfigService {
   db: any;
   fs: typeof fs;
+  adapter: any;
+
+  private ipc: IpcRenderer;
 
   constructor() {
 
-    this.fs = window.require("fs");
+    this.ipc = window.require('electron').ipcRenderer;
+    this.fs = window.require('fs');
 
-    const dir = process.env["HOME"] + "/.demos_launcher";
+    const dir: string = this.ipc.sendSync('getHomeDir');
     if (!this.fs.existsSync(dir)) {
       this.fs.mkdir(dir, { recursive: true }, (err) => {
-        if (err) throw err;
+        if (err) {throw err;}
       });
     }
 
-    const FileSync = window.require("lowdb/adapters/FileSync");
-    const adapter = new FileSync(
-      dir + "/config.json"
-    );
+    const fileSync = window.require('lowdb/adapters/FileSync');
+    this.adapter = new fileSync(`${dir}/config.json`);
 
-    this.db = lowdb(adapter);
+    this.db = lowdb(this.adapter);
     this.db.defaults = {
-      defaultPassword: "",
-      browser: SupportedBrowsers.Chrome,
+      defaultPassword: '',
+      browser: SupportedBrowsers.chrome,
       useMiddleware: true
     };
   }

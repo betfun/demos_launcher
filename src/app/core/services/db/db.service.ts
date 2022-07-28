@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as lowdb from 'lowdb';
 import { org_model } from '../../../store/orgs/model';
-import * as fs from "fs";
+import * as fs from 'fs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +12,18 @@ export class DbService {
 
   constructor() {
 
-    this.fs = window.require("fs");
+    this.fs = window.require('fs');
 
-    const dir = process.env["HOME"] + "/.demos_launcher";
+    const ipc = (<any>window).require('electron').ipcRenderer;
+    const dir: string = ipc.sendSync('getHomeDir');
     if (!this.fs.existsSync(dir)) {
       this.fs.mkdir(dir, { recursive: true }, (err) => {
-        if (err) throw err;
+        if (err) {throw err;}
       });
     }
 
     const FileSync = window.require('lowdb/adapters/FileSync');
-    const adapter = new FileSync(dir + '/db.json');
+    const adapter = new FileSync(`${dir}/db.json`);
 
     this.db = lowdb(adapter);
   }
@@ -31,7 +32,7 @@ export class DbService {
     return this.db.get('orgs').value();
   }
 
-  save(orgs: org_model[]) : void{
+  save(orgs: org_model[]): void {
     this.db.set('orgs', orgs).write();
   }
 }
