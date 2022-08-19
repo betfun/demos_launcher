@@ -61,7 +61,7 @@ try {
   ]);
 
   // Menu.setApplicationMenu(menu);
-  app.dock.setMenu(dockMenu);
+  // app.dock.setMenu(dockMenu);
 
   ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
   ipcMain.on('launch', (event, arg) => osBridge.launchRaw(arg));

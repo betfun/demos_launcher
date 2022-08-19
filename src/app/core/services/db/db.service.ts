@@ -14,7 +14,7 @@ export class DbService {
 
     this.fs = window.require('fs');
 
-    const ipc = (<any>window).require('electron').ipcRenderer;
+    const ipc = window.require('electron').ipcRenderer;
     const dir: string = ipc.sendSync('getHomeDir');
     if (!this.fs.existsSync(dir)) {
       this.fs.mkdir(dir, { recursive: true }, (err) => {
