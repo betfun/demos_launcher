@@ -1,0 +1,820 @@
+{
+  "orgs": [
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@atalianhsus-220831-203.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "Admin",
+      "adm": {
+        "login": "dappiano@atalianhsus-220831-203.demo",
+        "pwd": "salesforce123"
+      },
+      "name": "Atalian HSUS",
+      "id": "c4fc21c4-0a55-9413-f79d-123d1c6fe87f"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@adeccohsus-220711-674.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Adecco",
+      "id": "ac74c104-e656-1481-50e7-96679c2ef00e"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "jravillon@jravillon-220510-863.demo",
+          "pwd": "NetZeroCloud1707!"
+        }
+      ],
+      "admin": "admin",
+      "name": "ONET Original",
+      "id": "5897d868-b6db-49ea-2ab5-1f5302a1d6ab"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@atalian-net-220701-232.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Atalian ONET",
+      "id": "6dd275bb-08c4-0e5f-42cd-64f198d34815"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@ataliannzc-220630-973.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Atalian NZC",
+      "id": "460cbd99-481d-fd4c-48fc-60bd35ad6206"
+    },
+    {
+      "profiles": [
+        {
+          "name": "User",
+          "innerName": "admin",
+          "login": "bonobodemo2@gmail.com",
+          "pwd": "Bonobodemo101"
+        },
+        {
+          "name": "Josh Reed",
+          "innerName": "Josh Reed",
+          "login": "eci@demo.org",
+          "pwd": "salesforce6"
+        }
+      ],
+      "admin": "admin",
+      "name": "HVS",
+      "id": "5b6e2a2b-6b15-3a26-e7bc-42ef41c856bc"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@bureauveritas-220618-530.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Bureau Veritas - SmartByted",
+      "id": "d28ef5e9-1ba0-604b-168f-9000a2fa2ca6"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "jravillon@jravillon-220601-906.demo",
+          "pwd": "Salesforce1!"
+        }
+      ],
+      "admin": "admin",
+      "name": "NZC Bouygues",
+      "id": "42fa2936-69eb-2472-1e61-3dccc06478f1"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "demo@risdo.org",
+          "pwd": "salesforce1"
+        }
+      ],
+      "admin": "admin",
+      "name": "TCRM Thomas",
+      "id": "bfb48e15-9527-17a4-ec15-d4c8a966f385"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@capgemini-220525-83.demo",
+          "pwd": "Salesforce123"
+        },
+        {
+          "name": "Cindy Central",
+          "innerName": "Cindy Central",
+          "login": "cindy.central@capgemini-220525-83.demo",
+          "pwd": "salesforce1"
+        },
+        {
+          "name": "Elliot Executive",
+          "innerName": "Elliot Executive",
+          "login": "dappiano@capgemini-220525-83.demo",
+          "pwd": "Salesforce123"
+        },
+        {
+          "name": "Quentin Engineer",
+          "innerName": "Quentin Engineer",
+          "login": "quentin.engineer@capgemini-220525-83.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Capgemini Video GSI",
+      "id": "00bbaed7-c988-e1a9-e58e-8c840c2df91e"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@lafermedigitale.com",
+          "pwd": "Salesforce1"
+        }
+      ],
+      "admin": "admin",
+      "name": "La ferme Digitale - Prod",
+      "id": "a37e3add-a29a-4b03-0c5d-531d971b913e"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "s.cabessa@bouygues-construction.com.quip",
+          "pwd": "lanasandra19792006"
+        }
+      ],
+      "admin": "admin",
+      "name": "Bouygues Souci Quip",
+      "id": "32ec752b-83e3-2e9d-cdc2-5dd1470f2b87"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Davide",
+          "innerName": "admin",
+          "login": "dappiano@valorxproserve.com",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Capgemini + Valorx",
+      "id": "a90996b4-ff57-7128-1380-20f60034963c",
+      "domain": "cdemotemplate-161d7e2af0f-16-178144283ba.force.com"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@bouygues-immo-si-comm.demo",
+          "pwd": "salesforce123",
+          "loginType": "Standard"
+        },
+        {
+          "name": "Laurent Bailey",
+          "innerName": "Laurent Bailey",
+          "login": "lbailey@bouygues-immo-si-comm.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "ByImmo - SI Commercial",
+      "id": "e482b05d-4d4e-9d53-666a-7104f233a6d4"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "ebertin@bcm-202203.demo",
+          "pwd": "Salesforce1",
+          "loginType": "Standard"
+        },
+        {
+          "name": "Chargée Etudes",
+          "innerName": "chargee_Etudes",
+          "login": "ebertin@bcm-202203.demo",
+          "pwd": "Salesforce1",
+          "loginType": "Standard"
+        },
+        {
+          "name": "Laurence Bali",
+          "innerName": "Laurence Bali",
+          "login": "laurence@bcm.demo",
+          "pwd": "salesforce123",
+          "loginType": "professional"
+        }
+      ],
+      "admin": "admin",
+      "name": "Bouygues Construction Materiel",
+      "domain": "sdodemo-main-166ce2cf6b6-172-17fabdd98d3.force.com",
+      "id": "4efd29c5-74d9-17c6-2e0a-20436b58bd33"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "hgoalec@emeria.demo",
+          "pwd": "salesforce1"
+        }
+      ],
+      "admin": "admin",
+      "name": "Foncia / Emeria",
+      "id": "e848cde2-34b1-aa8e-527e-274f8b32ebb8"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@construction-fr-se.demo",
+          "pwd": "salesforce123"
+        },
+        {
+          "name": "Sophie Directrice",
+          "innerName": "Elliot Executive",
+          "login": "eexec.gjmo4cfd20zg.hhcb2u1l3dcl.rubrgsuvl7ta@construction-fr-se.demo",
+          "pwd": "salesforce1"
+        },
+        {
+          "name": "Camille Travaux",
+          "innerName": "Camille Travaux",
+          "login": "vcentral@construction-fr-se.demo",
+          "pwd": "salesforce1"
+        }
+      ],
+      "admin": "admin",
+      "name": "Construction 2",
+      "id": "41b5a531-706b-31f9-5f03-d919c538951d"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "dappiano@dappiano-220317-871.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Construction 1",
+      "id": "36cdcc52-2589-148d-23da-0c73d786762a"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Autodistrib",
+          "login": "ffaure@vialocation.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Autodistrib"
+        }
+      ],
+      "name": "Autoddistribution - Fred",
+      "description": "",
+      "domain": "",
+      "admin": "Autodistrib",
+      "id": "3c9cf553-5b19-ca7f-efbb-80e01b5e2fee"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "william.yu@valorxproserve.com",
+          "pwd": "Salesforce1"
+        }
+      ],
+      "admin": "admin",
+      "name": "Capgemini / Valorix",
+      "id": "0aa3fa1b-4b14-799b-6692-40b3bfbd94b6"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Henri",
+          "innerName": "admin",
+          "login": "hgoalec@bm-hgo.demo",
+          "pwd": "salesforce1"
+        },
+        {
+          "name": "Martin Bailey",
+          "innerName": "Martin Bailey",
+          "login": "mbailey@bm-hgo.demo",
+          "pwd": "salesforce01"
+        },
+        {
+          "name": "Mark Central",
+          "innerName": "Mark Central",
+          "login": "mcentral@bm-hgo.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "admin": "admin",
+      "name": "Henri",
+      "id": "12788d87-6747-f41a-c7ae-a68ab264c809"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "vditmann@vcf.poc",
+          "pwd": "salesforce01"
+        }
+      ],
+      "admin": "admin",
+      "name": "Vinci",
+      "id": "305ffcdf-f99c-c242-5d21-ee9cc9d29839"
+    },
+    {
+      "name": "Autodistribution - Doyen",
+      "description": "Autodistribution - Doyen",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "Admin",
+          "login1": "dappiano@project-doyen.demo",
+          "login": "dappiano@dappiano-20210617.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Dounia",
+          "login": "dounia.laal@doyen.demo",
+          "pwd": "Salesforce2021!!",
+          "innerName": "Dounia"
+        }
+      ],
+      "admin": "admin",
+      "id": "7dc858d8-bc26-e0a8-4a63-530838030aa8"
+    },
+    {
+      "name": "Orange IDO",
+      "description": "Orange IDO",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "rtordjman@orange-ido2.demo",
+          "pwd": "salesforce1",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "28d1604b-feb3-6689-09fc-8a4b6ea12877"
+    },
+    {
+      "name": "Guerbet - Manuf Cloud",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "Admin",
+          "login": "dappiano@guerbet-211122-912.demo",
+          "pwd": "salesforce123"
+        },
+        {
+          "name": "Elliot Executive",
+          "innerName": "Elliot Executive",
+          "login": "eexec.aqqaplejjwkt@guerbet-211122-912.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "id": "9000a147-d54c-7215-125f-ade5c479e8f5"
+    },
+    {
+      "name": "La ferme digitale",
+      "description": "La ferme digitale",
+      "domain": "",
+      "admin": "dappiano@fermedigit-211026-569.demo",
+      "profiles": [
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "Admin",
+          "login": "dappiano@fermedigit-211026-569.demo",
+          "pwd": "salesforce1",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "ebbffca1-8b3e-0fd1-55ff-b29c61d46c5e"
+    },
+    {
+      "name": "Bouygues for HubOne",
+      "description": "Bouygues for HubOne ",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "Admin",
+          "login": "rtordjman@comstech.org",
+          "pwd": "salesforce1",
+          "innerName": "Admin"
+        }
+      ],
+      "admin": "admin",
+      "id": "b830e094-2e91-6d00-f315-eb83c4e31667"
+    },
+    {
+      "name": "Vlocity for HubOne",
+      "description": "Vlocity for HubOne ",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "demo.org@communications.1613474281768",
+          "pwd": "Vlocity6653602902024986",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "6e39eabb-7203-87da-1438-db757010ae62"
+    },
+    {
+      "name": "Fruits",
+      "description": "Fruits",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "jkohnen@capfruit-20210915.demo",
+          "pwd": "Capfruit09",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "146010ef-aa55-9bf8-238d-5ccb74ffccc7"
+    },
+    {
+      "name": "Autodistribution",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@autodistrib-211111-943.demo",
+          "pwd": "Salesforce123",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Vanessa Central",
+          "login": "vanessa.central@autodistrib-211111-943-demo.com",
+          "pwd": "salesforce123",
+          "innerName": "Vanessa Central"
+        }
+      ],
+      "id": "51ecac1d-c339-6778-7a08-99eb50f760f0"
+    },
+    {
+      "name": "Linxis",
+      "description": "Autodistribution - Doyen",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@linxis-20210624.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Ted Data",
+          "login": "tdata@linxis-20210624.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Ted Data"
+        }
+      ],
+      "id": "8a9b2d2b-c347-13c7-901b-d3d6a7a2a4f9"
+    },
+    {
+      "profiles": [
+        {
+          "name": "Admin",
+          "innerName": "admin",
+          "login": "jverbecque@hubone-rfi.demo",
+          "pwd": "salesforce1"
+        },
+        {
+          "name": "Admin",
+          "login": "jverbecque@hubone-rfi.demo",
+          "pwd": "salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Gérard Client",
+          "login": "gclient@hubone-rfi.demo",
+          "pwd": "salesforce1",
+          "innerName": "Gérard Client"
+        },
+        {
+          "name": "Quentin Engineer",
+          "login": "qengineer@hubone-rfi.demo",
+          "pwd": "salesforce1",
+          "innerName": "Quentin Engineer"
+        },
+        {
+          "name": "Stéphane Manager",
+          "login": "eexec.9cqkeeyedn3w.cz5nxqjyzkbf@hubone-rfi.demo",
+          "pwd": "salesforce1",
+          "innerName": "Stéphane Manager"
+        },
+        {
+          "name": "Yannick Commercial",
+          "login": "ycommercial@hubone-rfi.demo",
+          "pwd": "salesforce1",
+          "innerName": "Yannick Commercial"
+        },
+        {
+          "name": "Paul Service N1",
+          "login": "tservice@hubone-rfi.demo",
+          "pwd": "salesforce1",
+          "innerName": "Paul Service N1"
+        },
+        {
+          "name": "Jacques Service N2",
+          "login": "bservice@hubone-rfi.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Jacques Service N2"
+        }
+      ],
+      "name": "RFP HubOne",
+      "description": "RFP HubOne",
+      "domain": "",
+      "admin": "admin",
+      "id": "b9f80e65-05c4-37a2-ebcc-0cc91e7d6fed"
+    },
+    {
+      "name": "MicroPort - CRM",
+      "description": "Microport - CRM",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "ebertin@microport-202005.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Lauren Bailey",
+          "login": "lbaileyg2qzwghsa4nq@microport-202005.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Lauren Bailey"
+        },
+        {
+          "name": "Tim Service",
+          "login": "tservice96aasm0r53a1@microport-202005.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Tim Service"
+        }
+      ],
+      "id": "04ba7eeb-364d-70ca-6bb4-03b7e99a1483"
+    },
+    {
+      "name": "RFP Socoda",
+      "description": "RFP Socoda",
+      "admin": "Admin",
+      "domain": "",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "ebertin@socoda-202003.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Damien Grands Comptes",
+          "login": "eexec.gjmo4cfd20zg.utspd5c4mttd@socoda-202003.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Damien Grands Comptes"
+        },
+        {
+          "name": "Philippe Direction",
+          "login": "tservice@socoda-202003.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Philippe Direction"
+        },
+        {
+          "name": "Claire Marketing",
+          "login": "cmarketing@socoda-202003.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Claire Marketing"
+        },
+        {
+          "name": "Sophie Adherents",
+          "login": "ccentral@socoda-202003.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Sophie Adherents"
+        },
+        {
+          "name": "Lauren Fournisseurs",
+          "login": "vcentral@socoda-202003.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Lauren Fournisseurs"
+        }
+      ],
+      "id": "02749ae6-930d-bf06-be78-094eae90800b"
+    },
+    {
+      "name": "Geoxia",
+      "description": "Geoxia Deal",
+      "domain": "https://geoxia-20210222-demo.my.salesforce.com",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "admin@geoxia-20210222.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "3c44a47f-80cf-d24d-4026-0e6e1e63bd35"
+    },
+    {
+      "name": "CG CLoud",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Sophie - Manager Commercial",
+          "login": "dappiano@dappiano-211121-941.demo",
+          "pwd": "salesforce123",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Philippe RSC",
+          "login": "philippe-rsc@ad.demo",
+          "pwd": "salesforce123",
+          "innerName": "Philippe RSC"
+        },
+        {
+          "name": "Gustavo Manager",
+          "login": "gustavomanager.psvs2ewokf4m.tqvdndsivmmk.rqxzlvsxkspb@dappiano-211121-941.demo",
+          "pwd": "salesforce123",
+          "innerName": "Gustavo Manager"
+        },
+        {
+          "name": "Claire Centre Appel",
+          "login": "tim.service@dappiano-211121-941-demo.com",
+          "pwd": "salesforce123",
+          "innerName": "Claire Centre Appel"
+        },
+        {
+          "name": "Fabien - Directeur Commercial",
+          "innerName": "Elliot Executive",
+          "login": "eexec.gjmo4cfd20zg.hu5rievk4tb3.l89zyquotr.rbq8ftnvzbdk@dappiano-211121-941.demo",
+          "pwd": "salesforce123"
+        },
+        {
+          "name": "Camille Point vente",
+          "innerName": "Camille Point vente",
+          "login": "adrianservice.2du0wsb4lzms.1ccvxyasuw7o.z6qtwmrvmtwf@dappiano-211121-941.demo",
+          "pwd": "salesforce123"
+        }
+      ],
+      "id": "8863474c-7a5b-eabe-ef8b-27a1d78ced2d"
+    },
+    {
+      "name": "Manuf Prat",
+      "description": "Manufacturing Pratictionner (IDO)",
+      "domain": "https://dappiano-20210215-demo.my.salesforce.com",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@dappianomanuf.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "82f6f73d-fa53-7858-17dd-a53c238a31be"
+    },
+    {
+      "name": "Dassault Peer Cert",
+      "description": "",
+      "domain": "https://dassault-peer-demo.my.salesforce.com",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@dassault-peer.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        }
+      ],
+      "id": "ec0a638f-c14e-b8f9-91a2-155bbad17b72"
+    },
+    {
+      "name": "Schlinder",
+      "description": "",
+      "domain": "mcanal-20210111.demo",
+      "profiles": [
+        {
+          "name": "",
+          "innerName": "admin",
+          "login": "",
+          "pwd": ""
+        },
+        {
+          "name": "Admin",
+          "login": "mcanal@mcanal-20210111.demo",
+          "pwd": "Salesforce1demo",
+          "innerName": "Admin"
+        }
+      ],
+      "admin": "admin",
+      "id": "fa8432c9-a281-c18c-4691-c5ae377f892c"
+    },
+    {
+      "name": "Latecoere",
+      "description": "",
+      "domain": "",
+      "admin": "Admin",
+      "profiles": [
+        {
+          "name": "Admin",
+          "login": "dappiano@latecoere-20211017.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Admin"
+        },
+        {
+          "name": "Elliot Executive",
+          "login": "eexecutive@latecoere-20211017.demo",
+          "pwd": "Salesforce1",
+          "innerName": "Elliot Executive"
+        }
+      ],
+      "id": "57d7c0d3-6c2c-9904-a1cd-edd877a378f1"
+    }
+  ]
+}

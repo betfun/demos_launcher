@@ -3,7 +3,7 @@ import { MatSelectionList } from '@angular/material/list';
 import { Store } from '@ngxs/store';
 import { BehaviorSubject } from 'rxjs';
 import { SalesforceService } from '../../core/services';
-import { OrgHelper, org_model, profile_model } from '../../store/orgs/model';
+import { OrgExtensions, org_model, profile_model } from '../../store/orgs/model';
 
 @Component({
   selector: 'app-list-profiles',
@@ -21,6 +21,19 @@ export class ListProfilesComponent {
 
   constructor(private sfdc: SalesforceService, private store: Store) { }
 
+  get selectedProfiles(): any[] {
+    const newProfiles: profile_model[] = this.list.selectedOptions.selected
+      .map(res => res.value)
+      .map(p => ({
+          name: p.Name,
+          login: p.Username,
+          pwd: p.pwd,
+          loginType: 'Standard'
+        }));
+
+    return newProfiles;
+  }
+
   set org(theOrg: org_model) {
     this.profiles = [];
     this.loading$.next(true);
@@ -31,7 +44,7 @@ export class ListProfilesComponent {
 
     console.log('Loading...');
 
-    this.sfdc.getDbUsers(OrgHelper.getAdmin(theOrg))
+    this.sfdc.getDbUsers(OrgExtensions.getAdminUser(theOrg))
       .then(profiles => {
 
         profiles = profiles.sort((a, b) => a.Name >= b.Name  ? 1 : -1);
@@ -47,19 +60,5 @@ export class ListProfilesComponent {
       {
         this.loading$.next(false);
       });
-  }
-
-  get selectedProfiles(): any[] {
-    const newProfiles: profile_model[] = this.list.selectedOptions.selected
-      .map(res => res.value)
-      .map(p => ({
-          name: p.Name,
-          innerName: p.Name,
-          login: p.Username,
-          pwd: p.pwd,
-          loginType: 'Standard'
-        }));
-
-    return newProfiles;
   }
 }

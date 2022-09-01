@@ -2,18 +2,15 @@
 </p>
 
 
-<p><strong>Admin:</strong> {{org.admin}}
-</p>
-
 <strong>Profiles</strong>
 <mat-list role="list">
-  <mat-list-item *ngFor="let item of org.profiles" role="listitem">
+  <mat-list-item *ngFor="let item of profiles" role="listitem">
     <strong>{{item.name}}</strong>  - {{item.login}} - {{item.pwd}}
   </mat-list-item>
 </mat-list>
 <!-- {{org | json}} -->
 
-<table #table mat-table [dataSource]="org.profiles" class="full-width-table">
+<table #table mat-table [dataSource]="profiles" class="full-width-table">
 
   <ng-container matColumnDef="name" class="mat-column-name">
     <th mat-header-cell *matHeaderCellDef>Name</th>

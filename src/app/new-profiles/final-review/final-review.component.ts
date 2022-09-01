@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { org_model } from '../../store/orgs/model';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { org_model, profile_model } from '../../store/orgs/model';
 
 @Component({
   selector: 'app-final-review',
   templateUrl: './final-review.component.html',
-  styleUrls: ['./final-review.component.scss']
+  styleUrls: ['./final-review.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class FinalReviewComponent {
+
+  profiles: profile_model[];
 
   displayedColumns: string[] = ['name', 'pwd', 'login'];
   communities: any[];
@@ -24,8 +27,9 @@ export class FinalReviewComponent {
   public set org(value: org_model) {
     this.innerOrg  = value;
 
-    for (const element of this.org.profiles) {
-        if(element.loginType === undefined) {element.loginType = 'Standard';}
+    this.profiles = this.org.profiles.map(item => ({...item}));
+    for (const element of this.profiles) {
+         if(element.loginType === undefined) {element.loginType = 'Standard';}
     }
   }
 

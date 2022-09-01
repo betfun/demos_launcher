@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { OrgHelper, org_model, profile_model } from '../store/orgs/model';
+import { OrgExtensions, org_model, profile_model } from '../store/orgs/model';
 import { EditOrgComponent } from './edit-org/edit-org.component';
 import { ListProfilesComponent } from './list-profiles/list-profiles.component';
 import { FinalReviewComponent } from './final-review/final-review.component';
@@ -30,9 +30,10 @@ export class NewProfilesComponent {
 
     if (previousIndex === 0) {
       this.org = this.orgEditor.getOrg();
+
       this.newProfilesEditor.org = this.org;
 
-      this.sfService.getDomain(OrgHelper.getAdmin(this.org)).then(domain => this.org.domain = domain);
+      // this.sfService.getDomain(OrgHelper.getAdmin(this.org)).then(domain => this.org.domain = domain);
 
     }
 
@@ -40,7 +41,7 @@ export class NewProfilesComponent {
       const newProfiles: profile_model[] = this.newProfilesEditor.selectedProfiles;
       this.org.profiles.push(...newProfiles);
 
-      this.sfService.getCommunities(OrgHelper.getAdmin(this.org))
+      this.sfService.getCommunities(OrgExtensions.getAdminUser(this.org))
         .then(communities => {
           this.orgReview.setAvailableCommunities(communities);
           this.orgReview.org = this.org;

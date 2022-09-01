@@ -1,6 +1,5 @@
 export interface profile_model {
   name: string;
-  innerName: string;
   login: string;
   pwd: string;
   loginType: string;
@@ -11,41 +10,35 @@ export class org_model {
   name: string;
   description: string;
   domain: string;
-  admin: string;
+  administrator: { login: string; pwd: string };
   profiles: profile_model[];
 
   constructor(ref: Partial<org_model>) {
     this.profiles = [];
-    Object.assign(this, ref);
+
+    this.id = ref.id;
+    this.name = ref.name;
+
+    for (const profile in ref.profiles) {
+      if (Object.prototype.hasOwnProperty.call(ref.profiles, profile)) {
+        const element = ref.profiles[profile];
+        this.profiles.push(element);
+      }
+    }
+    // Object.assign(this, ref);
   }
 }
 
-export class OrgHelper {
-  static getAdmin(org: org_model): profile_model {
-    const empty = {
-      name: '',
-      innerName: 'admin',
-      login: '',
-      pwd: '',
-      loginType: 'Standard'
-    };
-
-    if(org.admin === undefined){
-      org.admin = 'admin';
+export class OrgExtensions // OrgHelper.getAdminUser(org : org_model){
+  {
+    static getAdminUser(org: org_model): profile_model {
+      return {
+        login:org.administrator.login,
+        pwd: org.administrator.pwd,
+        name: 'Admin',
+        loginType: 'Standard'
+      };
     }
-
-    try{
-      const profile = org.profiles.find(p => p.innerName === org.admin);
-      if(profile === undefined){
-        org.profiles.unshift(empty);
-        return empty;
-      }
-      return profile;
-    }
-    catch{
-      return empty;
-    }
-  }
 }
 
 export interface OrgsStateModel {
@@ -53,3 +46,4 @@ export interface OrgsStateModel {
   orgs: org_model[];
   loading: boolean;
 }
+

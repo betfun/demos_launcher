@@ -5,7 +5,7 @@ import { Store } from '@ngxs/store';
 import { GetConfig, SaveConfig } from './store/config/actions';
 import { ConfigComponent } from './config/config.component';
 import { Config } from '../app/store/config/model';
-import { OrgSave } from './store/orgs/actions';
+import { OrgSave, OrgsLoadAll } from './store/orgs/actions';
 import { NewProfilesComponent } from './new-profiles/new-profiles.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 // import * as packageInfo from '../../package.json';
@@ -48,11 +48,13 @@ export class AppComponent implements OnInit {
       }
     });
 
+    this.store.dispatch(new OrgsLoadAll());
+
     this.http.get(this.apiUrl).subscribe(result => {
 
-      const latest_version = result[0];
+      const latestVersion = result[0];
 
-      if (this.isNewerVersion('0.5.3', latest_version.tag_name.substring(1))) {
+      if (this.isNewerVersion('0.5.3', latestVersion.tag_name.substring(1))) {
         this.snackBar.open('New release available', 'OK');
       }
     });

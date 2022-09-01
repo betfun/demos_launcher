@@ -24,6 +24,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Store } from '@ngxs/store';
 import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from '../store/orgs/actions';
 import { org_model, profile_model } from '../store/orgs/model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +41,7 @@ import { org_model, profile_model } from '../store/orgs/model';
     ]),
   ],
 })
-export class HomeComponent implements OnInit, AfterViewChecked, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewChecked {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('table') table: MatTable<any>;
 
@@ -49,6 +50,7 @@ export class HomeComponent implements OnInit, AfterViewChecked, AfterViewInit {
   expandedElement: any | null;
 
   constructor(
+    private router: Router,
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
     private clipboard: Clipboard,
@@ -67,11 +69,6 @@ export class HomeComponent implements OnInit, AfterViewChecked, AfterViewInit {
       .subscribe(orgs => {
         this.dataSource.data = [...orgs];
       });
-  }
-
-  ngAfterViewInit(): void {
-    // this.dataSource.paginator = this.paginator;
-    this.store.dispatch(new OrgsLoadAll());
   }
 
   launch(org): void {
@@ -105,15 +102,18 @@ export class HomeComponent implements OnInit, AfterViewChecked, AfterViewInit {
   }
 
   addNewProfiles(org): void {
-    const dialogRef = this.dialog.open(NewProfilesComponent, {
-      width: '650px',
-      data: org,
-    });
+    console.log(org);
+    this.router.navigate(['/edit', org.id]);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === null) {return;}
-      this.store.dispatch(new OrgSave(result));
-    });
+    // const dialogRef = this.dialog.open(NewProfilesComponent, {
+    //   width: '650px',
+    //   data: org,
+    // });
+
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result === undefined || result === null) {return;}
+    //   this.store.dispatch(new OrgSave(result));
+    // });
   }
 
   applyFilter(event: Event): void {

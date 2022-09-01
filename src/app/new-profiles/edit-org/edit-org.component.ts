@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { OrgHelper, org_model } from '../../store/orgs/model';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { OrgExtensions, org_model } from '../../store/orgs/model';
 
 @Component({
   selector: 'app-edit-org',
@@ -12,7 +12,14 @@ export class EditOrgComponent implements OnInit {
   @Input()
   public org: org_model;
 
-  profileForm: FormGroup;
+  profileForm: FormGroup<{
+    name: FormControl<string | null>;
+    mainUser: FormGroup<{
+      name: FormControl<string | null>;
+      login: FormControl<string | null>;
+      pwd: FormControl<string | null>;
+    }>;
+  }>;
 
   constructor(private fb: FormBuilder) { }
 
@@ -21,10 +28,10 @@ export class EditOrgComponent implements OnInit {
 
     const org = new org_model(this.org);
 
-    const admin = OrgHelper.getAdmin(this.org);
-    admin.name = result.main_user.name;
-    admin.login = result.main_user.login;
-    admin.pwd = result.main_user.pwd;
+    const admin = OrgExtensions.getAdminUser(org);
+    admin.name = result.mainUser.name;
+    admin.login = result.mainUser.login;
+    admin.pwd = result.mainUser.pwd;
     org.name = result.name;
 
     return org;
@@ -32,7 +39,7 @@ export class EditOrgComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const adminProfile = OrgHelper.getAdmin(this.org);
+    const adminProfile = OrgExtensions.getAdminUser(this.org);
 
     this.profileForm = this.fb.group({
       // eslint-disable-next-line @typescript-eslint/unbound-method

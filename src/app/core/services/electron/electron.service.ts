@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import { IpcRenderer } from 'electron';
 import * as fs from 'fs';
 import { Config, SupportedBrowsers } from '../../../store/config/model';
-import { OrgHelper, OrgsStateModel, profile_model } from '../../../store/orgs/model';
+import { OrgExtensions, OrgsStateModel, profile_model } from '../../../store/orgs/model';
 
 export interface LaunchOptions {
   profile: profile_model | null;
@@ -32,7 +32,7 @@ export class ElectronService {
     const globalConfig = this.store.selectSnapshot<Config>(state => state.config);
     const orgObj = store.orgs.find(o => o.name === org);
 
-    const admin = OrgHelper.getAdmin(orgObj); // org_obj.profiles.find(p => p.name === org_obj.admin);
+    const admin: profile_model = OrgExtensions.getAdminUser(orgObj);
 
     opts = opts ?? {
       profile: admin,
@@ -42,7 +42,7 @@ export class ElectronService {
 
     const config = this.localConfig(org);
 
-    const innerName = opts.profile.innerName
+    const innerName = opts.profile.name
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .trim();
@@ -132,14 +132,14 @@ export class ElectronService {
       const obj = JSON.parse(this.fs.readFileSync(fn, 'utf8'));
       const infoCache = obj.profile.info_cache;
 
-      const referenceProfile = infoCache[profiles[0].innerName];
+      const referenceProfile = infoCache[profiles[0].name];
 
       const newInfoCache = {};
 
       for (const profile of profiles) {
-        newInfoCache[profile.innerName] = {};
-        Object.assign(newInfoCache[profile.innerName], referenceProfile);
-        newInfoCache[profile.innerName].name = profile.name;
+        newInfoCache[profile.name] = {};
+        Object.assign(newInfoCache[profile.name], referenceProfile);
+        newInfoCache[profile.name].name = profile.name;
       }
 
       obj.profile.info_cache = newInfoCache;

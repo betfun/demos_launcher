@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { RouterModule, Routes } from '@angular/router';
+
 import { AppComponent } from './app.component';
 import { MatTableModule } from '@angular/material/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -34,6 +36,13 @@ import { ConfigComponent } from './config/config.component';
 import { ListProfilesComponent } from './new-profiles/list-profiles/list-profiles.component';
 import { EditOrgComponent } from './new-profiles/edit-org/edit-org.component';
 import { FinalReviewComponent } from './new-profiles/final-review/final-review.component';
+import { OrgSetupComponent } from './org-setup/org-setup.component';
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'edit/:id', component: OrgSetupComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
+];
 
 @NgModule({
   declarations: [
@@ -43,7 +52,8 @@ import { FinalReviewComponent } from './new-profiles/final-review/final-review.c
     ConfigComponent,
     ListProfilesComponent,
     EditOrgComponent,
-    FinalReviewComponent
+    FinalReviewComponent,
+    OrgSetupComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +81,7 @@ import { FinalReviewComponent } from './new-profiles/final-review/final-review.c
     NgxSpinnerModule,
     NgxsModule.forRoot([ConfigState, OrgsState]),
     NgxsLoggerPluginModule.forRoot(),
-
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent],
