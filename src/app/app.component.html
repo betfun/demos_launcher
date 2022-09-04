@@ -4,7 +4,7 @@
   <img width="60" alt="Angular Logo" src="assets/ilauncher.svg" style="mix-blend-mode: add" />
   <span>Demos Launcher - {{version}}</span>
   <div class="spacer"></div>
-  <button mat-icon-button class="example-icon favorite-icon" (click)="addNewOrg()">
+  <button mat-icon-button class="example-icon favorite-icon" [routerLink]="'/new'">
     <mat-icon>add</mat-icon>
   </button>
   <button mat-icon-button class="example-icon favorite-icon" (click)="openConfig()">
@@ -21,7 +21,7 @@
 
 <!-- Spinner -->
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
-  <p style="color: white"> Installing... </p>
+  <p style="color: white"> {{spinnerMessage}} </p>
 </ngx-spinner>
 
 <!-- Main content -->

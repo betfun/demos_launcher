@@ -5,7 +5,9 @@
     "baseUrl": "",
     "types": [
       "node"
-    ]
+    ],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
   },
   "files": [
     "main.ts",

@@ -1,3 +1,7 @@
+export enum LoginType {
+  standard = 'Standard'
+}
+
 export interface profile_model {
   name: string;
   login: string;
@@ -30,20 +34,20 @@ export class org_model {
 }
 
 export class OrgExtensions // OrgHelper.getAdminUser(org : org_model){
-  {
-    static getAdminUser(org: org_model): profile_model {
-      return {
-        login:org.administrator.login,
-        pwd: org.administrator.pwd,
-        name: 'Admin',
-        loginType: 'Standard'
-      };
-    }
+{
+  static getAdminUser(org: org_model): profile_model {
+    return {
+      login: org.administrator.login,
+      pwd: org.administrator.pwd,
+      name: 'Admin',
+      loginType: LoginType.standard
+    };
+  }
 }
 
 export interface OrgsStateModel {
   version: number;
   orgs: org_model[];
-  loading: boolean;
+  loadingMessage: string;
 }
 

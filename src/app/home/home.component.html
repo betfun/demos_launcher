@@ -1,10 +1,10 @@
-<mat-form-field appearance="standard" class="full-width-table">
+<mat-form-field class="full-width">
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
 </mat-form-field>
 
-<div class="table-outer mat-elevation-z8 scrollable" style="width: 100%" cdkScrollable>
-  <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width-table"
+<div class="table-outer mat-elevation-z8 scrollable" cdkScrollable>
+  <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width"
     [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" cdkDropList>
 
     <!-- Position Column -->
@@ -38,7 +38,7 @@
         <button mat-icon-button (click)="reinstall(element)" matTooltip="Install all Chrome profiles in a new Chrome">
           <mat-icon>developer_board</mat-icon>
         </button>
-        <button mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
+        <button [disabled]="element.profiles.length === 0" mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
           <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
 
           <ng-template #elseTemplateName>

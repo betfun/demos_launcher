@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import { IpcRenderer } from 'electron';
 import * as fs from 'fs';
 import { Config, SupportedBrowsers } from '../../../store/config/model';
-import { OrgExtensions, OrgsStateModel, profile_model } from '../../../store/orgs/model';
+import { LoginType, OrgExtensions, OrgsStateModel, org_model, profile_model } from '../../../store/orgs/model';
 
 export interface LaunchOptions {
   profile: profile_model | null;
@@ -100,21 +100,24 @@ export class ElectronService {
     }
   }
 
-  async install(org: string, profiles: profile_model[]): Promise<void> {
-    this.kill(org);
+  async install(org: org_model, hard: boolean = false): Promise<void> {
+    this.kill(org.name);
 
     await sleep(2000);
 
-    const config = this.localConfig(org);
-    const dir = `${config.base}/${config.name}`;
-    this.fs.rmdirSync(dir, { recursive: true });
+    const config = this.localConfig(org.name);
 
-    // Install first Chrome profile
-    const adminProfile = profiles[0];
+    if (hard) {
+      const dir = `${config.base}/${config.name}`;
+      this.fs.rmdirSync(dir, { recursive: true });
+    }
+
+    // Install first Chrome profile (Admin)
+    const adminProfile: profile_model = OrgExtensions.getAdminUser(org);
 
     console.log('install profile: ' + adminProfile.name);
 
-    this.launch(org, {
+    this.launch(org.name, {
       profile: adminProfile,
       headless: false,
       useHomepage: false
@@ -122,7 +125,7 @@ export class ElectronService {
 
     await sleep(5000);
 
-    this.kill(org);
+    this.kill(org.name);
 
     await sleep(3000);
 
@@ -132,11 +135,11 @@ export class ElectronService {
       const obj = JSON.parse(this.fs.readFileSync(fn, 'utf8'));
       const infoCache = obj.profile.info_cache;
 
-      const referenceProfile = infoCache[profiles[0].name];
+      const referenceProfile = infoCache[org.profiles[0].name];
 
       const newInfoCache = {};
 
-      for (const profile of profiles) {
+      for (const profile of [adminProfile, ...org.profiles]) {
         newInfoCache[profile.name] = {};
         Object.assign(newInfoCache[profile.name], referenceProfile);
         newInfoCache[profile.name].name = profile.name;

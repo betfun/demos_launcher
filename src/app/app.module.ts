@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { HomeComponent } from './home/home.component';
 import { NewProfilesComponent } from './new-profiles/new-profiles.component';
@@ -37,10 +38,12 @@ import { ListProfilesComponent } from './new-profiles/list-profiles/list-profile
 import { EditOrgComponent } from './new-profiles/edit-org/edit-org.component';
 import { FinalReviewComponent } from './new-profiles/final-review/final-review.component';
 import { OrgSetupComponent } from './org-setup/org-setup.component';
+import { ProfileLineComponent } from './org-setup/profile-line/profile-line.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'edit/:id', component: OrgSetupComponent },
+  { path: 'new', component: OrgSetupComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
@@ -53,7 +56,8 @@ const routes: Routes = [
     ListProfilesComponent,
     EditOrgComponent,
     FinalReviewComponent,
-    OrgSetupComponent
+    OrgSetupComponent,
+    ProfileLineComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +75,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatIconModule,
     MatDialogModule,
+    MatAutocompleteModule,
     MatTooltipModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -83,7 +88,9 @@ const routes: Routes = [
     NgxsLoggerPluginModule.forRoot(),
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

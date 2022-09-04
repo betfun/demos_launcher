@@ -1,13 +1,13 @@
 <h2 mat-dialog-title>Config</h2>
 <mat-dialog-content class="container">
   <form [formGroup]="configForm">
-    <mat-form-field appearance="fill">
+    <mat-form-field>
       <mat-label>Default Password:</mat-label>
       <input matInput placeholder="Password" formControlName="pwd" required />
       <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field>
       <mat-label>Browser to use:</mat-label>
       <mat-select formControlName="browser">
         <mat-option *ngFor="let bro of supportedBrowsers" [value]="bro">{{bro}}</mat-option>

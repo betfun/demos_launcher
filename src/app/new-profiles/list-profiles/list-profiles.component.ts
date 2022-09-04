@@ -3,7 +3,7 @@ import { MatSelectionList } from '@angular/material/list';
 import { Store } from '@ngxs/store';
 import { BehaviorSubject } from 'rxjs';
 import { SalesforceService } from '../../core/services';
-import { OrgExtensions, org_model, profile_model } from '../../store/orgs/model';
+import { LoginType, OrgExtensions, org_model, profile_model } from '../../store/orgs/model';
 
 @Component({
   selector: 'app-list-profiles',
@@ -28,7 +28,7 @@ export class ListProfilesComponent {
           name: p.Name,
           login: p.Username,
           pwd: p.pwd,
-          loginType: 'Standard'
+          loginType: LoginType.standard
         }));
 
     return newProfiles;
@@ -44,21 +44,21 @@ export class ListProfilesComponent {
 
     console.log('Loading...');
 
-    this.sfdc.getDbUsers(OrgExtensions.getAdminUser(theOrg))
-      .then(profiles => {
+  //   this.sfdc.getDbUsers(OrgExtensions.getAdminUser(theOrg))
+  //     .then(profiles => {
 
-        profiles = profiles.sort((a, b) => a.Name >= b.Name  ? 1 : -1);
+  //       profiles = profiles.sort((a, b) => a.Name >= b.Name  ? 1 : -1);
 
-        profiles.forEach(element => element.pwd = defaultPassword);
+  //       profiles.forEach(element => element.pwd = defaultPassword);
 
-        this.profiles = profiles.filter(e =>
-          !theOrg.profiles.some((profile) => profile.login === e.Username)
-        );
-      }).catch(err => {
-        this.error = err;
-      }).finally(() =>
-      {
-        this.loading$.next(false);
-      });
-  }
+  //       this.profiles = profiles.filter(e =>
+  //         !theOrg.profiles.some((profile) => profile.login === e.Username)
+  //       );
+  //     }).catch(err => {
+  //       this.error = err;
+  //     }).finally(() =>
+  //     {
+  //       this.loading$.next(false);
+  //     });
+   }
 }

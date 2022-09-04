@@ -41,11 +41,11 @@ export class NewProfilesComponent {
       const newProfiles: profile_model[] = this.newProfilesEditor.selectedProfiles;
       this.org.profiles.push(...newProfiles);
 
-      this.sfService.getCommunities(OrgExtensions.getAdminUser(this.org))
-        .then(communities => {
-          this.orgReview.setAvailableCommunities(communities);
-          this.orgReview.org = this.org;
-        });
+      // this.sfService.getCommunities(OrgExtensions.getAdminUser(this.org))
+      //   .then(communities => {
+      //     this.orgReview.setAvailableCommunities(communities);
+      //     this.orgReview.org = this.org;
+      //   });
     }
   }
 }

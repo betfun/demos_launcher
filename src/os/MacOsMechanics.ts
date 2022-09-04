@@ -14,6 +14,11 @@ export class MacOsMechanics extends OsMechanics {
   }
 
   launchRaw(command: string): void {
-    childProcess.execSync(command);
+    try {
+      childProcess.execSync(command);
+    }
+    catch (err) {
+
+    }
   }
 }

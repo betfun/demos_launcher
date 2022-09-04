@@ -10,7 +10,7 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
   defaults: {
     version: 2,
     orgs: [],
-    loading: false
+    loadingMessage: ''
   }
 })
 @Injectable({ providedIn: 'root' })
@@ -87,10 +87,10 @@ export class OrgsState {
   }
 
   @Action(OrgsInstallChrome)
-  public install(ctx: StateContext<OrgsStateModel>, { name, profiles }: OrgsInstallChrome): void {
-    ctx.patchState({ loading: true });
+  public install(ctx: StateContext<OrgsStateModel>, { org }: OrgsInstallChrome): void {
+    ctx.patchState({ loadingMessage: 'Installing' });
 
-    this.service.install(name, profiles).then(() =>
-      ctx.patchState({ loading: false }));
+    this.service.install(org).finally(() =>
+      ctx.patchState({ loadingMessage: '' }));
   }
 }

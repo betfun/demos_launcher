@@ -1,33 +1,114 @@
-<form [formGroup]="profileForm">
+<form [formGroup]="profileForm" (submit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
 
-  <mat-form-field appearance="legacy">
+  <section layout="row" align="end">
+    <button mat-raised-button color="warn" type="button" routerLink="/home">Cancel</button>
+    <button mat-raised-button color="primary" type="button" (click)="verify()"
+      [disabled]="!profileForm.valid">Verify</button>
+  </section>
+  <mat-form-field class="full" appearance="legacy">
     <mat-label>Name:</mat-label>
-    <input matInput placeholder="Name" formControlName="name" required>
-    <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+    <h3 style="margin-block: 0px;">
+      <input autofocus matInput placeholder="Name" formControlName="name" required>
+    </h3>
+
   </mat-form-field>
 
   <div formGroupName="mainUser">
     <h4>Admin User</h4>
 
-    <mat-form-field appearance="legacy">
-      <mat-label>Admin User Name:</mat-label>
-      <input matInput placeholder="Name" formControlName="name" required>
-      <!-- <mat-icon matSuffix>person</mat-icon> -->
-    </mat-form-field>
+    <div class="table-outer mat-elevation-z8 scrollable"
+      style="background-color: white; padding:20px; width: calc(100% - 40px)" cdkScrollable>
+      <section layout="row" align="end" style="margin-top: -45px; margin-right:-40px;">
+        <button [disabled]="!mainUser.valid" type="button" (click)="verify()" mat-mini-fab>
+          <mat-icon *ngIf="connection === ''" class="add-course-btn">how_to_reg</mat-icon>
+          <mat-icon *ngIf="connection === 'Connected'" color="green" class="add-course-btn">how_to_reg</mat-icon>
+          <mat-icon *ngIf="connection === 'Error'" color="red" class="add-course-btn">login</mat-icon>
 
-    <mat-form-field appearance="legacy">
-      <mat-label>Login:</mat-label>
-      <input matInput placeholder="Name" formControlName="login" required>
-      <!-- <mat-icon matSuffix>login</mat-icon> -->
-    </mat-form-field>
+        </button>
+      </section>
 
-    <mat-form-field appearance="legacy">
-      <mat-label>Password:</mat-label>
-      <input type="password" matInput placeholder="Name" formControlName="pwd" required>
-      <!-- <mat-icon matSuffix>password</mat-icon> -->
-    </mat-form-field>
+      <mat-form-field class="full">
+        <mat-label>Login:</mat-label>
+        <input matInput placeholder="Login" formControlName="login" required>
+      </mat-form-field>
+
+      <mat-form-field class="full">
+        <mat-label>Password:</mat-label>
+        <input #pwd type="password" matInput placeholder="Password" formControlName="pwd" required>
+        <button type="button" mat-icon-button matSuffix (click)="pwd.type=pwd.type=='password'?'text':'password'">
+          <mat-icon *ngIf="pwd.type==='password'">visibility</mat-icon>
+          <mat-icon *ngIf="pwd.type!=='password'">visibility_off</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
   </div>
-  <!--     -->
+
+
+  <h4>Profiles</h4>
+  <div class="table-outer mat-elevation-z8 scrollable"
+    style="background-color: white; padding:20px; width: calc(100% - 40px)" cdkScrollable>
+    <div>
+      <section layout="row" align="end" style="margin-top: -45px; margin-right:-40px;">
+        <button type="button" (click)="addProfile()" mat-mini-fab>
+          <mat-icon class="add-course-btn">person_add</mat-icon>
+        </button>
+      </section>
+      <mat-list dense formArrayName="profiles">
+        <mat-list-item #formRow *ngFor="let profile of profiles.controls; let i = index">
+          <div matLine style="display: flex;">
+            <app-profile-line style="width:99%;" [formGroup]="getProfile(i)"
+              [options]="sfUsers"
+              [comms]="comms">
+            </app-profile-line>
+          <!-- </div> -->
+          <!-- <div matLine class="lesson-form-row" [formGroupName]="i">
+            <mat-form-field>
+              <mat-label>Name:</mat-label>
+              <input matInput formControlName="name" placeholder="Name" />
+            </mat-form-field>
+
+            <mat-form-field style="width: 25%;">
+              <mat-label>Login:</mat-label>
+              <input matInput [matAutocomplete]="users" formControlName="login" placeholder="Login" />
+              <mat-autocomplete autoActiveFirstOption #users="matAutocomplete">
+                <mat-option *ngFor="let user of sfUsers" [value]="user.login">
+                  {{user.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Password:</mat-label>
+              <input matInput formControlName="pwd" placeholder="Password" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Type:</mat-label>
+
+              <input matInput formControlName="loginType" [matAutocomplete]="auto" placeholder="Login Type" />
+
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option value="Standard">Standard</mat-option>
+                <mat-option *ngFor="let c of comms" [value]="c">
+                  {{c}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field> -->
+
+            <button mat-icon-button type="button" (click)="duplicateProfile(i)">
+              <mat-icon color="primary">content_copy</mat-icon>
+            </button>
+
+            <button mat-icon-button type="button" (click)="deleteProfile(i)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </div>
+
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
 </form>
+
 
 <a routerLink="/home">Home</a>

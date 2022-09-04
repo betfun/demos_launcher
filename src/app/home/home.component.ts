@@ -83,12 +83,12 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(new OrgDeleteProfile(org.name, profile));
   }
 
-  deleteOrg(org): void {
+  deleteOrg(org: org_model): void {
     this.store.dispatch(new OrgDelete(org.name));
   }
 
-  reinstall(element): void {
-    this.store.dispatch(new OrgsInstallChrome(element.name, element.profiles));
+  reinstall(element: org_model): void {
+    this.store.dispatch(new OrgsInstallChrome(element as org_model));
   }
 
   copyProfile(profile: { login: string; pwd: string }): void {

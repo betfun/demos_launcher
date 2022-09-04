@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { org_model, profile_model } from '../../store/orgs/model';
+import { LoginType, org_model, profile_model } from '../../store/orgs/model';
 
 @Component({
   selector: 'app-final-review',
@@ -29,7 +29,7 @@ export class FinalReviewComponent {
 
     this.profiles = this.org.profiles.map(item => ({...item}));
     for (const element of this.profiles) {
-         if(element.loginType === undefined) {element.loginType = 'Standard';}
+         if(element.loginType === undefined) {element.loginType = LoginType.standard;}
     }
   }
 

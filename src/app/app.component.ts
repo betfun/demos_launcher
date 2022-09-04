@@ -8,7 +8,7 @@ import { Config } from '../app/store/config/model';
 import { OrgSave, OrgsLoadAll } from './store/orgs/actions';
 import { NewProfilesComponent } from './new-profiles/new-profiles.component';
 import { NgxSpinnerService } from 'ngx-spinner';
-// import * as packageInfo from '../../package.json';
+import packageInfo from '../../package.json';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IpcRenderer } from 'electron';
@@ -19,13 +19,16 @@ import { IpcRenderer } from 'electron';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
+  public version = packageInfo.version;
+
+  public spinnerMessage = '';
+
   private ipc: IpcRenderer;
 
   private readonly relasesUrl = 'https://github.com/davideappiano/demos_launcher/releases';
   private readonly apiUrl = 'https://api.github.com/repos/davideappiano/demos_launcher/releases';
   private readonly scUrl = 'https://solutionscentral.io/posts/5de95f70-72e7-11ec-9e6d-f1bf609be4ef/managing-personas-for-demos/';
-
-  // public version = packageInfo.version;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -39,8 +42,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.select(state => state.orgs.loading).subscribe(isLoading => {
-      if (isLoading) {
+    console.log(packageInfo.version);
+    this.store.select(state => state.orgs.loadingMessage).subscribe(loadingMessage => {
+      if (loadingMessage !== '') {
+        this.spinnerMessage = loadingMessage;
         this.spinner.show();
       }
       else {

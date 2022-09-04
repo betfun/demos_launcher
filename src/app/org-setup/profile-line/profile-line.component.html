@@ -1,0 +1,35 @@
+<div [formGroup]="formGroup">
+  <mat-form-field>
+    <mat-label>Name:</mat-label>
+    <input matInput formControlName="name" placeholder="Name" />
+  </mat-form-field>
+
+  <mat-form-field style="width: 30%;">
+    <mat-label>Login:</mat-label>
+    <input matInput [matAutocomplete]="users" formControlName="login" placeholder="Login" />
+    <mat-autocomplete autoActiveFirstOption #users="matAutocomplete">
+      <mat-option *ngFor="let user of filteredOptions | async" [value]="user.login">
+        {{user.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password:</mat-label>
+    <input matInput formControlName="pwd" placeholder="Password" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Type:</mat-label>
+
+    <input matInput formControlName="loginType" [matAutocomplete]="auto" placeholder="Login Type" />
+
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option value="Standard">Standard</mat-option>
+      <mat-option *ngFor="let community of comms" [value]="c">
+        {{community}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+</div>

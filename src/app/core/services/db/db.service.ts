@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as lowdb from 'lowdb';
-import { org_model, profile_model } from '../../../store/orgs/model';
+import { LoginType, org_model, profile_model } from '../../../store/orgs/model';
 import * as fs from 'fs';
 import { Guid } from 'guid-typescript';
 
@@ -23,8 +23,8 @@ export class DbService {
       });
     }
 
-    const FileSync = window.require('lowdb/adapters/FileSync');
-    const adapter = new FileSync(`${dir}/db.json`);
+    const fileSync = window.require('lowdb/adapters/FileSync');
+    const adapter = new fileSync(`${dir}/db.json`);
 
     this.db = lowdb(adapter);
   }
@@ -36,7 +36,9 @@ export class DbService {
 
     // Migration
     if (version === undefined) {
-      for (const org of orgs) {
+      // Migration
+      const newOrgs = orgs.map(org => {
+
         const adminProfile = org.profiles.find(p => (p as any).innerName === (org as any).admin ||
           p.name === (org as any).admin);
 
@@ -50,26 +52,29 @@ export class DbService {
           };
         }
 
-        // remove innername
-        org.profiles =  org.profiles.map(prof => {
-          const copy: profile_model = {
-            name: prof.name,
-            login: prof.login,
-            pwd: prof.pwd,
-            loginType: prof.loginType ?? 'Standard'
-          };
-          return copy;
-        });
+        const newOrg: org_model = {
+          profiles: org.profiles.map(prof => {
+            const copy: profile_model = {
+              name: prof.name,
+              login: prof.login,
+              pwd: prof.pwd,
+              loginType: prof.loginType ?? LoginType.standard
+            };
+            return copy;
+          }),
 
-        if (org.id === null || org.id === undefined) {
-          org.id = Guid.create().toString();
-        }
+          id: (org.id === null || org.id === undefined) ? Guid.create().toString() : org.id,
+          description: org.description,
+          name: org.name,
+          administrator: org.administrator,
+          domain: org.domain
+        };
 
-        // remove old Admin data
-        delete (org as any).admin;
-      }
+        return newOrg;
+      });
 
-      this.save(orgs);
+      this.save(newOrgs);
+      return newOrgs;
     }
 
     return orgs;

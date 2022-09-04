@@ -2,7 +2,7 @@ import { org_model, profile_model } from './model';
 
 export class OrgsInstallChrome {
   public static readonly type = '[Orgs] Install Chrome';
-  constructor(public name: string, public profiles: profile_model[]) { }
+  constructor(public org: org_model) { }
 }
 
 export class OrgsReorder {
