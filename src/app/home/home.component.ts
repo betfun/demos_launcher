@@ -1,6 +1,5 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -18,7 +17,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { NewProfilesComponent } from '../new-profiles/new-profiles.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Store } from '@ngxs/store';

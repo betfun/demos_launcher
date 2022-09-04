@@ -27,16 +27,12 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { HomeComponent } from './home/home.component';
-import { NewProfilesComponent } from './new-profiles/new-profiles.component';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { ConfigState } from './store/config/state';
 import { OrgsState } from './store/orgs/state';
 import { ConfigComponent } from './config/config.component';
-import { ListProfilesComponent } from './new-profiles/list-profiles/list-profiles.component';
-import { EditOrgComponent } from './new-profiles/edit-org/edit-org.component';
-import { FinalReviewComponent } from './new-profiles/final-review/final-review.component';
 import { OrgSetupComponent } from './org-setup/org-setup.component';
 import { ProfileLineComponent } from './org-setup/profile-line/profile-line.component';
 
@@ -51,11 +47,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     HomeComponent,
-    NewProfilesComponent,
     ConfigComponent,
-    ListProfilesComponent,
-    EditOrgComponent,
-    FinalReviewComponent,
     OrgSetupComponent,
     ProfileLineComponent,
   ],

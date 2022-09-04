@@ -6,7 +6,6 @@ import { GetConfig, SaveConfig } from './store/config/actions';
 import { ConfigComponent } from './config/config.component';
 import { Config } from '../app/store/config/model';
 import { OrgSave, OrgsLoadAll } from './store/orgs/actions';
-import { NewProfilesComponent } from './new-profiles/new-profiles.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import packageInfo from '../../package.json';
 import { HttpClient } from '@angular/common/http';
@@ -81,19 +80,6 @@ export class AppComponent implements OnInit {
 
         this.store.dispatch(new SaveConfig(config));
       }
-    });
-  }
-
-  addNewOrg(): void {
-    const dialogRef = this.dialog.open(NewProfilesComponent, {
-      width: '500px',
-      data: null
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === null) {return;}
-
-      this.store.dispatch(new OrgSave(result));
     });
   }
 

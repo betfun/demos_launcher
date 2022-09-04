@@ -26,7 +26,7 @@
 
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option value="Standard">Standard</mat-option>
-      <mat-option *ngFor="let community of comms" [value]="c">
+      <mat-option *ngFor="let community of comms" [value]="community">
         {{community}}
       </mat-option>
     </mat-autocomplete>
