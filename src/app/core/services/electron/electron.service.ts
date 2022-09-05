@@ -26,19 +26,14 @@ export class ElectronService {
     this.fs = window.require('fs');
   }
 
-  launch(org: string, opts?: LaunchOptions): void {
+  launch(org: string, opts: LaunchOptions): void {
 
     const store = this.store.selectSnapshot<OrgsStateModel>(state => state.orgs);
     const globalConfig = this.store.selectSnapshot<Config>(state => state.config);
     const orgObj = store.orgs.find(o => o.name === org);
 
     const admin: profile_model = OrgExtensions.getAdminUser(orgObj);
-
-    opts = opts ?? {
-      profile: admin,
-      useHomepage: true,
-      headless: false,
-    };
+    opts.profile = opts.profile ?? admin;
 
     const config = this.localConfig(org);
 
@@ -76,15 +71,17 @@ export class ElectronService {
 
     const homepage = `${loginPage}?un=${login}&pw=${pwd}`;
 
-    const path = `open -j -n "${browserPath}" \
+    const headless = opts.headless ? '-jga' : '';
+
+    const path = `open ${headless} -n "${browserPath}" \
       --args --user-data-dir=${config.base}/${config.name}/Chrome \
       --profile-directory="${innerName}" \
       --no-first-run \
       --no-default-browser-check`;
 
     const command = path +
-      (opts.useHomepage ? ` '${homepage}'` : '') +
-      (opts.headless ? '  --window-position=0,0 --window-size=1,1' : '');
+      (opts.useHomepage ? ` '${homepage}'` : '');
+      // (opts.headless ? ' -jga' : '');
 
     this.ipc.send('launch', command);
   }
@@ -114,19 +111,14 @@ export class ElectronService {
 
     // Install first Chrome profile (Admin)
     const adminProfile: profile_model = OrgExtensions.getAdminUser(org);
-
-    console.log('install profile: ' + adminProfile.name);
-
     this.launch(org.name, {
       profile: adminProfile,
-      headless: false,
+      headless: true,
       useHomepage: false
     });
 
     await sleep(5000);
-
     this.kill(org.name);
-
     await sleep(3000);
 
     const fn = `${config.base}/${config.name}/Chrome/Local State`;
@@ -135,7 +127,7 @@ export class ElectronService {
       const obj = JSON.parse(this.fs.readFileSync(fn, 'utf8'));
       const infoCache = obj.profile.info_cache;
 
-      const referenceProfile = infoCache[org.profiles[0].name];
+      const referenceProfile = infoCache[adminProfile.name];
 
       const newInfoCache = {};
 

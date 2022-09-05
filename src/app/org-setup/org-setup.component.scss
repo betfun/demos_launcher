@@ -6,3 +6,22 @@
 .mat-raised-button {
   margin: 8px 8px 8px 0;
 }
+
+.assigned-chip{
+  background-color: green; // as per your requirement
+  color: white;
+}
+
+.scrollable {
+  width: 100%;
+  max-height: 250px;
+  overflow: auto;
+}
+
+.tt {
+  position: sticky;
+  border: 1px;
+  border-color: red;
+  display: flex;
+  align-self: end;
+}

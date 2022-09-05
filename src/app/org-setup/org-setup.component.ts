@@ -7,12 +7,18 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SalesforceService } from '../core/services';
 import { OrgSave } from '../store/orgs/actions';
 import { LoginType, OrgsStateModel, org_model, profile_model } from '../store/orgs/model';
+import { Config } from '../store/config/model';
+import { ProfileFormGroup } from './profile-line/profile-line.component';
+import { ConfirmDialogService } from '../core/componentes/confirm-dialog/confirm-dialog.service';
+import { OrgsInstallChrome } from '../store/chrome/actions';
 
-type ProfileFormGroup = FormGroup<{
+type OrgFormGroup = FormGroup<{
   name: FormControl<string | null>;
-  login: FormControl<string | null>;
-  pwd: FormControl<string | null>;
-  loginType: FormControl<string | null>;
+  mainUser: FormGroup<{
+    login: FormControl<string | null>;
+    pwd: FormControl<string | null>;
+  }>;
+  profiles: FormArray<ProfileFormGroup>;
 }>;
 
 @Component({
@@ -23,19 +29,14 @@ export class OrgSetupComponent implements OnInit {
   sfUsers: { name: string; login: string }[] = [];
   comms: string[] = [];
   connection = '';
+  user: string;
 
-  profileForm: FormGroup<{
-    name: FormControl<string | null>;
-    mainUser: FormGroup<{
-      login: FormControl<string | null>;
-      pwd: FormControl<string | null>;
-    }>;
-    profiles: FormArray<ProfileFormGroup>;
-  }>;
+  profileForm: OrgFormGroup;
 
   private orgId: string;
 
   constructor(private route: ActivatedRoute,
+    private dialog: ConfirmDialogService,
     private router: Router,
     private sf: SalesforceService,
     private fb: FormBuilder,
@@ -68,38 +69,53 @@ export class OrgSetupComponent implements OnInit {
       }),
       profiles: this.fb.array(profiles.map(p => this.profileToForm(p)))
     });
+  }
 
-    this.mainUser.valueChanges.subscribe(() => this.connection = '');
+  reinstall(): void {
+
+    this.dialog.open({
+      title: 'Save & Install',
+      message: 'This action will reinstall all your Chrome profiles.\
+      \n\nAll already available Profiles will be reset (bookmarks, extensions). \n\nAre you sure?',
+      cancelText: 'Cancel',
+      confirmText: 'OK'
+    }).then(response => {
+
+      if (!response) { return; }
+
+      const org = this.formToOrg();
+
+      this.store.dispatch([
+        new OrgSave(org),
+        new OrgsInstallChrome(org, true)
+      ]);
+    });
   }
 
   onSubmit(): void {
-    const formValue = this.profileForm.value;
 
-    const org: org_model = {
-      id: this.orgId ?? Guid.create().toString(),
-      domain: '',
-      description: '',
-      name: formValue.name,
-      administrator: {
-        login: formValue.mainUser.login,
-        pwd: formValue.mainUser.pwd
-      },
-      profiles: formValue.profiles.map(formProfile => ({
-        name: formProfile.name,
-        login: formProfile.login,
-        pwd: formProfile.pwd,
-        loginType: formProfile.loginType
-      }))
-    };
+    this.dialog.open({
+      title: 'Save & Install',
+      message: 'Save your org and install the Chrome profiles?',
+      cancelText: 'Cancel',
+      confirmText: 'OK'
+    }).then(response => {
 
-    this.store.dispatch(new OrgSave(org));
+      if (!response) { return; }
 
-    this.router.navigate(['/home']);
+      const org = this.formToOrg();
+
+      this.store.dispatch([
+        new OrgSave(org),
+        new OrgsInstallChrome(org, false)
+      ]);
+
+      this.router.navigate(['/home']);
+    });
   }
 
   async verify(): Promise<void> {
-
-    // this.store.snapshot().orgs.loadingMessage = 'dwdq';
+    this.connection = '';
     this.spinner.show();
 
     const val = this.profileForm.value.mainUser;
@@ -114,6 +130,8 @@ export class OrgSetupComponent implements OnInit {
     const conn = await this.sf.connection(admin);
 
     if (conn.connected) {
+      this.user = conn.userInfo.name;
+
       await conn.getDbUsers().then(users => {
         const sfUsers = users
           .map(user => ({ name: user.Name, login: user.Username }))
@@ -144,7 +162,7 @@ export class OrgSetupComponent implements OnInit {
     const profile = this.getProfile(index).value;
 
     const newProfile: profile_model = {
-      name: profile.name,
+      name: '',
       login: profile.login,
       pwd: profile.pwd,
       loginType: profile.loginType
@@ -155,10 +173,12 @@ export class OrgSetupComponent implements OnInit {
   }
 
   addProfile(): void {
+    const cfg = this.store.selectSnapshot<Config>(state => state.config);
+
     const newProfile: profile_model = {
       name: '',
       login: '',
-      pwd: '',
+      pwd: cfg.defaultPassword,
       loginType: LoginType.standard
     };
 
@@ -166,8 +186,7 @@ export class OrgSetupComponent implements OnInit {
     this.profileForm.controls.profiles.push(formElement);
   }
 
-  private profileToForm(p: profile_model):
-    FormGroup<{ name: FormControl<string>; login: FormControl<string>; pwd: FormControl<string>; loginType: FormControl<string> }> {
+  private profileToForm(p: profile_model): ProfileFormGroup {
     return this.fb.group({
       name: [p.name, Validators.required],
       login: [p.login, Validators.email],
@@ -175,4 +194,28 @@ export class OrgSetupComponent implements OnInit {
       loginType: [p.loginType, Validators.required],
     });
   }
+
+  private formToOrg(): org_model {
+    const formValue = this.profileForm.value;
+
+    const org: org_model = {
+      id: this.orgId ?? Guid.create().toString(),
+      domain: '',
+      description: '',
+      name: formValue.name,
+      administrator: {
+        login: formValue.mainUser.login,
+        pwd: formValue.mainUser.pwd
+      },
+      profiles: formValue.profiles.map(formProfile => ({
+        name: formProfile.name,
+        login: formProfile.login,
+        pwd: formProfile.pwd,
+        loginType: formProfile.loginType
+      }))
+    };
+
+    return org;
+  }
 }
+

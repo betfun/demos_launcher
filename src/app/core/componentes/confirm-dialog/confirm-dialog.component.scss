@@ -1,0 +1,11 @@
+.dialog-message {
+  white-space: break-spaces;
+}
+
+.header::first-letter, .dialog-message::first-letter {
+  text-transform: uppercase;
+}
+.btn-cancel {
+  background-color: red;
+  color: #fff;
+}

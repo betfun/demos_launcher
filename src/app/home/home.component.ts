@@ -3,13 +3,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
-  ViewChild,
+  OnInit
 } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { ElectronService } from '../core/services';
 import {
   animate,
   state,
@@ -20,9 +17,10 @@ import {
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Store } from '@ngxs/store';
-import { OrgDelete, OrgDeleteProfile, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from '../store/orgs/actions';
+import { OrgDelete, OrgsReorder } from '../store/orgs/actions';
 import { org_model, profile_model } from '../store/orgs/model';
 import { Router } from '@angular/router';
+import { OrgKillChrome, OrgLaunchChrome } from '../store/chrome/actions';
 
 @Component({
   selector: 'app-home',
@@ -33,16 +31,12 @@ import { Router } from '@angular/router';
     trigger('detailExpand', [
       state('collapsed, void', style({ height: '0px', maxHeight: '0', visibility: 'collapse' })),
       state('expanded', style({ height: '*', visibility: 'visible' })),
-      // transition("* => void", state("collapsed")),
       transition('collapsed <=> expanded', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
       transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ]),
   ],
 })
 export class HomeComponent implements OnInit, AfterViewChecked {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('table') table: MatTable<any>;
-
   dataSource: MatTableDataSource<org_model>;
   displayedColumns: string[] = ['position', 'id', 'name', 'actions'];
   expandedElement: any | null;
@@ -52,7 +46,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
     private clipboard: Clipboard,
-    private electronService: ElectronService,
     private store: Store
   ) { }
 
@@ -70,48 +63,28 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   }
 
   launch(org): void {
-    this.electronService.launch(org.name);
+    this.store.dispatch(new OrgLaunchChrome(org, null));
   }
 
   launchProfile(org, profile: profile_model): void {
-    this.electronService.launch(org.name, { profile, headless: false, useHomepage: true });
-  }
-
-  deleteProfile(org, profile): void {
-    this.store.dispatch(new OrgDeleteProfile(org.name, profile));
+    this.store.dispatch(new OrgLaunchChrome(org, profile));
   }
 
   deleteOrg(org: org_model): void {
     this.store.dispatch(new OrgDelete(org.name));
   }
 
-  reinstall(element: org_model): void {
-    this.store.dispatch(new OrgsInstallChrome(element as org_model));
-  }
-
   copyProfile(profile: { login: string; pwd: string }): void {
-    console.log(profile);
     const copy = `login: ${profile.login} \n pwd: ${profile.pwd}`;
     this.clipboard.copy(copy);
   }
 
-  kill(element): void {
-    this.electronService.kill(element.name);
+  kill(element: org_model): void {
+    this.store.dispatch(new OrgKillChrome(element));
   }
 
-  addNewProfiles(org): void {
-    console.log(org);
+  editOrg(org): void {
     this.router.navigate(['/edit', org.id]);
-
-    // const dialogRef = this.dialog.open(NewProfilesComponent, {
-    //   width: '650px',
-    //   data: org,
-    // });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result === undefined || result === null) {return;}
-    //   this.store.dispatch(new OrgSave(result));
-    // });
   }
 
   applyFilter(event: Event): void {

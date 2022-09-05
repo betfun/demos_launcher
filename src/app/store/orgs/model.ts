@@ -9,31 +9,16 @@ export interface profile_model {
   loginType: string;
 }
 
-export class org_model {
+export interface org_model {
   id: string;
   name: string;
   description: string;
   domain: string;
   administrator: { login: string; pwd: string };
   profiles: profile_model[];
-
-  constructor(ref: Partial<org_model>) {
-    this.profiles = [];
-
-    this.id = ref.id;
-    this.name = ref.name;
-
-    for (const profile in ref.profiles) {
-      if (Object.prototype.hasOwnProperty.call(ref.profiles, profile)) {
-        const element = ref.profiles[profile];
-        this.profiles.push(element);
-      }
-    }
-    // Object.assign(this, ref);
-  }
 }
 
-export class OrgExtensions // OrgHelper.getAdminUser(org : org_model){
+export class OrgExtensions
 {
   static getAdminUser(org: org_model): profile_model {
     return {

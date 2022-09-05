@@ -3,7 +3,7 @@
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
 </mat-form-field>
 
-<div class="table-outer mat-elevation-z8 scrollable" cdkScrollable>
+<div class="mat-elevation-z8 scrollable" cdkScrollable>
   <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width"
     [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" cdkDropList>
 
@@ -35,9 +35,6 @@
         <button mat-icon-button (click)="launch(element)" matTooltip="Launch default user (Admin)">
           <mat-icon>launch</mat-icon>
         </button>
-        <button mat-icon-button (click)="reinstall(element)" matTooltip="Install all Chrome profiles in a new Chrome">
-          <mat-icon>developer_board</mat-icon>
-        </button>
         <button [disabled]="element.profiles.length === 0" mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
           <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
 
@@ -58,7 +55,7 @@
             <span>Kill browser</span>
           </button>
           <mat-divider [inset]="false"></mat-divider>
-          <button mat-menu-item (click)="addNewProfiles(element)">
+          <button mat-menu-item (click)="editOrg(element)">
             <mat-icon color="primary">edit</mat-icon>
             <span>Edit org</span>
           </button>
@@ -90,10 +87,6 @@
                   <mat-icon>
                     power_settings_new
                   </mat-icon>
-                </button>
-                <button mat-icon-button [disabled]="element.admin === profile.name"
-                  (click)="deleteProfile(element, profile);">
-                  <mat-icon [color]="element.admin === profile.name ? 'grey' : 'warn'">delete</mat-icon>
                 </button>
 
               <mat-divider *ngIf="!isLast"></mat-divider>

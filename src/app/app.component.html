@@ -1,7 +1,8 @@
 
 <!-- Toolbar -->
 <div class="toolbar app-toolbar" role="banner">
-  <img width="60" alt="Angular Logo" src="assets/ilauncher.svg" style="mix-blend-mode: add" />
+  <!-- <img width="60" alt="Angular Logo" src="assets/ilauncher.svg" style="mix-blend-mode: add" /> -->
+  <mat-icon class="logo-icon">rocket_launch</mat-icon>
   <span>Demos Launcher - {{version}}</span>
   <div class="spacer"></div>
   <button mat-icon-button class="example-icon favorite-icon" [routerLink]="'/new'">
@@ -26,8 +27,7 @@
 
 <!-- Main content -->
 <div class="content" role="main">
-  <router-outlet style="width: 100%;"></router-outlet>
-  <!-- <app-home style="width: 100%;"></app-home> -->
+  <router-outlet class="full-width"></router-outlet>
 </div>
 
 <!-- Background -->

@@ -25,7 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { MatChipsModule } from '@angular/material/chips';
 import { HomeComponent } from './home/home.component';
 
 import { NgxsModule } from '@ngxs/store';
@@ -35,6 +35,7 @@ import { OrgsState } from './store/orgs/state';
 import { ConfigComponent } from './config/config.component';
 import { OrgSetupComponent } from './org-setup/org-setup.component';
 import { ProfileLineComponent } from './org-setup/profile-line/profile-line.component';
+import { TasksState } from './store/chrome/state';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -57,6 +58,7 @@ const routes: Routes = [
     HttpClientModule,
     MatTableModule,
     MatButtonModule,
+    MatChipsModule,
     MatCheckboxModule,
     MatTableModule,
     MatPaginatorModule,
@@ -76,12 +78,12 @@ const routes: Routes = [
     DragDropModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    NgxsModule.forRoot([ConfigState, OrgsState]),
+    NgxsModule.forRoot([ConfigState, OrgsState, TasksState]),
     NgxsLoggerPluginModule.forRoot(),
     RouterModule.forRoot(routes)
   ],
   providers: [
-    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } }
   ],
   bootstrap: [AppComponent],
 })

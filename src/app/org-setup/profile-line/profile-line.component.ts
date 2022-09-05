@@ -1,16 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { profile_model } from '../../store/orgs/model';
+
+export type ProfileFormGroup = FormGroup<{
+  name: FormControl<string | null>;
+  login: FormControl<string | null>;
+  pwd: FormControl<string | null>;
+  loginType: FormControl<string | null>;
+}>;
 
 @Component({
   selector: 'app-profile-line',
   templateUrl: './profile-line.component.html',
   styleUrls: ['./profile-line.component.scss'],
 })
-export class ProfileLineComponent implements OnInit {
+export class ProfileLineComponent implements OnInit, AfterViewInit {
 
-  @Input() formGroup: FormGroup;
+  @ViewChild('name') nameElement: ElementRef;
+
+  @Input() formGroup: ProfileFormGroup;
   @Input() options: { name: string; login: string }[];
   @Input() comms: any[];
 
@@ -20,6 +28,20 @@ export class ProfileLineComponent implements OnInit {
     this.filteredOptions = this.formGroup.controls.login.valueChanges.pipe(
       startWith(''),
       map(value => this.filter(value || '')));
+  }
+
+  // ngAfterContentInit(): void {
+  //   if(this.formGroup.value.name === ''){
+  //     this.nameElement.nativeElement.focus();
+  //   }
+  // }
+
+  ngAfterViewInit(): void {
+    if (this.formGroup.value.name === '') {
+      setTimeout(() => {
+        this.nameElement.nativeElement.focus();
+      });
+    }
   }
 
   private filter(value: string): { name: string; login: string }[] {

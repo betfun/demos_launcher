@@ -5,7 +5,7 @@ import { Store } from '@ngxs/store';
 import { GetConfig, SaveConfig } from './store/config/actions';
 import { ConfigComponent } from './config/config.component';
 import { Config } from '../app/store/config/model';
-import { OrgSave, OrgsLoadAll } from './store/orgs/actions';
+import { OrgsLoadAll } from './store/orgs/actions';
 import { NgxSpinnerService } from 'ngx-spinner';
 import packageInfo from '../../package.json';
 import { HttpClient } from '@angular/common/http';
@@ -41,8 +41,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(packageInfo.version);
-    this.store.select(state => state.orgs.loadingMessage).subscribe(loadingMessage => {
+    this.store.select(state => state.tasks.loadingMessage).subscribe(loadingMessage => {
       if (loadingMessage !== '') {
         this.spinnerMessage = loadingMessage;
         this.spinner.show();

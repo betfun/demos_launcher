@@ -1,12 +1,12 @@
 <div [formGroup]="formGroup">
   <mat-form-field>
     <mat-label>Name:</mat-label>
-    <input matInput formControlName="name" placeholder="Name" />
+    <input #name matInput formControlName="name" placeholder="Name" />
   </mat-form-field>
 
   <mat-form-field style="width: 30%;">
     <mat-label>Login:</mat-label>
-    <input matInput [matAutocomplete]="users" formControlName="login" placeholder="Login" />
+    <input matInput [matAutocomplete]="users" formControlName="login" placeholder="Login"/>
     <mat-autocomplete autoActiveFirstOption #users="matAutocomplete">
       <mat-option *ngFor="let user of filteredOptions | async" [value]="user.login">
         {{user.name}}

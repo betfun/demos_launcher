@@ -1,18 +1,8 @@
-import { org_model, profile_model } from './model';
-
-export class OrgsInstallChrome {
-  public static readonly type = '[Orgs] Install Chrome';
-  constructor(public org: org_model) { }
-}
+import { org_model } from './model';
 
 export class OrgsReorder {
   public static readonly type = '[Orgs] Reorder';
   constructor(public updatedList: org_model[]) { }
-}
-
-export class OrgLaunchChrome {
-  public static readonly type = '[Orgs] Launch Chrome';
-  constructor(public payload: any) { }
 }
 
 export class OrgSave {
@@ -29,9 +19,4 @@ export class OrgsLoadAll {
 export class OrgDelete {
   public static readonly type = '[Orgs] Delete org';
   constructor(public name: string) { }
-}
-
-export class OrgDeleteProfile {
-  public static readonly type = '[Orgs] Delete profile';
-  constructor(public name: string, public profile: any) { }
 }

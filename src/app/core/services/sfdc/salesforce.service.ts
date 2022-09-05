@@ -6,8 +6,9 @@ import { profile_model } from '../../../store/orgs/model';
 export class SalesforceConnection {
 
   connected: boolean;
-  connection: jsforce.Connection;
+  userInfo: { name: string } = null;
 
+  private connection: jsforce.Connection;
   private admin: profile_model;
   private jsforce: typeof jsforce;
 
@@ -16,15 +17,21 @@ export class SalesforceConnection {
     this.admin = adminProfile;
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     this.connection = new this.jsforce.Connection({});
 
     try {
-      await this.connection.login(this.admin.login, this.admin.pwd);
+      const userInfo = await this.connection.login(this.admin.login, this.admin.pwd);
+
       this.connected = true;
+
+      const res = await this.connection.identity();
+      this.userInfo = { name: res.display_name};
     }
     catch {
+      this.userInfo = null;
       this.connected = false;
+      return null;
     }
   }
 
@@ -70,6 +77,7 @@ export class SalesforceService {
   async connection(adminProfile: profile_model): Promise<SalesforceConnection>  {
     const sfConnection = new SalesforceConnection(adminProfile);
     await sfConnection.connect();
+
     return sfConnection;
   }
 

@@ -1,5 +1,5 @@
 import { State, Action, StateContext } from '@ngxs/store';
-import { OrgDelete, OrgDeleteProfile, OrgLaunchChrome, OrgSave, OrgsInstallChrome, OrgsLoadAll, OrgsReorder } from './actions';
+import { OrgDelete, OrgSave, OrgsLoadAll, OrgsReorder } from './actions';
 import { OrgsStateModel, org_model, profile_model } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
@@ -23,33 +23,12 @@ export class OrgsState {
     let orgs = this.db.getOrgs();
 
     if (orgs === undefined || !Array.isArray(orgs)) {
-      console.log('Reset orgs');
       orgs = [];
     }
 
     ctx.setState(patch({
       orgs
     }));
-  }
-
-  @Action(OrgLaunchChrome)
-  public launch(ctx: StateContext<OrgsStateModel>, { payload }: OrgLaunchChrome): void {
-    this.service.launch(payload.org_name, {
-      headless: false,
-      useHomepage: true,
-      profile: payload.profile
-    });
-  }
-
-  @Action(OrgDeleteProfile)
-  public deleteProfile(ctx: StateContext<OrgsStateModel>, { name, profile }: OrgDeleteProfile): void {
-    ctx.setState(patch<OrgsStateModel>({
-      orgs: updateItem<org_model>(org => org.name === name, patch<org_model>({
-        profiles: removeItem<profile_model>(p => p.name === profile.name)
-      }))
-    }));
-
-    this.db.save(ctx.getState().orgs);
   }
 
   @Action(OrgSave)
@@ -84,13 +63,5 @@ export class OrgsState {
     }));
 
     this.db.save(ctx.getState().orgs);
-  }
-
-  @Action(OrgsInstallChrome)
-  public install(ctx: StateContext<OrgsStateModel>, { org }: OrgsInstallChrome): void {
-    ctx.patchState({ loadingMessage: 'Installing' });
-
-    this.service.install(org).finally(() =>
-      ctx.patchState({ loadingMessage: '' }));
   }
 }

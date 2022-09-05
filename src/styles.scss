@@ -1,15 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+// @use "sass:map";
+
 @use '@angular/material' as mat;
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@include mat.core();
+// @import '@angular/material/prebuilt-themes/indigo-pink.css';
+// @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+// @import '@angular/material/prebuilt-themes/pink-bluegrey.css';
+// @import '@angular/material/prebuilt-themes/purple-green.css';
 
 // Define a theme.
-$primary: mat.define-palette(mat.$indigo-palette);
+$primary: mat.define-palette(mat.$blue-palette);
 $accent:  mat.define-palette(mat.$blue-palette, A400, A100, A400);
+$success:  mat.define-palette(mat.$green-palette, A400, A100, A400);
 
 $theme: mat.define-light-theme((
   color: (
     primary: $primary,
-    accent: $accent
+    accent: $accent,
+    success: $success
   )
 ));
 
@@ -22,6 +30,14 @@ html, body {
 
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.spacer {
+  flex: 1;
 }
 
 /* CAN (MUST) BE REMOVED ! Sample Global style */
