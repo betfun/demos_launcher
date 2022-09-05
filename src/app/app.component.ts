@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
 
       const latestVersion = result[0];
 
-      if (this.isNewerVersion('0.5.3', latestVersion.tag_name.substring(1))) {
+      if (this.isNewerVersion(this.version, latestVersion.tag_name.substring(1))) {
         this.snackBar.open('New release available', 'OK');
       }
     });
