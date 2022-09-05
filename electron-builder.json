@@ -1,4 +1,5 @@
 {
+  "productName": "Demos launcher",
   "asar": true,
   "directories": {
     "output": "release/"
