@@ -21,6 +21,7 @@ $theme: mat.define-light-theme((
   )
 ));
 
+
 // Include all theme styles for the components.
 @include mat.all-component-themes($theme);
 
@@ -38,6 +39,10 @@ html, body {
 
 .spacer {
   flex: 1;
+}
+
+.logo-space {
+  width: 30px;
 }
 
 /* CAN (MUST) BE REMOVED ! Sample Global style */

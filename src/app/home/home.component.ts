@@ -18,7 +18,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Store } from '@ngxs/store';
 import { OrgDelete, OrgsReorder } from '../store/orgs/actions';
-import { org_model, profile_model } from '../store/orgs/model';
+import { OrgModel, ProfileModel } from '../store/orgs/model';
 import { Router } from '@angular/router';
 import { OrgKillChrome, OrgLaunchChrome } from '../store/chrome/actions';
 
@@ -37,7 +37,7 @@ import { OrgKillChrome, OrgLaunchChrome } from '../store/chrome/actions';
   ],
 })
 export class HomeComponent implements OnInit, AfterViewChecked {
-  dataSource: MatTableDataSource<org_model>;
+  dataSource: MatTableDataSource<OrgModel>;
   displayedColumns: string[] = ['position', 'id', 'name', 'actions'];
   expandedElement: any | null;
 
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource();
 
-    this.store.select<org_model[]>(s => s.orgs.orgs)
+    this.store.select<OrgModel[]>(s => s.orgs.orgs)
       .subscribe(orgs => {
         this.dataSource.data = [...orgs];
       });
@@ -66,11 +66,11 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(new OrgLaunchChrome(org, null));
   }
 
-  launchProfile(org, profile: profile_model): void {
+  launchProfile(org, profile: ProfileModel): void {
     this.store.dispatch(new OrgLaunchChrome(org, profile));
   }
 
-  deleteOrg(org: org_model): void {
+  deleteOrg(org: OrgModel): void {
     this.store.dispatch(new OrgDelete(org.name));
   }
 
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.clipboard.copy(copy);
   }
 
-  kill(element: org_model): void {
+  kill(element: OrgModel): void {
     this.store.dispatch(new OrgKillChrome(element));
   }
 

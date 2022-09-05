@@ -1,6 +1,6 @@
 import { State, Action, StateContext } from '@ngxs/store';
 import { OrgDelete, OrgSave, OrgsLoadAll, OrgsReorder } from './actions';
-import { OrgsStateModel, org_model, profile_model } from './model';
+import { OrgsStateModel, OrgModel, ProfileModel } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
@@ -39,8 +39,8 @@ export class OrgsState {
     const idx = stateModel.orgs.findIndex(org => org.id === payload.id);
 
     ctx.setState((idx === -1) ?
-      patch({ orgs: insertItem<org_model>(payload) }) :
-      patch({ orgs: updateItem<org_model>(o => o.id === payload.id, payload) }));
+      patch({ orgs: insertItem<OrgModel>(payload) }) :
+      patch({ orgs: updateItem<OrgModel>(o => o.id === payload.id, payload) }));
 
     this.db.save(ctx.getState().orgs);
   }
@@ -49,7 +49,7 @@ export class OrgsState {
   public delete(ctx: StateContext<OrgsStateModel>, { name }: OrgDelete): void {
 
     ctx.setState(patch<OrgsStateModel>({
-      orgs: removeItem<org_model>((org) => org.name === name)
+      orgs: removeItem<OrgModel>((org) => org.name === name)
     }));
 
     this.db.save(ctx.getState().orgs);

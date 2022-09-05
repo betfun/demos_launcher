@@ -1,13 +1,13 @@
-import { org_model } from './model';
+import { OrgModel } from './model';
 
 export class OrgsReorder {
   public static readonly type = '[Orgs] Reorder';
-  constructor(public updatedList: org_model[]) { }
+  constructor(public updatedList: OrgModel[]) { }
 }
 
 export class OrgSave {
   public static readonly type = '[Orgs] Save Org in db';
-  constructor(public payload: org_model) { }
+  constructor(public payload: OrgModel) { }
 }
 
 

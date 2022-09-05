@@ -3,10 +3,10 @@ import { Store } from '@ngxs/store';
 import { IpcRenderer } from 'electron';
 import * as fs from 'fs';
 import { Config, SupportedBrowsers } from '../../../store/config/model';
-import { LoginType, OrgExtensions, OrgsStateModel, org_model, profile_model } from '../../../store/orgs/model';
+import { LoginType, OrgExtensions, OrgsStateModel, OrgModel, ProfileModel } from '../../../store/orgs/model';
 
 export interface LaunchOptions {
-  profile: profile_model | null;
+  profile: ProfileModel | null;
   headless: boolean | false;
   useHomepage: boolean | true;
 }
@@ -32,7 +32,7 @@ export class ElectronService {
     const globalConfig = this.store.selectSnapshot<Config>(state => state.config);
     const orgObj = store.orgs.find(o => o.name === org);
 
-    const admin: profile_model = OrgExtensions.getAdminUser(orgObj);
+    const admin: ProfileModel = OrgExtensions.getAdminUser(orgObj);
     opts.profile = opts.profile ?? admin;
 
     const config = this.localConfig(org);
@@ -97,7 +97,7 @@ export class ElectronService {
     }
   }
 
-  async install(org: org_model, hard: boolean = false): Promise<void> {
+  async install(org: OrgModel, hard: boolean = false): Promise<void> {
     this.kill(org.name);
 
     await sleep(2000);
@@ -110,7 +110,7 @@ export class ElectronService {
     }
 
     // Install first Chrome profile (Admin)
-    const adminProfile: profile_model = OrgExtensions.getAdminUser(org);
+    const adminProfile: ProfileModel = OrgExtensions.getAdminUser(org);
     this.launch(org.name, {
       profile: adminProfile,
       headless: true,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as jsforce from 'jsforce';
-import { profile_model } from '../../../store/orgs/model';
+import { ProfileModel } from '../../../store/orgs/model';
 // const { PassThrough } = require("stream");
 
 export class SalesforceConnection {
@@ -9,10 +9,10 @@ export class SalesforceConnection {
   userInfo: { name: string } = null;
 
   private connection: jsforce.Connection;
-  private admin: profile_model;
+  private admin: ProfileModel;
   private jsforce: typeof jsforce;
 
-  constructor(adminProfile: profile_model) {
+  constructor(adminProfile: ProfileModel) {
     this.jsforce = window.require('jsforce');
     this.admin = adminProfile;
   }
@@ -74,7 +74,7 @@ export class SalesforceService {
     this.jsforce = window.require('jsforce');
   }
 
-  async connection(adminProfile: profile_model): Promise<SalesforceConnection>  {
+  async connection(adminProfile: ProfileModel): Promise<SalesforceConnection>  {
     const sfConnection = new SalesforceConnection(adminProfile);
     await sfConnection.connect();
 

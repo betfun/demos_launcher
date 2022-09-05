@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as lowdb from 'lowdb';
-import { LoginType, org_model, profile_model } from '../../../store/orgs/model';
+import { LoginType, OrgModel, ProfileModel } from '../../../store/orgs/model';
 import * as fs from 'fs';
 import { Guid } from 'guid-typescript';
 
@@ -29,10 +29,10 @@ export class DbService {
     this.db = lowdb(adapter);
   }
 
-  getOrgs(): org_model[] {
+  getOrgs(): OrgModel[] {
     const version = this.db.get('version').value();
 
-    const orgs = this.db.get('orgs').value() as org_model[];
+    const orgs = this.db.get('orgs').value() as OrgModel[];
 
     // Migration
     if (version === undefined) {
@@ -52,9 +52,9 @@ export class DbService {
           };
         }
 
-        const newOrg: org_model = {
+        const newOrg: OrgModel = {
           profiles: org.profiles.map(prof => {
-            const copy: profile_model = {
+            const copy: ProfileModel = {
               name: prof.name,
               login: prof.login,
               pwd: prof.pwd,
@@ -80,7 +80,7 @@ export class DbService {
     return orgs;
   }
 
-  save(orgs: org_model[]): void {
+  save(orgs: OrgModel[]): void {
     this.db.set('version', 2).write();
     this.db.set('orgs', orgs).write();
   }

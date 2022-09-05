@@ -15,6 +15,7 @@ function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
+    titleBarStyle: 'hidden',
     x: 0,
     y: 0,
     width: size.width,

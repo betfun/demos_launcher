@@ -2,25 +2,25 @@ export enum LoginType {
   standard = 'Standard'
 }
 
-export interface profile_model {
+export interface ProfileModel {
   name: string;
   login: string;
   pwd: string;
   loginType: string;
 }
 
-export interface org_model {
+export interface OrgModel {
   id: string;
   name: string;
   description: string;
   domain: string;
   administrator: { login: string; pwd: string };
-  profiles: profile_model[];
+  profiles: ProfileModel[];
 }
 
 export class OrgExtensions
 {
-  static getAdminUser(org: org_model): profile_model {
+  static getAdminUser(org: OrgModel): ProfileModel {
     return {
       login: org.administrator.login,
       pwd: org.administrator.pwd,
@@ -32,7 +32,7 @@ export class OrgExtensions
 
 export interface OrgsStateModel {
   version: number;
-  orgs: org_model[];
+  orgs: OrgModel[];
   loadingMessage: string;
 }
 

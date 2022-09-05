@@ -6,7 +6,7 @@ import { Guid } from 'guid-typescript';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SalesforceService } from '../core/services';
 import { OrgSave } from '../store/orgs/actions';
-import { LoginType, OrgsStateModel, org_model, profile_model } from '../store/orgs/model';
+import { LoginType, OrgsStateModel, OrgModel, ProfileModel } from '../store/orgs/model';
 import { Config } from '../store/config/model';
 import { ProfileFormGroup } from './profile-line/profile-line.component';
 import { ConfirmDialogService } from '../core/componentes/confirm-dialog/confirm-dialog.service';
@@ -120,7 +120,7 @@ export class OrgSetupComponent implements OnInit {
 
     const val = this.profileForm.value.mainUser;
 
-    const admin: profile_model = {
+    const admin: ProfileModel = {
       login: val.login,
       pwd: val.pwd,
       name: 'Admin',
@@ -161,7 +161,7 @@ export class OrgSetupComponent implements OnInit {
   duplicateProfile(index: number): void {
     const profile = this.getProfile(index).value;
 
-    const newProfile: profile_model = {
+    const newProfile: ProfileModel = {
       name: '',
       login: profile.login,
       pwd: profile.pwd,
@@ -175,7 +175,7 @@ export class OrgSetupComponent implements OnInit {
   addProfile(): void {
     const cfg = this.store.selectSnapshot<Config>(state => state.config);
 
-    const newProfile: profile_model = {
+    const newProfile: ProfileModel = {
       name: '',
       login: '',
       pwd: cfg.defaultPassword,
@@ -186,7 +186,7 @@ export class OrgSetupComponent implements OnInit {
     this.profileForm.controls.profiles.push(formElement);
   }
 
-  private profileToForm(p: profile_model): ProfileFormGroup {
+  private profileToForm(p: ProfileModel): ProfileFormGroup {
     return this.fb.group({
       name: [p.name, Validators.required],
       login: [p.login, Validators.email],
@@ -195,10 +195,10 @@ export class OrgSetupComponent implements OnInit {
     });
   }
 
-  private formToOrg(): org_model {
+  private formToOrg(): OrgModel {
     const formValue = this.profileForm.value;
 
-    const org: org_model = {
+    const org: OrgModel = {
       id: this.orgId ?? Guid.create().toString(),
       domain: '',
       description: '',
