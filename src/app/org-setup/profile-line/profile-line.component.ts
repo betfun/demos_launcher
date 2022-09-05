@@ -20,7 +20,7 @@ export class ProfileLineComponent implements OnInit, AfterViewInit {
 
   @Input() formGroup: ProfileFormGroup;
   @Input() options: { name: string; login: string }[];
-  @Input() comms: any[];
+  @Input() comms: { name: string; url: string }[];
 
   filteredOptions: Observable<any[]>;
 
@@ -29,12 +29,6 @@ export class ProfileLineComponent implements OnInit, AfterViewInit {
       startWith(''),
       map(value => this.filter(value || '')));
   }
-
-  // ngAfterContentInit(): void {
-  //   if(this.formGroup.value.name === ''){
-  //     this.nameElement.nativeElement.focus();
-  //   }
-  // }
 
   ngAfterViewInit(): void {
     if (this.formGroup.value.name === '') {

@@ -4,6 +4,7 @@ import { IpcRenderer } from 'electron';
 import * as fs from 'fs';
 import { Config, SupportedBrowsers } from '../../../store/config/model';
 import { LoginType, OrgExtensions, OrgsStateModel, OrgModel, ProfileModel } from '../../../store/orgs/model';
+import { SalesforceService } from '../sfdc/salesforce.service';
 
 export interface LaunchOptions {
   profile: ProfileModel | null;
@@ -21,7 +22,7 @@ export class ElectronService {
   private ipc: IpcRenderer;
   private fs: typeof fs;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private sf: SalesforceService) {
     this.ipc = (window as any).require('electron').ipcRenderer;
     this.fs = window.require('fs');
   }
@@ -69,7 +70,7 @@ export class ElectronService {
     const site = (opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') ?
       `&siteuser=${siteUser}&site=${opts.profile.loginType}` : '';
 
-    const homepage = `${loginPage}?un=${login}&pw=${pwd}`;
+    const homepage = `${loginPage}?un=${login}&pw=${pwd}` + site;
 
     const headless = opts.headless ? '-jga' : '';
 
