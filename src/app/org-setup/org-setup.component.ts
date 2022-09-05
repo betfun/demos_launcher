@@ -27,7 +27,7 @@ type OrgFormGroup = FormGroup<{
 })
 export class OrgSetupComponent implements OnInit {
   sfUsers: { name: string; login: string }[] = [];
-  comms: string[] = [];
+  comms: { name: string; url: string }[] = [];
   connection = '';
   user: string;
 
@@ -142,8 +142,8 @@ export class OrgSetupComponent implements OnInit {
 
       conn.getCommunities().then(comms => {
         this.comms = comms
-          .map(site => site.Name)
-          .sort((a: string, b: string) => a.localeCompare(b));
+          .map(site => ({ name: site.Name, url: site.UrlPathPrefix}))
+          .sort((a: any, b: any) => a.name.localeCompare(b));
       });
       this.connection = 'Connected';
     }
