@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select(state => state.tasks.loadingMessage).subscribe(loadingMessage => {
+      this.spinnerMessage = loadingMessage;
       if (loadingMessage !== '') {
-        this.spinnerMessage = loadingMessage;
         this.spinner.show();
       }
       else {

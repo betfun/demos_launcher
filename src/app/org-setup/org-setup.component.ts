@@ -61,13 +61,14 @@ export class OrgSetupComponent implements OnInit {
     const org = this.store.selectSnapshot<OrgsStateModel>(state => state.orgs).orgs.find(o => o.id === this.orgId);
 
     const profiles = org?.profiles;
+
     this.profileForm = this.fb.group({
       name: [org?.name, Validators.required],
       mainUser: this.fb.group({
         login: [org?.administrator?.login, [Validators.email]],
         pwd: [org?.administrator?.pwd, Validators.required]
       }),
-      profiles: this.fb.array(profiles.map(p => this.profileToForm(p)))
+      profiles: this.fb.array(profiles ? profiles.map(p => this.profileToForm(p)) : [])
     });
   }
 
@@ -142,7 +143,7 @@ export class OrgSetupComponent implements OnInit {
 
       conn.getCommunities().then(comms => {
         this.comms = comms
-          .map(site => ({ name: site.Name, url: site.UrlPathPrefix}))
+          .map(site => ({ name: site.Name, url: site.UrlPathPrefix }))
           .sort((a: any, b: any) => a.name.localeCompare(b));
       });
       this.connection = 'Connected';

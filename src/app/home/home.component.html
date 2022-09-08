@@ -35,7 +35,8 @@
         <button mat-icon-button (click)="launch(element)" matTooltip="Launch default user (Admin)">
           <mat-icon>launch</mat-icon>
         </button>
-        <button [disabled]="element.profiles.length === 0" mat-icon-button (click)="expandedElement = expandedElement === element ? null : element">
+        <button [disabled]="element.profiles.length === 0" mat-icon-button
+          (click)="expandedElement = expandedElement === element ? null : element">
           <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
 
           <ng-template #elseTemplateName>
@@ -55,18 +56,18 @@
               content_copy
             </mat-icon>
           </button> -->
-          <button mat-menu-item (click)="kill(element)">
-            <mat-icon color="warn">share</mat-icon>
+          <button mat-menu-item>
+            <mat-icon color="primary">share</mat-icon>
             <span>Share</span>
           </button>
-          <button mat-menu-item (click)="kill(element)">
-            <mat-icon color="warn">eject</mat-icon>
-            <span>Kill browser</span>
-          </button>
-          <mat-divider [inset]="false"></mat-divider>
           <button mat-menu-item (click)="editOrg(element)">
             <mat-icon color="primary">edit</mat-icon>
             <span>Edit org</span>
+          </button>
+          <mat-divider [inset]="false"></mat-divider>
+          <button mat-menu-item (click)="kill(element)">
+            <mat-icon color="warn">eject</mat-icon>
+            <span>Kill browser</span>
           </button>
           <button mat-menu-item (click)="deleteOrg(element)">
             <mat-icon color="warn">delete</mat-icon>
@@ -86,11 +87,11 @@
               <mat-icon class="line_icon" matListAvatar aria-hidden="false" aria-label="Example home icon">person
               </mat-icon>
               <h2 matLine>{{ profile.name }}</h2>
-                <button mat-icon-button (click)="launchProfile(element, profile);">
-                  <mat-icon>
-                    launch
-                  </mat-icon>
-                </button>
+              <button mat-icon-button (click)="launchProfile(element, profile);">
+                <mat-icon>
+                  launch
+                </mat-icon>
+              </button>
 
               <mat-divider *ngIf="!isLast"></mat-divider>
             </mat-list-item>
@@ -100,9 +101,9 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row  cdkdrag-box"
-      cdkDrag [cdkDragData]=element></tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row  cdkdrag-box" cdkDrag
+      [cdkDragData]=element></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
   </table>
 

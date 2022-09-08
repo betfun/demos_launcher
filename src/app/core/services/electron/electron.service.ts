@@ -72,9 +72,9 @@ export class ElectronService {
 
     const homepage = `${loginPage}?un=${login}&pw=${pwd}` + site;
 
-    const headless = opts.headless ? '-jga' : '';
+    const headless = opts.headless ? '-gj' : '';
 
-    const path = `open ${headless} -n "${browserPath}" \
+    const path = `open ${headless} -n -a "${browserPath}" \
       --args --user-data-dir=${config.base}/${config.name}/Chrome \
       --profile-directory="${innerName}" \
       --no-first-run \
@@ -107,7 +107,11 @@ export class ElectronService {
 
     if (hard) {
       const dir = `${config.base}/${config.name}`;
-      this.fs.rmdirSync(dir, { recursive: true });
+
+      try {
+        this.fs.rmdirSync(dir, { recursive: true });
+      }
+      catch {}
     }
 
     // Install first Chrome profile (Admin)
@@ -155,7 +159,7 @@ export class ElectronService {
     const dir: string = this.ipc.sendSync('getHomeDir');
 
     const config = {
-      base: `${dir}/.demos_launcher/Orgs`,
+      base: `${dir}/Orgs`,
       name: orgChrome,
     };
 
