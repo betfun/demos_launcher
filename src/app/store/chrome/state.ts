@@ -3,6 +3,7 @@ import { OrgKillChrome, OrgLaunchChrome, OrgsInstallChrome } from './actions';
 import { TasksStateModel } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
+import { OrgDelete } from '../orgs/actions';
 
 @State<TasksStateModel>({
   name: 'tasks',
@@ -52,5 +53,10 @@ export class TasksState {
     } finally {
       ctx.patchState({ loadingMessage: '' });
     }
+  }
+
+  @Action(OrgDelete)
+  public delete(ctx: StateContext<TasksStateModel>, { name }: OrgDelete): void {
+    this.service.delete(name);
   }
 }

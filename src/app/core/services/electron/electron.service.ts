@@ -52,12 +52,6 @@ export class ElectronService {
       'https://clicktologin.herokuapp.com/' :
       'https://login.salesforce.com/login.jsp';
 
-
-    // // TODO : Repoace with community
-    // if(opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') {
-    //   loginPage  = org_obj.domain + '/' + opts.profile.loginType;
-    // }
-
     const siteUser = opts.profile.login.toString();
 
     let login = opts.profile.login;
@@ -83,6 +77,13 @@ export class ElectronService {
     const command = path +
       (opts.useHomepage ? ` '${homepage}'` : '');
       // (opts.headless ? ' -jga' : '');
+
+    this.ipc.send('launch', command);
+  }
+
+  delete(orgName: string) {
+    const config = this.localConfig(orgName);
+    const command = `rm -rf ${config.base}/${config.name}`;
 
     this.ipc.send('launch', command);
   }
@@ -118,7 +119,7 @@ export class ElectronService {
     const adminProfile: ProfileModel = OrgExtensions.getAdminUser(org);
     this.launch(org.name, {
       profile: adminProfile,
-      headless: true,
+      headless: false,
       useHomepage: false
     });
 

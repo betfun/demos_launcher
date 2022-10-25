@@ -21,6 +21,7 @@ import { OrgDelete, OrgsReorder } from '../store/orgs/actions';
 import { OrgModel, ProfileModel } from '../store/orgs/model';
 import { Router } from '@angular/router';
 import { OrgKillChrome, OrgLaunchChrome } from '../store/chrome/actions';
+import { ConfirmDialogOptions, ConfirmDialogService } from '../core/componentes/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-home',
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
     private clipboard: Clipboard,
+    private confirmDialog: ConfirmDialogService,
     private store: Store
   ) { }
 
@@ -71,13 +73,20 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   }
 
   deleteOrg(org: OrgModel): void {
-    this.store.dispatch(new OrgDelete(org.name));
+    const opts: ConfirmDialogOptions = {
+      title: 'Delete Org',
+      cancelText: 'No',
+      confirmText: 'Yes',
+      message: `Are you sure you want to delete org: ${org.name} ? `
+    };
+
+    this.confirmDialog.open(opts).then(confirmed => {
+      if (confirmed) {
+        this.store.dispatch(new OrgDelete(org.name));
+      }
+    });
   }
 
-  copyProfile(profile: { login: string; pwd: string }): void {
-    const copy = `login: ${profile.login} \n pwd: ${profile.pwd}`;
-    this.clipboard.copy(copy);
-  }
 
   kill(element: OrgModel): void {
     this.store.dispatch(new OrgKillChrome(element));
@@ -85,6 +94,12 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
   editOrg(org): void {
     this.router.navigate(['/edit', org.id]);
+  }
+
+  share(org): void {
+    let copy = JSON.stringify(org);
+    copy = copy.replace(/[\[\]\{\}]+/g, '');
+    this.clipboard.copy(copy);
   }
 
   applyFilter(event: Event): void {

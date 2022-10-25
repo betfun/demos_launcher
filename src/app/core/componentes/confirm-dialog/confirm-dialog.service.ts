@@ -3,6 +3,13 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { firstValueFrom, Observable } from 'rxjs';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 
+export interface ConfirmDialogOptions {
+  title: string;
+  message: string;
+  cancelText: string;
+  confirmText: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,7 +18,7 @@ export class ConfirmDialogService {
 
   constructor(private dialog: MatDialog) { }
 
-  public open(options): Promise<any> {
+  public open(options: ConfirmDialogOptions): Promise<any> {
     this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: options.title,
