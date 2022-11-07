@@ -54,17 +54,16 @@ export class ElectronService {
 
     const siteUser = opts.profile.login.toString();
 
-    let login = opts.profile.login;
-    let pwd = opts.profile.pwd;
+    const isNonStandardLogin =
+      opts.profile.login !== undefined &&
+      opts.profile.loginType !== LoginType.standard.toString() &&
+      opts.profile.loginType !== LoginType.none.toString();
 
-    if (opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') {
-      login = admin.login;
-      pwd = admin.pwd;
-    }
-    const site = (opts.profile.login !== undefined && opts.profile.loginType !== 'Standard') ?
-      `&siteuser=${siteUser}&site=${opts.profile.loginType}` : '';
+    const login =  isNonStandardLogin ? admin.login : opts.profile.login;
+    const pwd = isNonStandardLogin ? admin.pwd : opts.profile.pwd;
+    const site = isNonStandardLogin ? `&siteuser=${siteUser}&site=${opts.profile.loginType}` : '';
 
-    const homepage = `${loginPage}?un=${login}&pw=${pwd}` + site;
+    const homepage = `${loginPage}?un=${login}&pw=${pwd}${site}`;
 
     const headless = opts.headless ? '-gj' : '';
 
@@ -74,9 +73,9 @@ export class ElectronService {
       --no-first-run \
       --no-default-browser-check`;
 
+    opts.useHomepage = opts.useHomepage && opts.profile.loginType !== LoginType.none.toString();
     const command = path +
       (opts.useHomepage ? ` '${homepage}'` : '');
-      // (opts.headless ? ' -jga' : '');
 
     this.ipc.send('launch', command);
   }
@@ -112,7 +111,7 @@ export class ElectronService {
       try {
         this.fs.rmdirSync(dir, { recursive: true });
       }
-      catch {}
+      catch { }
     }
 
     // Install first Chrome profile (Admin)
