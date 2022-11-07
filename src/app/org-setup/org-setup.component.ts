@@ -26,10 +26,13 @@ type OrgFormGroup = FormGroup<{
   styleUrls: ['./org-setup.component.scss'],
 })
 export class OrgSetupComponent implements OnInit {
-  sfUsers: { name: string; login: string }[] = [];
-  comms: { name: string; url: string }[] = [];
   connection = '';
   user: string;
+
+  sfUsers: { name: string; login: string }[] = [];
+  comms: { name: string; url: string }[] = [
+    { name: LoginType.standard, url: LoginType.standard },
+    { name: LoginType.none, url: LoginType.none }];
 
   profileForm: OrgFormGroup;
 
@@ -93,7 +96,7 @@ export class OrgSetupComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit($event): void {
 
     this.dialog.open({
       title: 'Save & Install',
@@ -142,9 +145,12 @@ export class OrgSetupComponent implements OnInit {
       });
 
       conn.getCommunities().then(comms => {
-        this.comms = comms
+        const extracomms = comms
           .map(site => ({ name: site.Name, url: site.UrlPathPrefix }))
           .sort((a: any, b: any) => a.name.localeCompare(b));
+
+        this.comms = [{ name: LoginType.standard, url: LoginType.standard }, { name: LoginType.none, url: LoginType.none }, ...extracomms];
+        console.log(this.comms);
       });
       this.connection = 'Connected';
     }
@@ -199,6 +205,8 @@ export class OrgSetupComponent implements OnInit {
   private formToOrg(): OrgModel {
     const formValue = this.profileForm.value;
 
+    console.log(this.profileForm.controls.profiles.dirty);
+    console.log(this.profileForm.controls.profiles);
     const org: OrgModel = {
       id: this.orgId ?? Guid.create().toString(),
       domain: '',

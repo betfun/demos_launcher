@@ -1,5 +1,6 @@
 export enum LoginType {
-  standard = 'Standard'
+  standard = 'Standard',
+  none = 'None'
 }
 
 export interface ProfileModel {

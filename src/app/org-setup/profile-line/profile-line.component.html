@@ -25,10 +25,11 @@
     <input matInput formControlName="loginType" [matAutocomplete]="auto" placeholder="Login Type" />
 
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option value="Standard">Standard</mat-option>
+      <!-- <mat-option value="Standard">Standard</mat-option> -->
       <mat-option *ngFor="let community of comms" [value]="community.url">
         {{community.name}}
       </mat-option>
+      <!-- <mat-option value="None">None</mat-option> -->
     </mat-autocomplete>
   </mat-form-field>
 

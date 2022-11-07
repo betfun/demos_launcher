@@ -1,4 +1,4 @@
-<form [formGroup]="profileForm" (submit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formGroup]="profileForm" (submit)="onSubmit($event)" (keydown.enter)="$event.preventDefault()">
     <section class="tt" layout="row" align="end">
       <button mat-button color="primary" type="button" routerLink="/home" matTooltip="Back without saving...">
         <mat-icon>navigate_before</mat-icon>Back
