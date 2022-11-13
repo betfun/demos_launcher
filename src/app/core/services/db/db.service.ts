@@ -1,38 +1,26 @@
 import { Injectable } from '@angular/core';
-import * as lowdb from 'lowdb';
+// import * as lowdb from 'lowdb';
 import { LoginType, OrgModel, ProfileModel } from '../../../store/orgs/model';
-import * as fs from 'fs';
 import { Guid } from 'guid-typescript';
+import { IpcRenderer } from 'electron';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class DbService {
-  db: any;
-  fs: typeof fs;
+  private ipc: IpcRenderer;
 
   constructor() {
-
-    this.fs = window.require('fs');
-
-    const ipc = window.require('electron').ipcRenderer;
-    const dir: string = ipc.sendSync('getHomeDir');
-    if (!this.fs.existsSync(dir)) {
-      this.fs.mkdir(dir, { recursive: true }, (err) => {
-        if (err) { throw err; }
-      });
-    }
-
-    const fileSync = window.require('lowdb/adapters/FileSync');
-    const adapter = new fileSync(`${dir}/db.json`);
-
-    this.db = lowdb(adapter);
+    this.ipc = window.ipc;
   }
 
   getOrgs(): OrgModel[] {
-    const version = this.db.get('version').value();
 
-    const orgs = this.db.get('orgs').value() as OrgModel[];
+    const fn = `db.json`;
+
+    const orgs: OrgModel[] = this.ipc.sendSync('db:read', fn, 'orgs');
+    const version: string = this.ipc.sendSync('db:read', fn, 'version');
 
     // Migration
     if (version === undefined) {
@@ -53,15 +41,12 @@ export class DbService {
         }
 
         const newOrg: OrgModel = {
-          profiles: org.profiles.map(prof => {
-            const copy: ProfileModel = {
-              name: prof.name,
-              login: prof.login,
-              pwd: prof.pwd,
-              loginType: prof.loginType ?? LoginType.standard
-            };
-            return copy;
-          }),
+          profiles: org.profiles.map(prof => ({
+            name: prof.name,
+            login: prof.login,
+            pwd: prof.pwd,
+            loginType: prof.loginType ?? LoginType.standard
+          })),
 
           id: (org.id === null || org.id === undefined) ? Guid.create().toString() : org.id,
           description: org.description,
@@ -81,7 +66,7 @@ export class DbService {
   }
 
   save(orgs: OrgModel[]): void {
-    this.db.set('version', 2).write();
-    this.db.set('orgs', orgs).write();
+    this.ipc.sendSync('db:write', orgs, 'db.json', 'orgs');
+    this.ipc.sendSync('db:write', 2, 'db.json', 'version');
   }
 }

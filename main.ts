@@ -8,6 +8,15 @@ let win: BrowserWindow | null = null;
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
+const osBridge = OsFactory.create();
+ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
+ipcMain.on('launch', (event, arg) => osBridge.launchRaw(arg));
+ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
+ipcMain.on('db:read', (event, ...arg) => event.returnValue = osBridge.readDb(arg[0], arg[1]));
+ipcMain.on('db:write', (event, ...arg) => event.returnValue = osBridge.writeDb(arg[0], arg[1], arg[2]));
+ipcMain.on('file:read', (event, ...arg) => event.returnValue = osBridge.readFile(arg[0]));
+ipcMain.on('file:write', (event, ...arg) => osBridge.writeFile(arg[0], arg[1]));
+
 function createWindow(): BrowserWindow {
 
   const electronScreen = screen;
@@ -22,7 +31,8 @@ function createWindow(): BrowserWindow {
     height: size.height,
     title: 'demos launcher',
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
+      preload: `${__dirname}/preload.js`,
       allowRunningInsecureContent: (serve) ? true : false,
       contextIsolation: false  // false if you want to run 2e2 test with Spectron
     },
@@ -52,7 +62,6 @@ function createWindow(): BrowserWindow {
 }
 
 try {
-  const osBridge = OsFactory.create();
 
   const dockMenu = Menu.buildFromTemplate([
     {
@@ -63,11 +72,6 @@ try {
 
   // Menu.setApplicationMenu(menu);
   // app.dock.setMenu(dockMenu);
-
-  ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
-  ipcMain.on('launch', (event, arg) => osBridge.launchRaw(arg));
-  ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
-
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.

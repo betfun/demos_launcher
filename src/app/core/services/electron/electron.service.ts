@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { IpcRenderer } from 'electron';
-import * as fs from 'fs';
 import { Config, SupportedBrowsers } from '../../../store/config/model';
 import { LoginType, OrgExtensions, OrgsStateModel, OrgModel, ProfileModel } from '../../../store/orgs/model';
 import { SalesforceService } from '../sfdc/salesforce.service';
@@ -20,11 +19,9 @@ const sleep = (waitTimeInMs: number) =>
 })
 export class ElectronService {
   private ipc: IpcRenderer;
-  private fs: typeof fs;
 
   constructor(private store: Store, private sf: SalesforceService) {
-    this.ipc = (window as any).require('electron').ipcRenderer;
-    this.fs = window.require('fs');
+    this.ipc = window.ipc;
   }
 
   launch(org: string, opts: LaunchOptions): void {
@@ -59,7 +56,7 @@ export class ElectronService {
       opts.profile.loginType !== LoginType.standard.toString() &&
       opts.profile.loginType !== LoginType.none.toString();
 
-    const login =  isNonStandardLogin ? admin.login : opts.profile.login;
+    const login = isNonStandardLogin ? admin.login : opts.profile.login;
     const pwd = isNonStandardLogin ? admin.pwd : opts.profile.pwd;
     const site = isNonStandardLogin ? `&siteuser=${siteUser}&site=${opts.profile.loginType}` : '';
 
@@ -105,14 +102,14 @@ export class ElectronService {
 
     const config = this.localConfig(org.name);
 
-    if (hard) {
-      const dir = `${config.base}/${config.name}`;
+    // if (hard) {
+    //   const dir = `${config.base}/${config.name}`;
 
-      try {
-        this.fs.rmdirSync(dir, { recursive: true });
-      }
-      catch { }
-    }
+    //   try {
+    //     this.fs.rmdirSync(dir, { recursive: true });
+    //   }
+    //   catch { }
+    // }
 
     // Install first Chrome profile (Admin)
     const adminProfile: ProfileModel = OrgExtensions.getAdminUser(org);
@@ -129,7 +126,7 @@ export class ElectronService {
     const fn = `${config.base}/${config.name}/Chrome/Local State`;
 
     try {
-      const obj = JSON.parse(this.fs.readFileSync(fn, 'utf8'));
+      const obj = this.ipc.sendSync('file:read', fn);
       const infoCache = obj.profile.info_cache;
 
       const referenceProfile = infoCache[adminProfile.name];
@@ -146,7 +143,7 @@ export class ElectronService {
 
       await sleep(3000);
 
-      this.fs.writeFileSync(fn, JSON.stringify(obj), 'utf8');
+      this.ipc.send('file:write', obj, fn);
     } catch (err) {
       console.log(err);
     }

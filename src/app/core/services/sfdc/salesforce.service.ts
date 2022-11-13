@@ -1,32 +1,30 @@
 import { Injectable } from '@angular/core';
-import * as jsforce from 'jsforce';
 import { ProfileModel } from '../../../store/orgs/model';
-// const { PassThrough } = require("stream");
+import jsforce, { Connection } from 'jsforce';
 
 export class SalesforceConnection {
 
   connected: boolean;
   userInfo: { name: string } = null;
 
-  private connection: jsforce.Connection;
+  private connection: Connection;
   private admin: ProfileModel;
   private jsforce: typeof jsforce;
 
   constructor(adminProfile: ProfileModel) {
-    this.jsforce = window.require('jsforce');
+    this.jsforce = window.jsForce;
     this.admin = adminProfile;
   }
 
   async connect(): Promise<void> {
     this.connection = new this.jsforce.Connection({});
-
     try {
       const userInfo = await this.connection.login(this.admin.login, this.admin.pwd);
 
       this.connected = true;
 
       const res = await this.connection.identity();
-      this.userInfo = { name: res.display_name};
+      this.userInfo = { name: res.display_name };
     }
     catch {
       this.userInfo = null;
@@ -43,18 +41,13 @@ export class SalesforceConnection {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       { Key_User__c: true } : {};
 
-    return this.connection
+    const records = await this.connection
       .sobject('User')
       .find(
       // conditions in JSON object
       // conditions
-    )
-      .execute({}, (err, records) => {
-        if (err) {
-          return console.error(err);
-        }
-        return records;
-      });
+    );
+    return records;
   }
 
   async getCommunities(): Promise<any> {
@@ -68,13 +61,8 @@ export class SalesforceConnection {
   providedIn: 'root',
 })
 export class SalesforceService {
-  jsforce: typeof jsforce;
 
-  constructor() {
-    this.jsforce = window.require('jsforce');
-  }
-
-  async connection(adminProfile: ProfileModel): Promise<SalesforceConnection>  {
+  async connection(adminProfile: ProfileModel): Promise<SalesforceConnection> {
     const sfConnection = new SalesforceConnection(adminProfile);
     await sfConnection.connect();
 
@@ -87,42 +75,5 @@ export class SalesforceService {
 
   //   return await conn.sobject('Domain').find().execute()
   //     .then((domain: any[]) => domain[0].Domain);
-  // }
-
-  // async getCommunities(adminProfile: profile_model): Promise<any> {
-  //   const conn = new this.jsforce.Connection({});
-  //   await conn.login(adminProfile.login, adminProfile.pwd);
-
-  //   return conn.sobject('Network')
-  //     .find()
-  //     .execute();
-  // }
-
-  // async getDbUsers(adminProfile: profile_model): Promise<any> {
-
-  //   const c = new SalesforceConnection(adminProfile);
-  //   await c.connect();
-
-  //   const conn = new this.jsforce.Connection({});
-  //   await conn.login(adminProfile.login, adminProfile.pwd);
-
-  //   const md = (await conn.metadata.read('CustomObject', ['User'])) as any;
-
-  //   const conditions = md.fields.some(x => x.fullName === 'Key_User__c') ?
-  //     // eslint-disable-next-line @typescript-eslint/naming-convention
-  //     { Key_User__c: true } : {};
-
-  //   return conn
-  //     .sobject('User')
-  //     .find(
-  //     // conditions in JSON object
-  //     // conditions
-  //   )
-  //     .execute({}, function (err, records) {
-  //       if (err) {
-  //         return console.error(err);
-  //       }
-  //       return records;
-  //     });
   // }
 }

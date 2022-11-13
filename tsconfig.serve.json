@@ -18,6 +18,7 @@
   },
   "files": [
     "main.ts",
+    "preload.ts",
     "src/os/OsFactory.ts",
     "src/os/OsMechanics.ts",
     "src/os/MacOsMechanics.ts"
