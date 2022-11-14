@@ -1,5 +1,5 @@
-window.ipc = require('electron').ipcRenderer;
-window.fs = require('fs');
-window.jsForce = require('jsForce');
+(window as any).ipc = require('electron').ipcRenderer;
+(window as any).fs = require('fs');
+(window as any).jsForce = require('jsForce');
 
 console.log('**** Preload ****');
