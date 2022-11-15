@@ -131,8 +131,10 @@ export class OrgSetupComponent implements OnInit {
       loginType: LoginType.standard
     };
 
+    console.log('Init Connection');
     const conn = await this.sf.connection(admin);
 
+    console.log('Connection Established');
     if (conn.connected) {
       this.user = conn.userInfo.name;
 
@@ -144,14 +146,14 @@ export class OrgSetupComponent implements OnInit {
         this.sfUsers = [...sfUsers];
       });
 
-      conn.getCommunities().then(comms => {
+      await conn.getCommunities().then(comms => {
         const extracomms = comms
           .map(site => ({ name: site.Name, url: site.UrlPathPrefix }))
           .sort((a: any, b: any) => a.name.localeCompare(b));
 
         this.comms = [{ name: LoginType.standard, url: LoginType.standard }, { name: LoginType.none, url: LoginType.none }, ...extracomms];
-        console.log(this.comms);
       });
+
       this.connection = 'Connected';
     }
     else {

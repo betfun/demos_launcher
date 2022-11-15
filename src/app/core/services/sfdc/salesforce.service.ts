@@ -35,18 +35,9 @@ export class SalesforceConnection {
 
   async getDbUsers(): Promise<any> {
 
-    const md = (await this.connection.metadata.read('CustomObject', ['User'])) as any;
-
-    const conditions = md.fields.some(x => x.fullName === 'Key_User__c') ?
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      { Key_User__c: true } : {};
-
-    const records = await this.connection
+    const records = this.connection
       .sobject('User')
-      .find(
-      // conditions in JSON object
-      // conditions
-    );
+      .find();
     return records;
   }
 
