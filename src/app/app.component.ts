@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { GetConfig, SaveConfig } from './store/config/actions';
@@ -16,6 +16,7 @@ import { IpcRenderer } from 'electron';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
 
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.store.dispatch(new GetConfig());
-    this.ipc = window.require('electron').ipcRenderer;
+    this.ipc = window.ipc;
   }
 
   ngOnInit(): void {
@@ -96,8 +97,8 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < newParts.length; i++) {
       const a = ~~newParts[i]; // parse int
       const b = ~~oldParts[i]; // parse int
-      if (a > b) {return true;}
-      if (a < b) {return false;}
+      if (a > b) { return true; }
+      if (a < b) { return false; }
     }
     return false;
   }

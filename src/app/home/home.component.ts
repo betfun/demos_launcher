@@ -19,7 +19,6 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Store } from '@ngxs/store';
 import { OrgDelete, OrgsReorder } from '../store/orgs/actions';
 import { OrgModel, ProfileModel } from '../store/orgs/model';
-import { Router } from '@angular/router';
 import { OrgKillChrome, OrgLaunchChrome } from '../store/chrome/actions';
 import { ConfirmDialogOptions, ConfirmDialogService } from '../core/componentes/confirm-dialog/confirm-dialog.service';
 
@@ -43,7 +42,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
   expandedElement: any | null;
 
   constructor(
-    private router: Router,
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
     private clipboard: Clipboard,
@@ -90,10 +88,6 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
   kill(element: OrgModel): void {
     this.store.dispatch(new OrgKillChrome(element));
-  }
-
-  editOrg(org): void {
-    this.router.navigate(['/edit', org.id]);
   }
 
   share(org): void {

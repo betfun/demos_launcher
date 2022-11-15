@@ -3,109 +3,120 @@
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
 </mat-form-field>
 
-<div class="mat-elevation-z8 scrollable" cdkScrollable>
-  <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width"
-    [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" cdkDropList>
+<div>
+  <div layout="row" align="end" style="margin-bottom: -20px; padding-right: 24px; z-index: 100000;
+  position: sticky! important;">
+    <button mat-mini-fab [routerLink]="'/new'">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="mat-elevation-z8 scrollable" cdkScrollable>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <mat-icon class="dragging" cdkDragHandle>reorder</mat-icon>
-      </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
+    <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width"
+      [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" cdkDropList>
 
-    <ng-container matColumnDef="id" class="mat-column-name">
-      <th mat-header-cell *matHeaderCellDef hidden>Ids</th>
-      <td mat-cell *matCellDef="let element" hidden>{{ element.id }}</td>
-      <td mat-footer-cell *matFooterCellDef hidden></td>
-    </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon class="dragging" cdkDragHandle>reorder</mat-icon>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
 
-    <ng-container matColumnDef="name" class="mat-column-name">
-      <th mat-header-cell *matHeaderCellDef>Names</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      <td mat-footer-cell *matFooterCellDef>Total: {{dataSource.data.length}} environments</td>
-    </ng-container>
+      <ng-container matColumnDef="id" class="mat-column-name">
+        <th mat-header-cell *matHeaderCellDef hidden>Ids</th>
+        <td mat-cell *matCellDef="let element" hidden>{{ element.id }}</td>
+        <td mat-footer-cell *matFooterCellDef hidden></td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td class="th-right" mat-cell *matCellDef="let element">
-        <!-- Launch button -->
-        <button mat-icon-button (click)="launch(element)" matTooltip="Launch default user (Admin)">
-          <mat-icon>launch</mat-icon>
-        </button>
-        <button [disabled]="element.profiles.length === 0" mat-icon-button
-          (click)="expandedElement = expandedElement === element ? null : element">
-          <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
+      <ng-container matColumnDef="name" class="mat-column-name">
+        <th mat-header-cell *matHeaderCellDef>Names</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td mat-footer-cell *matFooterCellDef>Total: {{dataSource.data.length}} environments</td>
+      </ng-container>
 
-          <ng-template #elseTemplateName>
-            <mat-icon>expand_more</mat-icon>
-          </ng-template>
-        </button>
+      <ng-container matColumnDef="actions">
+        <th class="th-right" mat-header-cell *matHeaderCellDef></th>
+        <td class="th-right" mat-cell *matCellDef="let element">
+          <!-- Launch button -->
+          <button mat-icon-button (click)="launch(element)" matTooltip="Launch default user (Admin)">
+            <mat-icon>launch</mat-icon>
+          </button>
+          <button [disabled]="element.profiles.length === 0" mat-icon-button
+            (click)="expandedElement = expandedElement === element ? null : element">
+            <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
 
-        <!-- Separator -->
-        <!-- <span class="separator fx-spacer"><span>&#124;</span></span> -->
+            <ng-template #elseTemplateName>
+              <mat-icon>expand_more</mat-icon>
+            </ng-template>
+          </button>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <!-- <button mat-icon-button (click)="copyProfile(profile)" matTooltip='Copy credential to clipboard'>
+          <!-- Separator -->
+          <!-- <span class="separator fx-spacer"><span>&#124;</span></span> -->
+
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <!-- <button mat-icon-button (click)="copyProfile(profile)" matTooltip='Copy credential to clipboard'>
             <mat-icon>
               content_copy
             </mat-icon>
           </button> -->
-          <button (click)="share(element)" mat-menu-item>
-            <mat-icon color="primary">share</mat-icon>
-            <span>Share</span>
-          </button>
-          <button mat-menu-item (click)="editOrg(element)">
-            <mat-icon color="primary">edit</mat-icon>
-            <span>Edit org</span>
-          </button>
-          <mat-divider [inset]="false"></mat-divider>
-          <button mat-menu-item (click)="kill(element)">
-            <mat-icon color="warn">eject</mat-icon>
-            <span>Kill browser</span>
-          </button>
-          <button mat-menu-item (click)="deleteOrg(element)">
-            <mat-icon color="warn">delete</mat-icon>
-            <span>Delete org</span>
-          </button>
-        </mat-menu>
-      </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
+            <button (click)="share(element)" mat-menu-item>
+              <mat-icon color="primary">share</mat-icon>
+              <span>Share</span>
+            </button>
+            <!-- <button mat-menu-item (click)="editOrg(element)"> -->
+            <a mat-menu-item [routerLink]="['/edit', element.id]">
+              <mat-icon color="primary">edit</mat-icon>
+              <span>Edit org</span>
+            </a>
+            <!-- </button> -->
+            <mat-divider [inset]="false"></mat-divider>
+            <button mat-menu-item (click)="kill(element)">
+              <mat-icon color="warn">eject</mat-icon>
+              <span>Kill browser</span>
+            </button>
+            <button mat-menu-item (click)="deleteOrg(element)">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Delete org</span>
+            </button>
+          </mat-menu>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-        <div class="example-element-detail" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
-          <mat-list role="list" dense>
-            <mat-list-item *ngFor="let profile of element.profiles; last as isLast">
-              <mat-icon class="line_icon" matListAvatar aria-hidden="false" aria-label="Example home icon">person
-              </mat-icon>
-              <h2 matLine>{{ profile.name }}</h2>
-              <button mat-icon-button (click)="launchProfile(element, profile);">
-                <mat-icon>
-                  launch
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+          <div class="example-element-detail" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+            <mat-list role="list" dense>
+              <mat-list-item *ngFor="let profile of element.profiles; last as isLast">
+                <mat-icon class="line_icon" matListAvatar aria-hidden="false" aria-label="Example home icon">person
                 </mat-icon>
-              </button>
+                <h2 matLine>{{ profile.name }}</h2>
+                <button mat-icon-button (click)="launchProfile(element, profile);">
+                  <mat-icon>
+                    launch
+                  </mat-icon>
+                </button>
 
-              <mat-divider *ngIf="!isLast"></mat-divider>
-            </mat-list-item>
-          </mat-list>
-        </div>
-      </td>
-    </ng-container>
+                <mat-divider *ngIf="!isLast"></mat-divider>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row  cdkdrag-box" cdkDrag
-      [cdkDragData]=element></tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row cdkdrag-box" cdkDrag
+        [cdkDragData]=element></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+    </table>
 
-  <!-- <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+    <!-- <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+  </div>
 </div>
