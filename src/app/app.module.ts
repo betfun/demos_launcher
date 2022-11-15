@@ -36,6 +36,9 @@ import { ConfigComponent } from './config/config.component';
 import { OrgSetupComponent } from './org-setup/org-setup.component';
 import { ProfileLineComponent } from './org-setup/profile-line/profile-line.component';
 import { TasksState } from './store/chrome/state';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -43,6 +46,17 @@ const routes: Routes = [
   { path: 'new', component: OrgSetupComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyD5M1Zg5d4s1QHbFGFQGhJNlVIot41b7M8',
+  authDomain: 'demos-launcher.firebaseapp.com',
+  databaseURL: 'https://demos-launcher-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'demos-launcher',
+  storageBucket: 'demos-launcher.appspot.com',
+  messagingSenderId: '783594879691',
+  appId: '1:783594879691:web:dae3895efb964e0dd8394e'
+};
 
 @NgModule({
   declarations: [
@@ -80,7 +94,10 @@ const routes: Routes = [
     NgxSpinnerModule,
     NgxsModule.forRoot([ConfigState, OrgsState, TasksState]),
     NgxsLoggerPluginModule.forRoot(),
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'standard' } }
