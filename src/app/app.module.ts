@@ -39,11 +39,18 @@ import { TasksState } from './store/chrome/state';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo, AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
+import { LoginComponent } from './login/login.component';
+import { AuthState } from './store/auth/auth.state';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectAuthorizedToHome = () => redirectLoggedInTo(['home']);
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'edit/:id', component: OrgSetupComponent },
-  { path: 'new', component: OrgSetupComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedToLogin }},
+  { path: 'edit/:id', component: OrgSetupComponent, ...canActivate(redirectUnauthorizedToLogin) },
+  { path: 'new', component: OrgSetupComponent, ...canActivate(redirectUnauthorizedToLogin) },
+  { path: 'login', component: LoginComponent, ...canActivate(redirectAuthorizedToHome) },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
@@ -65,6 +72,7 @@ const firebaseConfig = {
     ConfigComponent,
     OrgSetupComponent,
     ProfileLineComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,7 +100,7 @@ const firebaseConfig = {
     DragDropModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    NgxsModule.forRoot([ConfigState, OrgsState, TasksState]),
+    NgxsModule.forRoot([ConfigState, OrgsState, TasksState, AuthState]),
     NgxsLoggerPluginModule.forRoot(),
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(firebaseConfig),

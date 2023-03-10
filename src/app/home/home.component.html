@@ -4,13 +4,13 @@
 </mat-form-field>
 
 <div>
-  <div layout="row" align="end" style="margin-bottom: -20px; padding-right: 24px; z-index: 100000;
+  <div layout="row" align="end" style="margin-bottom: -20px; padding-right: 24px; z-index: 101;
   position: sticky! important;">
-    <button mat-mini-fab [routerLink]="'/new'">
+    <button class="mat-elevation-z8" mat-mini-fab [routerLink]="'/new'">
       <mat-icon>add</mat-icon>
     </button>
   </div>
-  <div class="mat-elevation-z8 scrollable" cdkScrollable>
+  <div class="mat-elevation-z2 scrollable" cdkScrollable>
 
     <table #table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width"
       [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" cdkDropList>
@@ -43,6 +43,8 @@
           <button mat-icon-button (click)="launch(element)" matTooltip="Launch default user (Admin)">
             <mat-icon>launch</mat-icon>
           </button>
+
+          <!-- Profiles -->
           <button [disabled]="element.profiles.length === 0" mat-icon-button
             (click)="expandedElement = expandedElement === element ? null : element">
             <mat-icon *ngIf="expandedElement === element; else elseTemplateName">expand_less</mat-icon>
@@ -52,28 +54,18 @@
             </ng-template>
           </button>
 
-          <!-- Separator -->
-          <!-- <span class="separator fx-spacer"><span>&#124;</span></span> -->
-
           <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <!-- <button mat-icon-button (click)="copyProfile(profile)" matTooltip='Copy credential to clipboard'>
-            <mat-icon>
-              content_copy
-            </mat-icon>
-          </button> -->
             <button (click)="share(element)" mat-menu-item>
               <mat-icon color="primary">share</mat-icon>
               <span>Share</span>
             </button>
-            <!-- <button mat-menu-item (click)="editOrg(element)"> -->
             <a mat-menu-item [routerLink]="['/edit', element.id]">
               <mat-icon color="primary">edit</mat-icon>
               <span>Edit org</span>
             </a>
-            <!-- </button> -->
             <mat-divider [inset]="false"></mat-divider>
             <button mat-menu-item (click)="kill(element)">
               <mat-icon color="warn">eject</mat-icon>
@@ -116,7 +108,5 @@
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
       <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
     </table>
-
-    <!-- <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
   </div>
 </div>

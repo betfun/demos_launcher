@@ -40,8 +40,8 @@ function createWindow(): BrowserWindow {
 
   if (serve) {
     win.webContents.openDevTools();
+    // win.loadURL('https://demos-launcher-web.azurewebsites.net/');
     win.loadURL('http://localhost:4200');
-
   } else {
     win.loadURL(url.format({
       pathname: path.join(__dirname, 'dist/index.html'),

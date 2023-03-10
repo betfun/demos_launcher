@@ -85,15 +85,27 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     });
   }
 
-
   kill(element: OrgModel): void {
     this.store.dispatch(new OrgKillChrome(element));
   }
 
-  share(org): void {
+  share(org: OrgModel): void {
+
+    let clip = '';
+    clip += 'Administrator:\n';
+    clip += `${org.administrator.login}\n`;
+    clip += `${org.administrator.pwd}\n`;
+    clip += `\n`;
+
+    org.profiles.forEach(profile => {
+      clip += `${profile.name}\n`;
+      clip += `${profile.login}\n`;
+      clip += `${profile.pwd}\n\n`;
+    });
+
     let copy = JSON.stringify(org);
     copy = copy.replace(/[\[\]\{\}]+/g, '');
-    this.clipboard.copy(copy);
+    this.clipboard.copy(clip);
   }
 
   applyFilter(event: Event): void {

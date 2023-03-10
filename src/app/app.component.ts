@@ -1,28 +1,33 @@
 /* eslint-disable no-bitwise */
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { GetConfig, SaveConfig } from './store/config/actions';
 import { ConfigComponent } from './config/config.component';
 import { Config } from '../app/store/config/model';
-import { OrgsLoadAll } from './store/orgs/actions';
+import { OrgsLoadAll, OrgsMigration } from './store/orgs/actions';
 import { NgxSpinnerService } from 'ngx-spinner';
-import packageInfo from '../../package.json';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IpcRenderer } from 'electron';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import packageInfo from '../../package.json';
+import { AuthStateModel } from './store/auth/auth.model';
+import { Logout } from './store/auth/auth.actions';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
 
   public version = packageInfo.version;
 
   public spinnerMessage = '';
+  public user$: Observable<AuthStateModel> | undefined;
 
   private ipc: IpcRenderer;
 
@@ -31,17 +36,26 @@ export class AppComponent implements OnInit {
   private readonly scUrl = 'https://solutionscentral.io/posts/5de95f70-72e7-11ec-9e6d-f1bf609be4ef/managing-personas-for-demos/';
 
   constructor(
+    private router: Router,
     private spinner: NgxSpinnerService,
     private snackBar: MatSnackBar,
     private store: Store,
     private http: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {
     this.store.dispatch(new GetConfig());
     this.ipc = window.ipc;
   }
 
   ngOnInit(): void {
+    this.user$ = this.store.select<AuthStateModel>(state => state.auth);
+
+    this.user$.subscribe(user => {
+      if (!user) {
+        this.router.navigate(['/login']);
+      }
+    });
+
     this.store.select(state => state.tasks.loadingMessage).subscribe(loadingMessage => {
       this.spinnerMessage = loadingMessage;
       if (loadingMessage !== '') {
@@ -52,8 +66,6 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.store.dispatch(new OrgsLoadAll());
-
     this.http.get(this.apiUrl).subscribe(result => {
 
       const latestVersion = result[0];
@@ -62,6 +74,14 @@ export class AppComponent implements OnInit {
         this.snackBar.open('New release available', 'OK');
       }
     });
+  }
+
+  logout() {
+    this.store.dispatch(new Logout());
+  }
+
+  migrate() {
+    this.store.dispatch(new OrgsMigration());
   }
 
   openConfig(): void {

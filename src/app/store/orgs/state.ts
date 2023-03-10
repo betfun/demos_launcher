@@ -1,9 +1,13 @@
-import { State, Action, StateContext } from '@ngxs/store';
-import { OrgDelete, OrgSave, OrgsLoadAll, OrgsReorder } from './actions';
+import { State, Action, StateContext, Store, NgxsOnInit, NgxsOnChanges, NgxsSimpleChange, NgxsExecutionStrategy } from '@ngxs/store';
+import { OrgDelete, OrgSave, OrgsLoadAll, OrgsMigration, OrgsReorder, OrgsUnload } from './actions';
 import { OrgsStateModel, OrgModel, ProfileModel } from './model';
 import { DbService, ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthState } from '../auth/auth.state';
+import firebase from 'firebase/compat';
 
 @State<OrgsStateModel>({
   name: 'orgs',
@@ -14,25 +18,48 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
   }
 })
 @Injectable({ providedIn: 'root' })
-export class OrgsState {
+export class OrgsState implements NgxsOnInit {
 
-  constructor(private service: ElectronService, private db: DbService) { }
+  constructor(private fire: AngularFirestore, private db: DbService, private store: Store) {
+    this.store.select<OrgsStateModel>(state => state.orgs).subscribe(state => {
+      const userId = this.store.selectSnapshot(AuthState.userId);
+
+      if(state && userId) {
+        this.fire.collection('Users').doc(userId).update({ orgs: state.orgs });
+      }
+    });
+  }
+
+  @Action(OrgsMigration)
+  migrate(ctx: StateContext<OrgsStateModel>): void {
+
+    const oldOrgs = this.db.getOrgs();
+
+    ctx.setState(patch({ orgs: oldOrgs }));
+  }
+
+  @Action(OrgsUnload)
+  public unloadAll(ctx: StateContext<OrgsStateModel>): void {
+    ctx.setState(patch({ orgs: [] as OrgModel[] }));
+  }
 
   @Action(OrgsLoadAll)
-  getOrgs(ctx: StateContext<OrgsStateModel>): any {
-    let orgs = this.db.getOrgs();
+  loadAll(ctx: StateContext<OrgsStateModel>, { }: OrgsLoadAll): void {
 
-    if (orgs === undefined || !Array.isArray(orgs)) {
-      orgs = [];
+    const userId = this.store.selectSnapshot(AuthState.userId);
+
+    if (userId === undefined) {
+      ctx.setState(patch({ orgs: [] as OrgModel[] }));
     }
-
-    ctx.setState(patch({
-      orgs
-    }));
+    else {
+      this.fire.collection('Users').doc<{ orgs: OrgModel[] }>(userId).get().subscribe(l => {
+        ctx.setState(patch({ orgs: l.data().orgs }));
+      });
+    }
   }
 
   @Action(OrgSave)
-  public save(ctx: StateContext<OrgsStateModel>, { payload }: OrgSave): void {
+  save(ctx: StateContext<OrgsStateModel>, { payload }: OrgSave): void {
 
     const stateModel = ctx.getState();
 
@@ -41,27 +68,27 @@ export class OrgsState {
     ctx.setState((idx === -1) ?
       patch({ orgs: insertItem<OrgModel>(payload) }) :
       patch({ orgs: updateItem<OrgModel>(o => o.id === payload.id, payload) }));
-
-    this.db.save(ctx.getState().orgs);
   }
 
   @Action(OrgDelete)
-  public delete(ctx: StateContext<OrgsStateModel>, { name }: OrgDelete): void {
+  delete(ctx: StateContext<OrgsStateModel>, { name }: OrgDelete): void {
 
     ctx.setState(patch<OrgsStateModel>({
       orgs: removeItem<OrgModel>((org) => org.name === name)
     }));
-
-    this.db.save(ctx.getState().orgs);
   }
 
   @Action(OrgsReorder)
-  public reorder(ctx: StateContext<OrgsStateModel>, { updatedList }: OrgsReorder): void {
-    // const stateModel = ctx.getState();
+  reorder(ctx: StateContext<OrgsStateModel>, { updatedList }: OrgsReorder): void {
     ctx.setState(patch<OrgsStateModel>({
       orgs: updatedList
     }));
+  }
 
-    this.db.save(ctx.getState().orgs);
+  ngxsOnInit(ctx?: StateContext<OrgsStateModel>) {
+    this.store.select(AuthState.userId).subscribe(userId => {
+      const action = userId ? new OrgsLoadAll() : new OrgsUnload();
+      ctx.dispatch(action);
+    });
   }
 }

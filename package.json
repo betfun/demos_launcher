@@ -41,6 +41,7 @@
     "lint": "ng lint"
   },
   "dependencies": {
+    "@angular/fire": "7.4.1",
     "guid-typescript": "1.0.9",
     "jsforce": "1.11.0",
     "lowdb": "1.0.0",
