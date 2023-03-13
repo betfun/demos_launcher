@@ -1,4 +1,4 @@
-import { State, Action, StateContext, Store, NgxsOnInit, NgxsOnChanges, NgxsSimpleChange, NgxsExecutionStrategy } from '@ngxs/store';
+import { State, Action, StateContext, Store, NgxsOnInit, NgxsOnChanges, NgxsSimpleChange, NgxsExecutionStrategy, Actions, ofActionSuccessful, ActionType } from '@ngxs/store';
 import { OrgDelete, OrgSave, OrgsLoadAll, OrgsMigration, OrgsReorder, OrgsUnload } from './actions';
 import { OrgsStateModel, OrgModel, ProfileModel } from './model';
 import { DbService, ElectronService } from '../../core/services';
@@ -20,22 +20,14 @@ import firebase from 'firebase/compat';
 @Injectable({ providedIn: 'root' })
 export class OrgsState implements NgxsOnInit {
 
-  constructor(private fire: AngularFirestore, private db: DbService, private store: Store) {
-    this.store.select<OrgsStateModel>(state => state.orgs).subscribe(state => {
-      const userId = this.store.selectSnapshot(AuthState.userId);
-
-      if(state && userId) {
-        this.fire.collection('Users').doc(userId).update({ orgs: state.orgs });
-      }
-    });
-  }
+  constructor(private fire: AngularFirestore, private store: Store, private actions$: Actions) { }
 
   @Action(OrgsMigration)
-  migrate(ctx: StateContext<OrgsStateModel>): void {
+  migrate({ setState }: StateContext<OrgsStateModel>): void {
 
-    const oldOrgs = this.db.getOrgs();
+    const oldOrgs = DbService.getOrgs();
 
-    ctx.setState(patch({ orgs: oldOrgs }));
+    setState(patch({ orgs: oldOrgs }));
   }
 
   @Action(OrgsUnload)
@@ -90,5 +82,13 @@ export class OrgsState implements NgxsOnInit {
       const action = userId ? new OrgsLoadAll() : new OrgsUnload();
       ctx.dispatch(action);
     });
+
+    const syncedTypes: ActionType[] = [OrgDelete, OrgsMigration, OrgSave];
+    this.actions$
+      .pipe(ofActionSuccessful(...syncedTypes))
+      .subscribe(_ => {
+        const userId = this.store.selectSnapshot(AuthState.userId);
+        this.fire.collection('Users').doc(userId).update({ orgs: ctx.getState() });
+      });
   }
 }

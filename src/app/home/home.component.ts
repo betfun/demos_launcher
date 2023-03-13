@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(new OrgLaunchChrome(org, null));
   }
 
-  launchProfile(org, profile: ProfileModel): void {
+  launchProfile(org: OrgModel, profile: ProfileModel): void {
     this.store.dispatch(new OrgLaunchChrome(org, profile));
   }
 

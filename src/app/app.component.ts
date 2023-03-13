@@ -5,17 +5,16 @@ import { Store } from '@ngxs/store';
 import { GetConfig, SaveConfig } from './store/config/actions';
 import { ConfigComponent } from './config/config.component';
 import { Config } from '../app/store/config/model';
-import { OrgsLoadAll, OrgsMigration } from './store/orgs/actions';
+import { OrgsMigration } from './store/orgs/actions';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IpcRenderer } from 'electron';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import packageInfo from '../../package.json';
 import { AuthStateModel } from './store/auth/auth.model';
 import { Logout } from './store/auth/auth.actions';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import packageInfo from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -111,7 +110,7 @@ export class AppComponent implements OnInit {
     this.ipc.send('open_ext', [this.scUrl]);
   }
 
-  private isNewerVersion(oldVer, newVer): boolean {
+  private isNewerVersion(oldVer: string, newVer: string): boolean {
     const oldParts = oldVer.split('.');
     const newParts = newVer.split('.');
     for (let i = 0; i < newParts.length; i++) {
