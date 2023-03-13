@@ -1,13 +1,11 @@
-import { State, Action, StateContext, Store, NgxsOnInit, NgxsOnChanges, NgxsSimpleChange, NgxsExecutionStrategy, Actions, ofActionSuccessful, ActionType } from '@ngxs/store';
+import { State, Action, StateContext, Store, NgxsOnInit, Actions, ofActionSuccessful, ActionType } from '@ngxs/store';
 import { OrgDelete, OrgSave, OrgsLoadAll, OrgsMigration, OrgsReorder, OrgsUnload } from './actions';
-import { OrgsStateModel, OrgModel, ProfileModel } from './model';
-import { DbService, ElectronService } from '../../core/services';
+import { OrgsStateModel, OrgModel } from './model';
+import { DbService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthState } from '../auth/auth.state';
-import firebase from 'firebase/compat';
 
 @State<OrgsStateModel>({
   name: 'orgs',
