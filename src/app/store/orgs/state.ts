@@ -86,7 +86,8 @@ export class OrgsState implements NgxsOnInit {
       .pipe(ofActionSuccessful(...syncedTypes))
       .subscribe(_ => {
         const userId = this.store.selectSnapshot(AuthState.userId);
-        this.fire.collection('Users').doc(userId).update({ orgs: ctx.getState() });
+        const orgs = ctx.getState().orgs;
+        this.fire.collection('Users').doc(userId).set({ orgs });
       });
   }
 }
