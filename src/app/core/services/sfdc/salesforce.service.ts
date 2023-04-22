@@ -35,16 +35,22 @@ export class SalesforceConnection {
 
   async getDbUsers(): Promise<any> {
 
-    const records = this.connection
-      .sobject('User')
-      .find();
+    const records = (await this.connection.query('SELECT Id, Username, Name FROM User')).records;
+    // const records = await this.connection
+    //   .sobject('User')
+    //   .find();
+
+    console.log(records);
+
     return records;
   }
 
   async getCommunities(): Promise<any> {
-    return this.connection.sobject('Network')
-      .find()
-      .execute();
+
+    return (await this.connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')).records;
+    // return this.connection.sobject('Network')
+    //   .find()
+    //   .execute();
   }
 }
 
