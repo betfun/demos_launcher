@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Login, Logout } from './auth.actions';
 import firebase from 'firebase/compat/app';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { serverTimestamp } from 'firebase/firestore';
 
 @State<AuthStateModel>({
   name: 'auth',
@@ -35,10 +36,11 @@ export class AuthState implements NgxsOnInit {
 
   ngxsOnInit(ctx: StateContext<AuthStateModel>): void {
     this.auth.authState.subscribe(user => {
-      if(user) {
-        this.fb.collection('Users').doc(user.uid).update({
+      if (user) {
+        this.fb.collection('Auth').doc(user.uid).set({
           displayName: user.displayName,
           email: user.email,
+          timestamp: serverTimestamp()
         });
 
         ctx.setState({
@@ -46,7 +48,7 @@ export class AuthState implements NgxsOnInit {
           photoUrl: user?.photoURL
         });
       }
-      else{
+      else {
         ctx.setState(null);
       }
 
