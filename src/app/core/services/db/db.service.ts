@@ -18,7 +18,7 @@ export class DbService {
     const orgs: OrgModel[] = ipc.sendSync('db:read', fn, 'orgs');
     const version: string = ipc.sendSync('db:read', fn, 'version');
 
-    // Latest version
+    // Latest versiodow.ipc
     if (version !== undefined) {
       return orgs;
     }
