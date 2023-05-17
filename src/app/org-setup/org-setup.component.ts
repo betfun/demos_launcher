@@ -131,10 +131,8 @@ export class OrgSetupComponent implements OnInit {
       loginType: LoginType.standard
     };
 
-    console.log('Init Connection');
     const conn = await this.sf.connection(admin);
 
-    console.log('Connection Established');
     if (conn.connected) {
       this.user = conn.userInfo.name;
 
