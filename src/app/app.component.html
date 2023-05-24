@@ -3,16 +3,6 @@
   <mat-icon class="logo-icon">rocket_launch</mat-icon>
   <span>Demos Launcher - {{version}}</span>
   <div class="spacer"></div>
-  <div *ngIf="user$ | async as user">
-    <button mat-icon-button [matMenuTriggerFor]="menu" class="icon-button">
-      <mat-icon>
-      <img class="avatar" referrerPolicy="no-referrer" [src]="user.photoUrl"></mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="migrate()">Migrate from local DB</button>
-      <button mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
-  </div>
   <button mat-icon-button class="example-icon favorite-icon" (click)="openConfig()">
     <mat-icon>settings</mat-icon>
   </button>

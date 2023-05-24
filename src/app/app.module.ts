@@ -29,7 +29,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { HomeComponent } from './home/home.component';
 
 import { NgxsModule } from '@ngxs/store';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { ConfigState } from './store/config/state';
 import { OrgsState } from './store/orgs/state';
 import { ConfigComponent } from './config/config.component';
@@ -37,20 +36,14 @@ import { OrgSetupComponent } from './org-setup/org-setup.component';
 import { ProfileLineComponent } from './org-setup/profile-line/profile-line.component';
 import { TasksState } from './store/chrome/state';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo, AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
-import { LoginComponent } from './login/login.component';
 import { AuthState } from './store/auth/auth.state';
 
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-const redirectAuthorizedToHome = () => redirectLoggedInTo(['home']);
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent, canActivate: [AngularFireAuthGuard], data: {authGuardPipe: redirectUnauthorizedToLogin }},
-  { path: 'edit/:id', component: OrgSetupComponent, ...canActivate(redirectUnauthorizedToLogin) },
-  { path: 'new', component: OrgSetupComponent, ...canActivate(redirectUnauthorizedToLogin) },
-  { path: 'login', component: LoginComponent, ...canActivate(redirectAuthorizedToHome) },
+  { path: 'home', component: HomeComponent },
+  { path: 'edit/:id', component: OrgSetupComponent },
+  { path: 'new', component: OrgSetupComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
@@ -71,8 +64,7 @@ const firebaseConfig = {
     HomeComponent,
     ConfigComponent,
     OrgSetupComponent,
-    ProfileLineComponent,
-    LoginComponent,
+    ProfileLineComponent
   ],
   imports: [
     BrowserModule,
@@ -101,10 +93,8 @@ const firebaseConfig = {
     ReactiveFormsModule,
     NgxSpinnerModule,
     NgxsModule.forRoot([ConfigState, OrgsState, TasksState, AuthState]),
-    NgxsLoggerPluginModule.forRoot(),
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule,
     AngularFireDatabaseModule
   ],
   providers: [

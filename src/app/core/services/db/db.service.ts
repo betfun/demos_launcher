@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-// import * as lowdb from 'lowdb';
 import { LoginType, OrgModel, ProfileModel } from '../../../store/orgs/model';
 import { Guid } from 'guid-typescript';
-import { IpcRenderer } from 'electron';
 
 
 @Injectable({
@@ -54,5 +52,10 @@ export class DbService {
         domain: org.domain
       };
     });
+  }
+
+  public static save(orgs: OrgModel[]): void {
+    window.ipc.sendSync('db:write', orgs, 'db.json', 'orgs');
+    window.ipc.sendSync('db:write', 2, 'db.json', 'version');
   }
 }

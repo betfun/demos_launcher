@@ -79,16 +79,19 @@ export class ElectronService {
 
   delete(orgName: string) {
     const config = this.localConfig(orgName);
-    const command = `rm -rf ${config.base}/${config.name}`;
+    // const command = `rm -rf ${config.base}/${config.name}`;
 
-    this.ipc.send('launch', command);
+    const dir = `${config.base}/${config.name}`;
+
+    this.ipc.send('removeDir', dir);
+    // this.ipc.send('launch', command);
   }
 
   kill(org: string): void {
     const orgChrome = org.replace(/\s/g, '');
 
     try {
-      this.ipc.send('launch', `pkill -f '${orgChrome}'`);
+      this.ipc.sendSync('launch', `pkill -f '${orgChrome}'`);
     }
     catch (err) {
       // No need to take care of the error
@@ -96,54 +99,68 @@ export class ElectronService {
   }
 
   async install(org: OrgModel, hard: boolean = false): Promise<void> {
+
     this.kill(org.name);
 
     await sleep(2000);
 
     const config = this.localConfig(org.name);
 
-    // if (hard) {
-    //   const dir = `${config.base}/${config.name}`;
+    if (true) {
+      const dir = `${config.base}/${config.name}`;
 
-    //   try {
-    //     this.fs.rmdirSync(dir, { recursive: true });
-    //   }
-    //   catch { }
-    // }
-
-    // Install first Chrome profile (Admin)
-    const adminProfile: ProfileModel = OrgExtensions.getAdminUser(org);
-    this.launch(org.name, {
-      profile: adminProfile,
-      headless: false,
-      useHomepage: false
-    });
-
-    await sleep(5000);
-    this.kill(org.name);
-    await sleep(3000);
+      try {
+        this.ipc.sendSync('removeDir', dir);
+      }
+      catch { }
+    }
 
     const fn = `${config.base}/${config.name}/Chrome/Local State`;
 
+    // create file
+    /* eslint-disable @typescript-eslint/naming-convention */
+    const obj = {
+      profile: {
+        info_cache:
+        {
+          Admin:
+          {
+            active_time: 1684100630.045999,
+            avatar_icon: 'chrome://theme/IDR_PROFILE_AVATAR_26',
+            background_apps: false,
+            force_signin_profile_locked: false,
+            gaia_given_name: '',
+            gaia_id: '',
+            gaia_name: '',
+            hosted_domain: '',
+            is_consented_primary_account: false,
+            is_ephemeral: false,
+            is_using_default_avatar: true,
+            is_using_default_name: false,
+            managed_user_id: '',
+            metrics_bucket_index: 2,
+            name: 'Admin',
+            'signin.with_credential_provider': false,
+            user_name: ''
+          }
+        },
+      }
+    };
+
     try {
-      const obj = this.ipc.sendSync('file:read', fn);
       const infoCache = obj.profile.info_cache;
 
-      const referenceProfile = infoCache[adminProfile.name];
+      const referenceProfile = infoCache.Admin;
 
-      const newInfoCache = {};
-
-      for (const profile of [adminProfile, ...org.profiles]) {
-        newInfoCache[profile.name] = {};
-        Object.assign(newInfoCache[profile.name], referenceProfile);
-        newInfoCache[profile.name].name = profile.name;
+      for (const profile of [...org.profiles]) {
+        infoCache[profile.name] = {};
+        Object.assign(infoCache[profile.name], referenceProfile);
+        infoCache[profile.name].name = profile.name;
       }
 
-      obj.profile.info_cache = newInfoCache;
+      console.log(infoCache);
 
-      await sleep(3000);
-
-      this.ipc.send('file:write', obj, fn);
+      this.ipc.sendSync('file:write', obj, fn);
     } catch (err) {
       console.log(err);
     }

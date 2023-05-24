@@ -2,6 +2,9 @@ import { shell } from 'electron';
 import * as lowdb from 'lowdb';
 import * as fs from 'fs';
 import * as fileSync from 'lowdb/adapters/FileSync';
+import * as childProcess from 'child_process';
+import * as os from 'os';
+import * as path from 'path';
 
 export abstract class OsMechanics {
 
@@ -9,16 +12,29 @@ export abstract class OsMechanics {
     shell.openExternal(url);
   }
 
+  getUserName(): string {
+    return process.env.username ?? process.env.user ?? os?.userInfo?.()?.username;
+  }
+
   getUserDir(): string {
     return `${process.env.HOME}/.demos_launcher`;
   }
 
-  readFile(fn: string){
+  readFile(fn: string) {
     return JSON.parse(fs.readFileSync(fn, 'utf8'));
   }
 
-  writeFile(obj: any, fn: string){
-    fs.writeFileSync(fn, JSON.stringify(obj), 'utf8');
+  writeFile(obj: any, fn: string): boolean {
+    try {
+      const dir = path.dirname(fn);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(fn, JSON.stringify(obj), 'utf8');
+    }
+    catch {
+      return false;
+    }
+
+    return true;
   }
 
   writeDb(obj: any, fn: string, what: string): void {
@@ -46,6 +62,27 @@ export abstract class OsMechanics {
     return db.get(what).value();
   }
 
+  launchRaw(command: string): boolean {
+    try {
+      childProcess.execSync(command, { stdio: 'ignore' });
+    }
+    catch (err) {
+      return false;
+    }
+
+    return true;
+  }
+
+  deleteDir(dir: string): boolean {
+    try {
+      fs.rmdirSync(dir, { recursive: true });
+    }
+    catch (err) {
+      return false;
+    }
+
+    return true;
+  }
+
   abstract killall(): void;
-  abstract launchRaw(command: string): void;
 }

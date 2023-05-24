@@ -16,17 +16,7 @@ export class OrgsLoadAll {
   constructor() { }
 }
 
-export class OrgsMigration {
-  public static readonly type = '[Orgs] Migrate all';
-  constructor() { }
-}
-
 export class OrgDelete {
   public static readonly type = '[Orgs] Delete org';
   constructor(public name: string) { }
-}
-
-export class OrgsUnload {
-  public static readonly type = '[Orgs] Unload all';
-  constructor() { }
 }

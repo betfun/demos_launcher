@@ -1,11 +1,12 @@
 import { State, Action, StateContext, Store, NgxsOnInit, Actions, ofActionSuccessful, ActionType } from '@ngxs/store';
-import { OrgDelete, OrgSave, OrgsLoadAll, OrgsMigration, OrgsReorder, OrgsUnload } from './actions';
+import { OrgDelete, OrgSave, OrgsLoadAll, OrgsReorder } from './actions';
 import { OrgsStateModel, OrgModel } from './model';
 import { DbService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthState } from '../auth/auth.state';
+import { DbConfigService } from '../../core/services/db/config.service';
 
 @State<OrgsStateModel>({
   name: 'orgs',
@@ -20,32 +21,9 @@ export class OrgsState implements NgxsOnInit {
 
   constructor(private fire: AngularFirestore, private store: Store, private actions$: Actions) { }
 
-  @Action(OrgsMigration)
-  migrate({ setState }: StateContext<OrgsStateModel>): void {
-
-    const oldOrgs = DbService.getOrgs();
-
-    setState(patch({ orgs: oldOrgs }));
-  }
-
-  @Action(OrgsUnload)
-  public unloadAll(ctx: StateContext<OrgsStateModel>): void {
-    ctx.setState(patch({ orgs: [] as OrgModel[] }));
-  }
-
   @Action(OrgsLoadAll)
-  loadAll(ctx: StateContext<OrgsStateModel>, { }: OrgsLoadAll): void {
-
-    const userId = this.store.selectSnapshot(AuthState.userId);
-
-    if (userId === undefined) {
-      ctx.setState(patch({ orgs: [] as OrgModel[] }));
-    }
-    else {
-      this.fire.collection('Users').doc<{ orgs: OrgModel[] }>(userId).get().subscribe(l => {
-        ctx.setState(patch({ orgs: l.data().orgs }));
-      });
-    }
+  loadAll(ctx: StateContext<OrgsStateModel>): void {
+    ctx.setState(patch({ orgs: DbService.getOrgs() }));
   }
 
   @Action(OrgSave)
@@ -76,18 +54,15 @@ export class OrgsState implements NgxsOnInit {
   }
 
   ngxsOnInit(ctx?: StateContext<OrgsStateModel>) {
-    this.store.select(AuthState.userId).subscribe(userId => {
-      const action = userId ? new OrgsLoadAll() : new OrgsUnload();
-      ctx.dispatch(action);
-    });
+    this.loadAll(ctx);
 
-    const syncedTypes: ActionType[] = [OrgDelete, OrgsMigration, OrgSave];
+    const syncedTypes: ActionType[] = [OrgDelete, OrgSave];
     this.actions$
       .pipe(ofActionSuccessful(...syncedTypes))
       .subscribe(_ => {
-        const userId = this.store.selectSnapshot(AuthState.userId);
+        // const userId = this.store.selectSnapshot(AuthState.userId);
         const orgs = ctx.getState().orgs;
-        this.fire.collection('Users').doc(userId).set({ orgs });
+        DbService.save(orgs);
       });
   }
 }

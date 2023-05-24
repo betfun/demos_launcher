@@ -1,7 +1,7 @@
 import { State, Action, StateContext } from '@ngxs/store';
 import { OrgKillChrome, OrgLaunchChrome, OrgsInstallChrome } from './actions';
 import { TasksStateModel } from './model';
-import { DbService, ElectronService } from '../../core/services';
+import { ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { OrgDelete } from '../orgs/actions';
 
@@ -14,7 +14,7 @@ import { OrgDelete } from '../orgs/actions';
 @Injectable({ providedIn: 'root' })
 export class TasksState {
 
-  constructor(private service: ElectronService, private db: DbService) { }
+  constructor(private service: ElectronService) { }
 
   @Action(OrgLaunchChrome)
   public launch(ctx: StateContext<TasksStateModel>, { org, profile }: OrgLaunchChrome): void {

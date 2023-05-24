@@ -10,12 +10,14 @@ const serve = args.some(val => val === '--serve');
 
 const osBridge = OsFactory.create();
 ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
-ipcMain.on('launch', (event, arg) => osBridge.launchRaw(arg));
+ipcMain.on('launch', (event, arg) => event.returnValue = osBridge.launchRaw(arg));
 ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
+ipcMain.on('getUserInfo', (event) => event.returnValue = osBridge.getUserName());
 ipcMain.on('db:read', (event, ...arg) => event.returnValue = osBridge.readDb(arg[0], arg[1]));
 ipcMain.on('db:write', (event, ...arg) => event.returnValue = osBridge.writeDb(arg[0], arg[1], arg[2]));
 ipcMain.on('file:read', (event, ...arg) => event.returnValue = osBridge.readFile(arg[0]));
-ipcMain.on('file:write', (event, ...arg) => osBridge.writeFile(arg[0], arg[1]));
+ipcMain.on('file:write', (event, ...arg) => event.returnValue = osBridge.writeFile(arg[0], arg[1]));
+ipcMain.on('removeDir', (event, arg) => event.returnValue = osBridge.deleteDir(arg));
 
 function createWindow(): BrowserWindow {
 
