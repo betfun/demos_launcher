@@ -7,7 +7,7 @@ export class OrgsInstallChrome {
 
 export class OrgLaunchChrome {
   public static readonly type = '[Orgs] Launch Chrome';
-  constructor(public org: OrgModel, public profile: ProfileModel) { }
+  constructor(public org: OrgModel, public profile: ProfileModel | null) { }
 }
 
 export class OrgKillChrome {

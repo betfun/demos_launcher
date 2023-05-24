@@ -59,7 +59,8 @@ export class OrgSetupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.orgId = this.route.snapshot.paramMap.get('id');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.orgId = this.route.snapshot.paramMap.get('id')!;
 
     const org = this.store.selectSnapshot<OrgsStateModel>(state => state.orgs).orgs.find(o => o.id === this.orgId);
 
@@ -218,7 +219,7 @@ export class OrgSetupComponent implements OnInit {
         login: formValue.mainUser.login,
         pwd: formValue.mainUser.pwd
       },
-      profiles: formValue.profiles.map(formProfile => ({
+      profiles: formValue.profiles?.map(formProfile => ({
         name: formProfile.name,
         login: formProfile.login,
         pwd: formProfile.pwd,
