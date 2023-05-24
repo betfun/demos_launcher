@@ -33,10 +33,11 @@ function createWindow(): BrowserWindow {
     height: size.height,
     title: 'demos launcher',
     webPreferences: {
+      sandbox: false,
       nodeIntegration: false,
       preload: `${__dirname}/preload.js`,
       allowRunningInsecureContent: (serve) ? true : false,
-      contextIsolation: false  // false if you want to run 2e2 test with Spectron
+      contextIsolation: false  // false if you want to run 2e2 test with Spectron,
     },
   });
 
