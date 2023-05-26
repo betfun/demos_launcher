@@ -37,7 +37,7 @@ function createWindow(): BrowserWindow {
       nodeIntegration: false,
       preload: `${__dirname}/preload.js`,
       allowRunningInsecureContent: (serve) ? true : false,
-      contextIsolation: false  // false if you want to run 2e2 test with Spectron,
+      contextIsolation: true  // false if you want to run 2e2 test with Spectron,
     },
   });
 

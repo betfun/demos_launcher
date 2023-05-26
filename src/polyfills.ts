@@ -45,17 +45,30 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js'; // Included with Angular CLI.
+import 'zone.js';
+import { OrgModel } from './app/store/orgs/model';
+
 (window as any).global = window;
 
 declare global {
   interface Window {
-    fs: any;
-    os: any;
-    jsForce: any;
     ipc: any;
+    electron: {
+      config: {
+        load(): any;
+        save(payload: any): void;
+      };
+      database: {
+        load(): {version: string; orgs: OrgModel[] };
+        save(orgs: OrgModel[]): void;
+      };
+      salesforce: {
+        connect(login: string, pwd: string): any;
+      };
+    };
   }
 }
+
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */

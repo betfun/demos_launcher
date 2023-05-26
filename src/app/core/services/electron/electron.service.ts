@@ -3,7 +3,6 @@ import { Store } from '@ngxs/store';
 import { IpcRenderer } from 'electron';
 import { Config, SupportedBrowsers } from '../../../store/config/model';
 import { LoginType, OrgExtensions, OrgsStateModel, OrgModel, ProfileModel } from '../../../store/orgs/model';
-import { SalesforceService } from '../sfdc/salesforce.service';
 
 export interface LaunchOptions {
   profile: ProfileModel | null;
@@ -20,7 +19,7 @@ const sleep = (waitTimeInMs: number) =>
 export class ElectronService {
   private ipc: IpcRenderer;
 
-  constructor(private store: Store, private sf: SalesforceService) {
+  constructor(private store: Store) {
     this.ipc = window.ipc;
   }
 

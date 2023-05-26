@@ -5,7 +5,7 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
  * Custom angular webpack configuration
  */
 module.exports = (config, options) => {
-    config.target = 'electron-renderer';
+    config.target = 'web';
 
     if (options.fileReplacements) {
         for(let fileReplacement of options.fileReplacements) {
@@ -29,7 +29,7 @@ module.exports = (config, options) => {
     ];
 
     // https://github.com/ryanclark/karma-webpack/issues/497
-    config.output.globalObject = 'globalThis';
+    // config.output.globalObject = 'globalThis';
 
     return config;
 }

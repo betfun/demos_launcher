@@ -13,10 +13,10 @@ import { ConfirmDialogService } from '../core/componentes/confirm-dialog/confirm
 import { OrgsInstallChrome } from '../store/chrome/actions';
 
 type OrgFormGroup = FormGroup<{
-  name: FormControl<string | null>;
+  name: FormControl<string | undefined | null>;
   mainUser: FormGroup<{
-    login: FormControl<string | null>;
-    pwd: FormControl<string | null>;
+    login: FormControl<string | undefined | null>;
+    pwd: FormControl<string | undefined | null>;
   }>;
   profiles: FormArray<ProfileFormGroup>;
 }>;
@@ -133,27 +133,23 @@ export class OrgSetupComponent implements OnInit {
     };
 
     console.log('Init Connection');
-    const conn = await this.sf.connection(admin);
+    const conn = await this.sf.connect(admin);
 
     console.log('Connection Established');
     if (conn.connected) {
-      this.user = conn.userInfo.name;
+      this.user = conn.name;
 
-      await conn.getDbUsers().then(users => {
-        const sfUsers = users
-          .map(user => ({ name: user.Name, login: user.Username }))
-          .sort((a, b) => a.name.localeCompare(b.name));
+      const sfUsers = conn.users
+        .map(user => ({ name: user.Name, login: user.Username }))
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-        this.sfUsers = [...sfUsers];
-      });
+      this.sfUsers = [...sfUsers];
 
-      await conn.getCommunities().then(comms => {
-        const extracomms = comms
-          .map(site => ({ name: site.Name, url: site.UrlPathPrefix }))
-          .sort((a: any, b: any) => a.name.localeCompare(b));
+      const extracomms = conn.communities
+        .map(site => ({ name: site.Name, url: site.UrlPathPrefix }))
+        .sort((a: any, b: any) => a.name.localeCompare(b));
 
-        this.comms = [{ name: LoginType.standard, url: LoginType.standard }, { name: LoginType.none, url: LoginType.none }, ...extracomms];
-      });
+      this.comms = [{ name: LoginType.standard, url: LoginType.standard }, { name: LoginType.none, url: LoginType.none }, ...extracomms];
 
       this.connection = 'Connected';
     }

@@ -10,19 +10,21 @@ import { Config } from '../store/config/model';
 export class ConfigComponent implements OnInit {
   supportedBrowsers = ['chrome', 'chromium'];
 
-  configForm = this.fb.group({
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    browser: ['chrome', Validators.required],
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    pwd: ['', Validators.required],
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    useMiddleware: true
-  });
+  configForm: any;
 
   constructor(
-    private fb: FormBuilder,
+    fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: Config
-  ) { }
+  ) {
+    this.configForm = fb.group({
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      browser: ['chrome', Validators.required],
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      pwd: ['', Validators.required],
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      useMiddleware: true
+    });
+  }
 
   ngOnInit(): void {
     if (this.data !== undefined && this.data !== null) {

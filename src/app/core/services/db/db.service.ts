@@ -2,21 +2,15 @@ import { Injectable } from '@angular/core';
 import { LoginType, OrgModel, ProfileModel } from '../../../store/orgs/model';
 import { Guid } from 'guid-typescript';
 
-
 @Injectable({
   providedIn: 'root',
 })
 export class DbService {
 
   public static getOrgs(): OrgModel[] {
+    const {version, orgs} = window.electron.database.load();
 
-    const ipc = window.ipc;
-    const fn = `db.json`;
-
-    const orgs: OrgModel[] = ipc.sendSync('db:read', fn, 'orgs');
-    const version: string = ipc.sendSync('db:read', fn, 'version');
-
-    // Latest versiodow.ipc
+    // Version check
     if (version !== undefined) {
       return orgs;
     }
@@ -55,7 +49,6 @@ export class DbService {
   }
 
   public static save(orgs: OrgModel[]): void {
-    window.ipc.sendSync('db:write', orgs, 'db.json', 'orgs');
-    window.ipc.sendSync('db:write', 2, 'db.json', 'version');
+    window.electron.database.save(orgs);
   }
 }

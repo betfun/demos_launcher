@@ -14,10 +14,10 @@ export class DbConfigService {
   }
 
   get(): Config {
-    return this.ipc.sendSync('db:read', 'config.json', 'config');
+    return window.electron.config.load() as Config;
   }
 
   save(payload: Config): void {
-    this.ipc.sendSync('db:write', payload, 'config.json', 'config');
+    window.electron.config.save(payload);
   }
 }

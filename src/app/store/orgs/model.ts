@@ -21,10 +21,10 @@ export interface OrgModel {
 
 export class OrgExtensions
 {
-  static getAdminUser(org: OrgModel): ProfileModel {
+  static getAdminUser(org: OrgModel | undefined): ProfileModel {
     return {
-      login: org.administrator.login,
-      pwd: org.administrator.pwd,
+      login: org?.administrator?.login ?? '',
+      pwd: org?.administrator.pwd ?? '',
       name: 'Admin',
       loginType: LoginType.standard
     };

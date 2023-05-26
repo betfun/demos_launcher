@@ -1,12 +1,12 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 
 export type ProfileFormGroup = FormGroup<{
-  name: FormControl<string | null>;
-  login: FormControl<string | null>;
-  pwd: FormControl<string | null>;
-  loginType: FormControl<string | null>;
+  name: FormControl<string | undefined | null>;
+  login: FormControl<string | undefined | null>;
+  pwd: FormControl<string | undefined | null>;
+  loginType: FormControl<string | undefined | null>;
 }>;
 
 @Component({
