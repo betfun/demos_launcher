@@ -44,10 +44,8 @@
     "lint": "ng lint"
   },
   "dependencies": {
-    "guid-typescript": "1.0.9",
     "jsforce": "1.11.0",
-    "lowdb": "1.0.0",
-    "stream": "0.0.2"
+    "lowdb": "1.0.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "14.0.0",
@@ -94,6 +92,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsdoc": "39.3.3",
     "eslint-plugin-prefer-arrow": "1.2.3",
+    "guid-typescript": "1.0.9",
     "jasmine-core": "3.6.0",
     "jasmine-spec-reporter": "6.0.0",
     "karma": "~6.4.0",

@@ -1,7 +1,6 @@
 import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { AuthStateModel } from './auth.model';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { LogUserActivity } from './auth.actions';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { serverTimestamp } from 'firebase/firestore';
@@ -16,7 +15,7 @@ import { serverTimestamp } from 'firebase/firestore';
 @Injectable({ providedIn: 'root' })
 export class AuthState implements NgxsOnInit {
 
-  constructor(private fb: AngularFirestore, private auth: AngularFireAuth) { }
+  constructor(private fb: AngularFirestore) { }
 
   @Action(LogUserActivity)
   logUserActivity(ctx: StateContext<AuthStateModel>, { username, version }: LogUserActivity): void {
