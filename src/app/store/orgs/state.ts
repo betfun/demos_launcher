@@ -4,9 +4,6 @@ import { OrgsStateModel, OrgModel } from './model';
 import { DbService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AuthState } from '../auth/auth.state';
-import { DbConfigService } from '../../core/services/db/config.service';
 
 @State<OrgsStateModel>({
   name: 'orgs',
@@ -19,7 +16,7 @@ import { DbConfigService } from '../../core/services/db/config.service';
 @Injectable({ providedIn: 'root' })
 export class OrgsState implements NgxsOnInit {
 
-  constructor(private fire: AngularFirestore, private store: Store, private actions$: Actions) { }
+  constructor(private store: Store, private actions$: Actions) { }
 
   @Action(OrgsLoadAll)
   loadAll(ctx: StateContext<OrgsStateModel>): void {
@@ -39,10 +36,10 @@ export class OrgsState implements NgxsOnInit {
   }
 
   @Action(OrgDelete)
-  delete(ctx: StateContext<OrgsStateModel>, { name }: OrgDelete): void {
+  delete(ctx: StateContext<OrgsStateModel>, { org }: OrgDelete): void {
 
     ctx.setState(patch<OrgsStateModel>({
-      orgs: removeItem<OrgModel>((org) => org.name === name)
+      orgs: removeItem<OrgModel>((o) => o.id === org.id || o.name === org.name)
     }));
   }
 

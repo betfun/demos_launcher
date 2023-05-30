@@ -46,7 +46,8 @@
  * Zone JS is required by default for Angular itself.
  */
 import 'zone.js';
-import { OrgModel } from './app/store/orgs/model';
+import { OrgModel, ProfileModel } from './app/store/orgs/model';
+import { SupportedBrowsers } from './app/store/config/model';
 
 (window as any).global = window;
 
@@ -57,6 +58,10 @@ declare global {
       config: {
         load(): any;
         save(payload: any): void;
+      };
+      chrome: {
+        installed(dir: string): boolean;
+        launch(org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean): void;
       };
       database: {
         load(): {version: string; orgs: OrgModel[] };

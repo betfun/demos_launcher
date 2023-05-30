@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
     this.confirmDialog.open(opts).then(confirmed => {
       if (confirmed) {
-        this.store.dispatch(new OrgDelete(org.name));
+        this.store.dispatch(new OrgDelete(org));
       }
     });
   }

@@ -18,5 +18,5 @@ export class OrgsLoadAll {
 
 export class OrgDelete {
   public static readonly type = '[Orgs] Delete org';
-  constructor(public name: string) { }
+  constructor(public org: OrgModel) { }
 }

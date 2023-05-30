@@ -19,27 +19,22 @@ export class TasksState {
   @Action(OrgLaunchChrome)
   public launch(ctx: StateContext<TasksStateModel>, { org, profile }: OrgLaunchChrome): void {
 
-    try {
-      ctx.patchState({ loadingMessage: 'Launching Org: ' + org.name + '...' });
+    ctx.patchState({ loadingMessage: 'Launching Org: ' + org.name + '...' });
 
-      this.service.launch(org.name, {
-        profile,
-        headless: false,
-        useHomepage: true
-      });
-
-    }
-    finally {
+    this.service.launch(org, {
+      profile,
+      useHomepage: true
+    }).finally(() => {
       ctx.patchState({ loadingMessage: '' });
-    }
+    });
   }
 
   @Action(OrgsInstallChrome)
   public install(ctx: StateContext<TasksStateModel>, { org, hardReset }: OrgsInstallChrome): void {
-    ctx.patchState({ loadingMessage: 'Installing Org: ' + org.name + '...' });
+    // ctx.patchState({ loadingMessage: 'Installing Org: ' + org.name + '...' });
 
-    this.service.install(org, hardReset).finally(() =>
-      ctx.patchState({ loadingMessage: '' }));
+    // this.service.install(org, hardReset).finally(() =>
+    //   ctx.patchState({ loadingMessage: '' }));
   }
 
   @Action(OrgKillChrome)
@@ -48,7 +43,7 @@ export class TasksState {
     try {
       ctx.patchState({ loadingMessage: 'Killing Org: ' + org.name + '...' });
 
-      this.service.kill(org.name);
+      this.service.kill(org.id);
 
     } finally {
       ctx.patchState({ loadingMessage: '' });
@@ -56,7 +51,7 @@ export class TasksState {
   }
 
   @Action(OrgDelete)
-  public delete(ctx: StateContext<TasksStateModel>, { name }: OrgDelete): void {
-    this.service.delete(name);
+  public delete(ctx: StateContext<TasksStateModel>, { org }: OrgDelete): void {
+    this.service.delete(org);
   }
 }

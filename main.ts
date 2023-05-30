@@ -2,6 +2,8 @@ import { app, BrowserWindow, ipcMain, screen, Menu } from 'electron';
 import { OsFactory } from './src/os/OsFactory';
 import * as path from 'path';
 import * as url from 'url';
+import { OrgModel, ProfileModel } from './src/app/store/orgs/model';
+import { SupportedBrowsers } from './src/app/store/config/model';
 
 let win: BrowserWindow | null = null;
 
@@ -11,12 +13,13 @@ const serve = args.some(val => val === '--serve');
 const osBridge = OsFactory.create();
 ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
 ipcMain.on('launch', (event, arg) => event.returnValue = osBridge.launchRaw(arg));
+ipcMain.on('runChrome',
+  (_event: any, org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean) =>
+    osBridge.runChrome(org, browser, useMiddleware, profile, useHomepage));
 ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
 ipcMain.on('getUserInfo', (event) => event.returnValue = osBridge.getUserName());
 ipcMain.on('db:read', (event, ...arg) => event.returnValue = osBridge.readDb(arg[0], arg[1]));
 ipcMain.on('db:write', (event, ...arg) => event.returnValue = osBridge.writeDb(arg[0], arg[1], arg[2]));
-ipcMain.on('file:read', (event, ...arg) => event.returnValue = osBridge.readFile(arg[0]));
-ipcMain.on('file:write', (event, ...arg) => event.returnValue = osBridge.writeFile(arg[0], arg[1]));
 ipcMain.on('removeDir', (event, arg) => event.returnValue = osBridge.deleteDir(arg));
 
 function createWindow(): BrowserWindow {
@@ -73,7 +76,10 @@ try {
     }
   ]);
 
-  // Menu.setApplicationMenu(menu);
+  const menu = Menu.buildFromTemplate([
+
+  ])
+  Menu.setApplicationMenu(menu);
   // app.dock.setMenu(dockMenu);
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.

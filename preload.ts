@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 import * as jsForce from 'jsforce';
-import { OrgModel } from './src/app/store/orgs/model';
+import { OrgModel, ProfileModel } from './src/app/store/orgs/model';
+import { SupportedBrowsers } from './src/app/store/config/model';
 
 contextBridge.exposeInMainWorld(
   'electron', {
@@ -8,6 +9,12 @@ contextBridge.exposeInMainWorld(
   {
     load: () => ipcRenderer.sendSync('db:read', 'config.json', 'config'),
     save: (payload: any) => ipcRenderer.sendSync('db:write', payload, 'config.json', 'config')
+  },
+  chrome:{
+    installed: (dir: string) => ipcRenderer.sendSync('dirExixts', dir),
+    launch(org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean): any {
+      return ipcRenderer.send('runChrome', org, browser, useMiddleware, profile, useHomepage);
+    }
   },
   database: {
     load: () => {

@@ -10,7 +10,7 @@ import { LoginType, OrgsStateModel, OrgModel, ProfileModel } from '../store/orgs
 import { Config } from '../store/config/model';
 import { ProfileFormGroup } from './profile-line/profile-line.component';
 import { ConfirmDialogService } from '../core/componentes/confirm-dialog/confirm-dialog.service';
-import { OrgsInstallChrome } from '../store/chrome/actions';
+import { OrgKillChrome } from '../store/chrome/actions';
 
 type OrgFormGroup = FormGroup<{
   name: FormControl<string | undefined | null>;
@@ -76,44 +76,21 @@ export class OrgSetupComponent implements OnInit {
     });
   }
 
-  reinstall(): void {
-
-    this.dialog.open({
-      title: 'Save & Install',
-      message: 'This action will reinstall all your Chrome profiles.\
-      \n\nAll already available Profiles will be reset (bookmarks, extensions). \n\nAre you sure?',
-      cancelText: 'Cancel',
-      confirmText: 'OK'
-    }).then(response => {
-
-      if (!response) { return; }
-
-      const org = this.formToOrg();
-
-      this.store.dispatch([
-        new OrgSave(org),
-        new OrgsInstallChrome(org, true)
-      ]);
-    });
-  }
-
   onSubmit($event): void {
 
+    const org = this.formToOrg();
+
     this.dialog.open({
       title: 'Save & Install',
-      message: 'Save your org and install the Chrome profiles?',
+      message: `All running instances of ${org.name} will close`,
       cancelText: 'Cancel',
       confirmText: 'OK'
     }).then(response => {
 
       if (!response) { return; }
 
-      const org = this.formToOrg();
-
-      this.store.dispatch([
-        new OrgSave(org),
-        new OrgsInstallChrome(org, false)
-      ]);
+      this.store.dispatch(new OrgKillChrome(org))
+        .subscribe( _ => this.store.dispatch(new OrgSave(org)));
 
       this.router.navigate(['/home']);
     });
@@ -161,7 +138,8 @@ export class OrgSetupComponent implements OnInit {
   }
 
   deleteProfile(index: number): void {
-    this.profiles.removeAt(index);
+    this.profileForm.controls.profiles.removeAt(index);
+    this.profileForm.markAsDirty();
   }
 
   duplicateProfile(index: number): void {
@@ -204,8 +182,6 @@ export class OrgSetupComponent implements OnInit {
   private formToOrg(): OrgModel {
     const formValue = this.profileForm.value;
 
-    console.log(this.profileForm.controls.profiles.dirty);
-    console.log(this.profileForm.controls.profiles);
     const org: OrgModel = {
       id: this.orgId ?? Guid.create().toString(),
       domain: '',
