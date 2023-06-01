@@ -76,10 +76,9 @@ try {
     }
   ]);
 
-  const menu = Menu.buildFromTemplate([
-
-  ])
-  Menu.setApplicationMenu(menu);
+  const menu = Menu.getApplicationMenu();
+  console.log(menu);
+  // Menu.setApplicationMenu(menu);
   // app.dock.setMenu(dockMenu);
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
@@ -88,6 +87,7 @@ try {
   // More detais at https://github.com/electron/electron/issues/15947
   app.whenReady()
     .then(() => app.dock.setMenu(dockMenu))
+    .then(() => Menu.setApplicationMenu(menu))
     .then(() => setTimeout(createWindow, 400));
 
   // Quit when all windows are closed.
