@@ -3,8 +3,7 @@ import * as jsForce from 'jsforce';
 import { OrgModel, ProfileModel } from './src/app/store/orgs/model';
 import { SupportedBrowsers } from './src/app/store/config/model';
 
-contextBridge.exposeInMainWorld(
-  'electron', {
+contextBridge.exposeInMainWorld('electron', {
   config:
   {
     load: () => ipcRenderer.sendSync('db:read', 'config.json', 'config'),
