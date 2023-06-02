@@ -62,6 +62,8 @@ declare global {
       chrome: {
         installed(dir: string): boolean;
         launch(org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean): void;
+        delete(org: OrgModel): void;
+        kill(orgId: string): void;
       };
       database: {
         load(): {version: string; orgs: OrgModel[] };

@@ -11,16 +11,18 @@ const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
 const osBridge = OsFactory.create();
-ipcMain.on('open_ext', (event, arg) => osBridge.openExternal(arg[0]));
-ipcMain.on('launch', (event, arg) => event.returnValue = osBridge.launchRaw(arg));
+ipcMain.on('open_ext', (_event, arg) => osBridge.openExternal(arg[0]));
 ipcMain.on('runChrome',
   (_event: any, org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean) =>
     osBridge.runChrome(org, browser, useMiddleware, profile, useHomepage));
+ipcMain.on('kill', (_event, arg) => osBridge.kill(arg));
 ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
 ipcMain.on('getUserInfo', (event) => event.returnValue = osBridge.getUserName());
 ipcMain.on('db:read', (event, ...arg) => event.returnValue = osBridge.readDb(arg[0], arg[1]));
 ipcMain.on('db:write', (event, ...arg) => event.returnValue = osBridge.writeDb(arg[0], arg[1], arg[2]));
-ipcMain.on('removeDir', (event, arg) => event.returnValue = osBridge.deleteDir(arg));
+ipcMain.on('removeDir', (event, arg) => event.returnValue = osBridge.deleteOrg(arg));
+
+// ipcMain.on('launch', (event, arg) => event.returnValue = osBridge.launchRaw(arg));
 
 function createWindow(): BrowserWindow {
 

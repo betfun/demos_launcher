@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { IpcRenderer } from 'electron';
-import { Config, SupportedBrowsers } from '../../../store/config/model';
-import { LoginType, OrgExtensions, OrgsStateModel, OrgModel, ProfileModel } from '../../../store/orgs/model';
+import { Config } from '../../../store/config/model';
+import { OrgExtensions, OrgModel, ProfileModel } from '../../../store/orgs/model';
 
 export interface LaunchOptions {
   profile: ProfileModel | null;
@@ -16,11 +15,8 @@ const sleep = (waitTimeInMs: number) =>
   providedIn: 'root',
 })
 export class ElectronService {
-  private ipc: IpcRenderer;
 
-  constructor(private store: Store) {
-    this.ipc = window.ipc;
-  }
+  constructor(private store: Store) { }
 
   async launch(org: OrgModel, opts: LaunchOptions): Promise<void> {
 
@@ -46,26 +42,19 @@ export class ElectronService {
     //   'https://login.salesforce.com/login.jsp';
 
 
-    window.electron.chrome.launch(org, globalConfig.browser, globalConfig.useMiddleware, opts.profile, opts.useHomepage);
+    window.electron.chrome.launch(org, globalConfig.browser,
+      globalConfig.useMiddleware, opts.profile, opts.useHomepage);
 
     // this.ipc.send('launch', command);
   }
 
   delete(orgName: OrgModel) {
-    const config = this.localConfig(orgName);
-
-    this.ipc.send('removeDir', config.dir);
+    window.electron.chrome.delete(orgName);
   }
 
   kill(org: string): void {
     // const orgChrome = org.replace(/\s/g, '');
-
-    try {
-      this.ipc.sendSync('launch', `pkill -f '${org}'`);
-    }
-    catch (err) {
-      // No need to take care of the error
-    }
+    window.electron.chrome.kill(org);
   }
 
   // async install(org: OrgModel, hard: boolean = false): Promise<void> {
@@ -133,18 +122,4 @@ export class ElectronService {
   //     console.log(err);
   //   }
   // }
-
-  private localConfig(org: OrgModel): { base: string; name: string; dir: string } {
-    const orgChrome = org.name.replace(/\s/g, '');
-
-    const dir: string = this.ipc.sendSync('getHomeDir');
-
-    const config = {
-      base: `${dir}/Orgs`,
-      name: orgChrome,
-      dir: `${dir}/Orgs/${org.id}`
-    };
-
-    return config;
-  }
 }

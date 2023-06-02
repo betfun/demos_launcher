@@ -19,11 +19,6 @@ import { patch } from '@ngxs/store/operators';
 export class ConfigState {
   constructor(private dbConfig: DbConfigService) { }
 
-  @Selector()
-  public static getState(state: Config): Config {
-    return state;
-  }
-
   @Action(SaveConfig)
   public add(ctx: StateContext<Config>, { payload }: SaveConfig): void {
     this.dbConfig.save(payload);

@@ -59,6 +59,15 @@ export abstract class OsMechanics {
     return true;
   }
 
+  kill(orgId: string) {
+    try {
+      this.launchRaw(`pkill -f '${orgId}'`);
+    }
+    catch (err) {
+      // No need to take care of the error
+    }
+  }
+
   async runChrome(org: OrgModel,
     browser: SupportedBrowsers,
     useMiddleware: boolean,
@@ -67,12 +76,8 @@ export abstract class OsMechanics {
 
     const orgChrome = org.name.replace(/\s/g, '');
 
-    const dir: string = this.getUserDir();
-
-    const config = {
-      dir: `${dir}/Orgs/${org.id}`,
-      oldDir: `${dir}/Orgs/${orgChrome}`
-    };
+    const udir: string = this.getUserDir();
+    const dir = `${udir}/Orgs/${org.id}`;
 
     // TODO: Remove and put "install" when saving the Org
     await this.install(org);
@@ -112,7 +117,7 @@ export abstract class OsMechanics {
     console.log('*** 3 *** ');
 
     const runPath = `open -n -a "${browserPath}" \
-      --args --user-data-dir=${config.dir} \
+      --args --user-data-dir=${dir} \
       --profile-directory="${innerName}" \
       --no-first-run \
       --no-default-browser-check`;
@@ -184,7 +189,10 @@ export abstract class OsMechanics {
     }
   }
 
-  deleteDir(dir: string): boolean {
+  deleteOrg(org: OrgModel) {
+
+    const dir = `${this.getUserDir()}/Orgs/${org.id}`;
+
     try {
       fs.rmdirSync(dir, { recursive: true });
     }
