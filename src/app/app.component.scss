@@ -9,6 +9,10 @@
   /* Ensure that your app's content doesn't overlap the toolbar */
 }
 
+.toolbar-button {
+  -webkit-app-region: no-drag
+}
+
 .logo-icon {
   transform: scale(1.5);
   margin-right: 40px;
