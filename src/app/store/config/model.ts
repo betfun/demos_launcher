@@ -8,5 +8,4 @@ export enum SupportedBrowsers {
 export interface Config {
   browser: SupportedBrowsers;
   defaultPassword: string;
-  useMiddleware: boolean;
 }

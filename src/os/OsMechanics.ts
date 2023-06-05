@@ -50,7 +50,6 @@ export abstract class OsMechanics {
 
   async runChrome(org: OrgModel,
     browser: SupportedBrowsers,
-    useMiddleware: boolean,
     profile: ProfileModel,
     useHomepage: boolean): Promise<void> {
 
@@ -65,9 +64,7 @@ export abstract class OsMechanics {
       .replace(/[\u0300-\u036f]/g, '')
       .trim();
 
-    const loginPage = useMiddleware ?
-      'https://clicktologin.herokuapp.com/' :
-      'https://login.salesforce.com/login.jsp';
+    const loginPage = 'https://clicktologin.herokuapp.com/';
 
     const siteUser = profile.login.toString();
 

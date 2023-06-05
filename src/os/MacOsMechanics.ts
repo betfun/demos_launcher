@@ -8,7 +8,7 @@ export class MacOsMechanics extends OsMechanics {
     const fn = `db.json`;
     const orgs: OrgModel[] = this.readDb(fn, 'orgs');
 
-    orgs.forEach(org => childProcess.exec(`pkill -f '${org.id}'`));
+    orgs.forEach(org => this.kill(org.id));
   }
 
   kill(orgId: string): void {

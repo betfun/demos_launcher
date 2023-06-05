@@ -75,8 +75,7 @@ export class AppComponent implements OnInit {
       if (result !== null) {
         const config: Config = {
           browser: result.browser,
-          defaultPassword: result.pwd,
-          useMiddleware: result.useMiddleware
+          defaultPassword: result.pwd
         };
 
         this.store.dispatch(new SaveConfig(config));

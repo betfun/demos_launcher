@@ -20,9 +20,7 @@ export class ConfigComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       browser: ['chrome', Validators.required],
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      pwd: ['', Validators.required],
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      useMiddleware: true
+      pwd: ['', Validators.required]
     });
   }
 
@@ -30,8 +28,7 @@ export class ConfigComponent implements OnInit {
     if (this.data !== undefined && this.data !== null) {
       this.configForm.setValue({
         browser: this.data.browser,
-        pwd: this.data.defaultPassword,
-        useMiddleware: this.data.useMiddleware
+        pwd: this.data.defaultPassword
       });
     }
   }

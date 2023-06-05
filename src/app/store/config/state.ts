@@ -9,8 +9,7 @@ import { patch } from '@ngxs/store/operators';
   name: 'config',
   defaults: {
     browser: SupportedBrowsers.chrome,
-    defaultPassword: 'salesforce123',
-    useMiddleware: true
+    defaultPassword: 'salesforce123'
   }
 })
 @Injectable({

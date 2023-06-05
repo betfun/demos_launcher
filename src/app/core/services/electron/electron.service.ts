@@ -42,8 +42,7 @@ export class ElectronService {
     //   'https://login.salesforce.com/login.jsp';
 
 
-    window.electron.chrome.launch(org, globalConfig.browser,
-      globalConfig.useMiddleware, opts.profile, opts.useHomepage);
+    window.electron.chrome.launch(org, globalConfig.browser, opts.profile, opts.useHomepage);
 
     // this.ipc.send('launch', command);
   }

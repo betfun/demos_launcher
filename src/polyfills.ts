@@ -61,7 +61,7 @@ declare global {
       };
       chrome: {
         installed(dir: string): boolean;
-        launch(org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean): void;
+        launch(org: OrgModel, browser: SupportedBrowsers, profile: ProfileModel, useHomepage: boolean): void;
         delete(org: OrgModel): void;
         kill(orgId: string): void;
       };

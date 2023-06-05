@@ -11,8 +11,8 @@ contextBridge.exposeInMainWorld('electron', {
   },
   chrome: {
     installed: (dir: string) => ipcRenderer.sendSync('dirExixts', dir),
-    launch(org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean): any {
-      return ipcRenderer.send('runChrome', org, browser, useMiddleware, profile, useHomepage);
+    launch(org: OrgModel, browser: SupportedBrowsers, profile: ProfileModel, useHomepage: boolean): any {
+      return ipcRenderer.send('runChrome', org, browser, profile, useHomepage);
     },
     delete: (org: OrgModel) => ipcRenderer.send('removeDir', org),
     kill: (orgId: string) => ipcRenderer.send('kill', orgId)
