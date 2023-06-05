@@ -13,8 +13,8 @@ const serve = args.some(val => val === '--serve');
 const osBridge = OsFactory.create();
 ipcMain.on('open_ext', (_event, arg) => osBridge.openExternal(arg[0]));
 ipcMain.on('runChrome',
-  (_event: any, org: OrgModel, browser: SupportedBrowsers, useMiddleware: boolean, profile: ProfileModel, useHomepage: boolean) =>
-    osBridge.runChrome(org, browser, useMiddleware, profile, useHomepage));
+  (_event: any, org: OrgModel, browser: SupportedBrowsers, profile: ProfileModel, useHomepage: boolean) =>
+    osBridge.runChrome(org, browser, profile, useHomepage));
 ipcMain.on('kill', (_event, arg) => osBridge.kill(arg));
 ipcMain.on('getHomeDir', (event) => event.returnValue = osBridge.getUserDir());
 ipcMain.on('getUserInfo', (event) => event.returnValue = osBridge.getUserName());
