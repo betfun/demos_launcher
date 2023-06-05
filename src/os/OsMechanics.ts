@@ -48,33 +48,11 @@ export abstract class OsMechanics {
     return db.get(what).value();
   }
 
-  launchRaw(command: string): boolean {
-    try {
-      childProcess.execSync(command, { stdio: 'ignore' });
-    }
-    catch (err) {
-      return false;
-    }
-
-    return true;
-  }
-
-  kill(orgId: string) {
-    try {
-      this.launchRaw(`pkill -f '${orgId}'`);
-    }
-    catch (err) {
-      // No need to take care of the error
-    }
-  }
-
   async runChrome(org: OrgModel,
     browser: SupportedBrowsers,
     useMiddleware: boolean,
     profile: ProfileModel,
     useHomepage: boolean): Promise<void> {
-
-    const orgChrome = org.name.replace(/\s/g, '');
 
     const udir: string = this.getUserDir();
     const dir = `${udir}/Orgs/${org.id}`;
@@ -86,11 +64,6 @@ export abstract class OsMechanics {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .trim();
-
-    const browserPath =
-      browser === SupportedBrowsers.chromium
-        ? '/Applications/Google Chrome Canary.app'
-        : '/Applications/Google Chrome.app';
 
     const loginPage = useMiddleware ?
       'https://clicktologin.herokuapp.com/' :
@@ -114,7 +87,10 @@ export abstract class OsMechanics {
 
     const homepage = `${loginPage}?un=${login}&pw=${pwd}${site}`;
 
-    console.log('*** 3 *** ');
+    const browserPath =
+      browser === SupportedBrowsers.chromium
+        ? '/Applications/Google Chrome Canary.app'
+        : '/Applications/Google Chrome.app';
 
     const runPath = `open -n -a "${browserPath}" \
       --args --user-data-dir=${dir} \
@@ -136,7 +112,7 @@ export abstract class OsMechanics {
     const oldDir = `${userDir}/Orgs/${orgChrome}`;
     const dir = `${userDir}/Orgs/${org.id}`;
 
-    if (this.dirExixts(oldDir)) {
+    if (fs.existsSync(oldDir)) {
       this.renameDir(oldDir, dir);
     }
 
@@ -203,8 +179,15 @@ export abstract class OsMechanics {
     return true;
   }
 
-  dirExixts(dir: string): boolean {
-    return fs.existsSync(dir);
+  private launchRaw(command: string): boolean {
+    try {
+      childProcess.execSync(command, { stdio: 'ignore' });
+    }
+    catch (err) {
+      return false;
+    }
+
+    return true;
   }
 
   private renameDir(oldDir: string, newDir: string): void {
@@ -229,4 +212,5 @@ export abstract class OsMechanics {
   }
 
   abstract killall(): void;
+  abstract kill(orgId: string): void;
 }

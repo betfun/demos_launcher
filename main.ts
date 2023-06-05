@@ -73,7 +73,7 @@ try {
 
   const dockMenu = Menu.buildFromTemplate([
     {
-      label: 'Close all (Chromium only)',
+      label: 'Close all',
       click() { osBridge.killall(); }
     }
   ]);

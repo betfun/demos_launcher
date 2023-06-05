@@ -1,13 +1,17 @@
+import { OrgModel } from '../app/store/orgs/model';
 import { OsMechanics } from './OsMechanics';
+import * as childProcess from 'child_process';
 
 export class MacOsMechanics extends OsMechanics {
 
   killall(): void {
-    try {
-      this.launchRaw(`pkill -f Canary`);
-    }
-    catch (err) {
-      // Ignore error
-    }
+    const fn = `db.json`;
+    const orgs: OrgModel[] = this.readDb(fn, 'orgs');
+
+    orgs.forEach(org => childProcess.exec(`pkill -f '${org.id}'`));
+  }
+
+  kill(orgId: string): void {
+    childProcess.exec(`pkill -f '${orgId}'`);
   }
 }
