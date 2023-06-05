@@ -154,9 +154,14 @@ export abstract class OsMechanics {
       const referenceProfile = infoCache.Admin;
 
       for (const profile of [...org.profiles]) {
-        infoCache[profile.name] = {};
-        Object.assign(infoCache[profile.name], referenceProfile);
-        infoCache[profile.name].name = profile.name;
+        const profileInnerName = profile.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .trim();
+
+        infoCache[profileInnerName] = {};
+        Object.assign(infoCache[profileInnerName], referenceProfile);
+        infoCache[profileInnerName].name = profile.name;
       }
 
       this.writeFile(obj, fn);
