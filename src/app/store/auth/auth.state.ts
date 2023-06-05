@@ -19,11 +19,13 @@ export class AuthState implements NgxsOnInit {
 
   @Action(LogUserActivity)
   logUserActivity(ctx: StateContext<AuthStateModel>, { username, version }: LogUserActivity): void {
+
     this.fb.collection('Auth').doc(username).set({
       displayName: username,
       version,
       timestamp: serverTimestamp()
-    }).catch(ret => console.log(ret));
+    },
+      { merge: true });
   }
 
   // @Action(Login)
