@@ -44,10 +44,10 @@
             <span>{{element.info?.expiryDate ? (element.info?.expiryDate | date) : 'unknown'}}</span>
           </div>
           <div *ngIf="element.info?.status === 'false'">
-            <mat-icon color="accent" matTooltip="Cannot connect">warning</mat-icon>
+            <mat-icon color="warn" matTooltip="Cannot connect">error</mat-icon>
           </div>
           <div *ngIf="element.info?.status === 'NOT ADMIN'">
-            <mat-icon color="warn" matTooltip="Administrator user is not defined">error</mat-icon>
+            <mat-icon class="warning-icon" matTooltip="Administrator user is not defined">warning</mat-icon>
           </div>
 
         </td>

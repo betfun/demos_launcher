@@ -14,3 +14,8 @@ export class OrgKillChrome {
   public static readonly type = '[Orgs] Kill Chrome';
   constructor(public org: OrgModel) { }
 }
+
+export class GenericMessage {
+  public static readonly type = '[Orgs] Generic Message';
+  constructor(public message: string) { }
+}

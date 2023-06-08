@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as url from 'url';
 import { OrgModel, ProfileModel } from './src/app/store/orgs/model';
 import { SupportedBrowsers } from './src/app/store/config/model';
+const { dialog } = require('electron');
 
 let win: BrowserWindow | null = null;
 
@@ -11,7 +12,6 @@ const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
 const osBridge = OsFactory.create();
-ipcMain.on('open_ext', (_event, arg) => osBridge.openExternal(arg[0]));
 ipcMain.on('runChrome',
   (_event: any, org: OrgModel, browser: SupportedBrowsers, profile: ProfileModel, useHomepage: boolean) =>
     osBridge.runChrome(org, browser, profile, useHomepage));
@@ -48,6 +48,7 @@ function createWindow(): BrowserWindow {
 
   if (serve) {
     win.webContents.openDevTools();
+
     // win.loadURL('https://demos-launcher-web.azurewebsites.net/');
     win.loadURL('http://localhost:4200');
   } else {
@@ -78,6 +79,70 @@ try {
     }
   ]);
 
+  const isMac = process.platform === 'darwin';
+
+  const scUrl = 'https://solutionscentral.io/posts/5de95f70-72e7-11ec-9e6d-f1bf609be4ef/managing-personas-for-demos/';
+  const relasesUrl = 'https://github.com/davideappiano/demos_launcher/releases';
+
+  const template: Electron.MenuItemConstructorOptions[] = [
+    { role: 'appMenu' },
+    { role: 'fileMenu' },
+    // {
+    //   label: 'File',
+    //   submenu: [
+    //     {
+    //       label: 'Import from file...',
+    //       click: () => {
+    //         dialog.showOpenDialog({ properties: ['openFile'] }).then(response => {
+    //           if (!response.canceled) {
+    //             // handle fully qualified file name
+    //             const orgs = osBridge.readDb(response.filePaths[0], 'orgs', true);
+    //             console.log(orgs);
+    //           } else {
+    //             console.log('no file selected');
+    //           }
+    //         });
+    //       }
+    //     },
+    //     { type: 'separator' },
+    //     isMac ? { role: 'close' } : { role: 'quit' }
+    //   ]
+    // },
+    { role: 'editMenu' },
+    ...(serve ?
+      [{ role: 'viewMenu' }] as Electron.MenuItemConstructorOptions[] :
+      []),
+    // {
+    //   label: 'View',
+    //   submenu: [
+    //     { role: 'reload' },
+    //     { role: 'forceReload' },
+    //     { role: 'toggleDevTools' },
+    //     { type: 'separator' },
+    //     { role: 'resetZoom' },
+    //     { role: 'zoomIn' },
+    //     { role: 'zoomOut' },
+    //     { type: 'separator' },
+    //     { role: 'togglefullscreen' }
+    //   ]
+    // },
+    { role: 'windowMenu' },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Releases',
+          click: () => osBridge.openExternal(relasesUrl)
+        },
+        { type: 'separator' },
+        {
+          label: 'Learn More',
+          click: () => osBridge.openExternal(scUrl)
+        },
+      ]
+    }
+  ];
+
   // Menu.setApplicationMenu(menu);
   // app.dock.setMenu(dockMenu);
   // This method will be called when Electron has finished
@@ -87,10 +152,10 @@ try {
   // More detais at https://github.com/electron/electron/issues/15947
   app.whenReady()
     .then(() => app.dock.setMenu(dockMenu))
-    // .then(() => {
-    //   const menu = Menu.getApplicationMenu();
-    //   console.log(menu);
-    // })
+    .then(() => {
+      const menu = Menu.buildFromTemplate(template);
+      Menu.setApplicationMenu(menu);
+    })
     .then(() => setTimeout(createWindow, 400));
 
   // Quit when all windows are closed.

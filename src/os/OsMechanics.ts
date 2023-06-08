@@ -32,7 +32,7 @@ export abstract class OsMechanics {
     db.set(what, obj).write();
   }
 
-  readDb(fn: string, what: string): any {
+  readDb(fn: string, what: string, fullPath: boolean = false): any {
     const dir = this.getUserDir();
 
     if (!fs.existsSync(dir)) {
@@ -41,7 +41,8 @@ export abstract class OsMechanics {
       });
     }
 
-    const adapter = new fileSync(`${dir}/${fn}`);
+    const filePath = fullPath ? fn : `${dir}/${fn}`;
+    const adapter = new fileSync(filePath);
 
     const db = lowdb(adapter);
 

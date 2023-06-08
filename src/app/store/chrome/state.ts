@@ -1,5 +1,5 @@
 import { State, Action, StateContext } from '@ngxs/store';
-import { OrgKillChrome, OrgLaunchChrome, OrgsInstallChrome } from './actions';
+import { GenericMessage, OrgKillChrome, OrgLaunchChrome, OrgsInstallChrome } from './actions';
 import { TasksStateModel } from './model';
 import { ElectronService } from '../../core/services';
 import { Injectable } from '@angular/core';
@@ -53,5 +53,10 @@ export class TasksState {
   @Action(OrgDelete)
   public delete(ctx: StateContext<TasksStateModel>, { org }: OrgDelete): void {
     this.service.delete(org);
+  }
+
+  @Action(GenericMessage)
+  public run(ctx: StateContext<TasksStateModel>, { message }: GenericMessage): void {
+    ctx.patchState({ loadingMessage: message });
   }
 }

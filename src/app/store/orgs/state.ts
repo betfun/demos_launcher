@@ -4,7 +4,6 @@ import { OrgsStateModel, OrgModel } from './model';
 import { DbService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { stat } from 'fs';
 
 @State<OrgsStateModel>({
   name: 'orgs',

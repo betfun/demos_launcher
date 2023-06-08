@@ -37,28 +37,42 @@ contextBridge.exposeInMainWorld('electron', {
     connect: async (login: string, pwd: string) => {
       const connection = new Connection({});
 
+      const retValue = {
+        connected: false,
+        name: '',
+        users: [],
+        communities: [],
+        expiryDate: ''
+      };
+
       try {
-        await connection.login(login, pwd);
+        const log = await connection.login(login, pwd);
 
-        const res = await connection.identity();
+        Promise.race([
+          await Promise.all([
+            connection.identity().then(result => retValue.name = result.display_name),
 
-        const users = (await connection.query('SELECT Id, Username, Name FROM User')).records;
-        const communities = (await connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')).records;
-        const expiryDate = ((await connection.query('Select TrialExpirationDate from Organization')).records[0] as any).TrialExpirationDate;
+            Promise.race(
+              [connection.query('SELECT Id, Username, Name FROM User')
+                .then(result => retValue.users = result.records)
+                .catch(_err => { }),
+              setTimeout(() => { }, 5000)]),
 
-        return {
-          connected: true,
-          name: res.display_name,
-          users,
-          communities,
-          expiryDate
-        };
-      }
-      catch (err) {
-        return {
-          connected: false
-        };
-      }
+            Promise.race(
+              [connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')
+                .then(result => retValue.communities = result.records)
+                .catch(_err => { }),
+              setTimeout(() => { }, 5000)]),
+
+            connection.query('Select TrialExpirationDate from Organization LIMIT 1')
+              .then(result => retValue.expiryDate = (result.records[0] as any).TrialExpirationDate)
+              .catch(_err => { }),
+          ]), setTimeout(() => { }, 5 * 60 * 1000)]);
+
+        retValue.connected = true;
+      } catch { }
+
+      return retValue;
     }
   }
 });

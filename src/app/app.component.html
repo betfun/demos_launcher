@@ -3,17 +3,15 @@
   <mat-icon class="logo-icon">rocket_launch</mat-icon>
   <span>Demos Launcher - {{version}}</span>
   <div class="spacer"></div>
+  <button mat-icon-button class="toolbar-button favorite-icon" (click)="runCheck()">
+    <mat-icon>running_with_errors</mat-icon>
+  </button>
+  <mat-divider [vertical]="true" style="height: 50%; border-color:white;"></mat-divider>
+  <!-- <mat-divider [vertical]="true" style="height: 50%; border-color:white;"></mat-divider> -->
   <button mat-icon-button class="toolbar-button favorite-icon" (click)="openConfig()">
     <mat-icon>settings</mat-icon>
   </button>
-  <mat-divider [vertical]="true" style="height: 50%; border-color:white;"></mat-divider>
-  <button mat-icon-button class="toolbar-button favorite-icon" (click)="openSolutionCentral()"
-    matTooltip="Go to the Solution Central article">
-    <mat-icon>help_outline</mat-icon>
-  </button>
-  <button mat-icon-button class="toolbar-button favorite-icon" (click)="openGithub()" matTooltip="Go to Github relases">
-    <mat-icon>cloud_download</mat-icon>
-  </button>
+  <mat-icon></mat-icon>
 </div>
 
 <!-- Spinner -->

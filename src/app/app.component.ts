@@ -10,7 +10,12 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IpcRenderer } from 'electron';
 import { LogUserActivity } from './store/auth/auth.actions';
+import { SalesforceService } from './core/services';
+import { OrgsStateModel, ProfileModel } from './store/orgs/model';
+import { LoginType } from './store/orgs/model';
+import { UpdateOrgInfos } from './store/orgs/actions';
 import packageInfo from '../../package.json';
+import { GenericMessage } from './store/chrome/actions';
 
 @Component({
   selector: 'app-root',
@@ -25,9 +30,7 @@ export class AppComponent implements OnInit {
 
   private ipc: IpcRenderer;
 
-  private readonly relasesUrl = 'https://github.com/davideappiano/demos_launcher/releases';
   private readonly apiUrl = 'https://api.github.com/repos/davideappiano/demos_launcher/releases';
-  private readonly scUrl = 'https://solutionscentral.io/posts/5de95f70-72e7-11ec-9e6d-f1bf609be4ef/managing-personas-for-demos/';
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -35,6 +38,7 @@ export class AppComponent implements OnInit {
     private store: Store,
     private http: HttpClient,
     private dialog: MatDialog,
+    private sf: SalesforceService,
   ) {
     this.store.dispatch(new GetConfig());
     this.ipc = window.ipc;
@@ -65,7 +69,42 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openConfig(): void {
+  runCheck(): void {
+    const orgs = this.store.selectSnapshot<OrgsStateModel>(state => state.orgs).orgs;
+
+    this.store.dispatch(new GenericMessage('Verification'));
+
+    const tasks$: Promise<any>[] = [];
+    for (const element of orgs) {
+
+      if (!element.administrator?.login) {
+        this.store.dispatch(new UpdateOrgInfos(element.id, { status: 'NOT ADMIN', expiryDate: '' }));
+        continue;
+      }
+
+      const p: ProfileModel = {
+        name: '',
+        login: element.administrator.login,
+        pwd: element.administrator.pwd,
+        loginType: LoginType.standard
+      };
+
+      tasks$.push(
+        this.sf.connect(p).then(conn =>
+          this.store.dispatch(
+            new UpdateOrgInfos(element.id, {
+              status: conn.connected.toString(),
+              expiryDate: conn.expiryDate
+            })
+          )));
+    }
+
+    Promise.all(tasks$)
+      .finally(() => this.store.dispatch(new GenericMessage('')));
+  }
+
+  async openConfig(): Promise<void> {
+
     const dialogRef = this.dialog.open(ConfigComponent, {
       width: '500px',
       data: this.store.snapshot().config,
@@ -81,14 +120,6 @@ export class AppComponent implements OnInit {
         this.store.dispatch(new SaveConfig(config));
       }
     });
-  }
-
-  openGithub(): void {
-    window.ipc.send('open_ext', [this.relasesUrl]);
-  }
-
-  openSolutionCentral(): void {
-    window.ipc.send('open_ext', [this.scUrl]);
   }
 
   private isNewerVersion(oldVer: string, newVer: string): boolean {
