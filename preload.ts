@@ -50,24 +50,32 @@ contextBridge.exposeInMainWorld('electron', {
 
         Promise.race([
           await Promise.all([
-            connection.identity().then(result => retValue.name = result.display_name),
+            connection.identity()
+              .then(result => retValue.name = result.display_name)
+              .catch(_err => {}),
 
             Promise.race(
               [connection.query('SELECT Id, Username, Name FROM User')
                 .then(result => retValue.users = result.records)
-                .catch(_err => { }),
-              setTimeout(() => { }, 5000)]),
+                .catch(_err => {}),
+
+              setTimeout(null, 50000)]),
 
             Promise.race(
               [connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')
                 .then(result => retValue.communities = result.records)
-                .catch(_err => { }),
-              setTimeout(() => { }, 5000)]),
+                .catch(_err => {}),
 
-            connection.query('Select TrialExpirationDate from Organization LIMIT 1')
-              .then(result => retValue.expiryDate = (result.records[0] as any).TrialExpirationDate)
-              .catch(_err => { }),
-          ]), setTimeout(() => { }, 5 * 60 * 1000)]);
+              setTimeout(null, 50000)]),
+
+            Promise.race(
+              [connection.query('Select TrialExpirationDate from Organization')
+                .then(result => retValue.expiryDate = (result.records[0] as any).TrialExpirationDate)
+                .catch(_err => {}),
+
+              setTimeout(null, 50000)]),
+
+          ]), setTimeout(null, 5 * 60 * 1000)]);
 
         retValue.connected = true;
       } catch { }
