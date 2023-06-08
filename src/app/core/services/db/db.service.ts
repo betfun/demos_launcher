@@ -8,7 +8,28 @@ import { Guid } from 'guid-typescript';
 export class DbService {
 
   public static getOrgs(): OrgModel[] {
-    const {version, orgs} = window.electron.database.load();
+    const {version, orgsDTO} = window.electron.database.load();
+
+    const orgs = orgsDTO ? orgsDTO.map(o => {
+      const org: OrgModel = {
+        administrator: {
+          login: o.administrator?.login,
+          pwd: o.administrator?.pwd
+        },
+        description: '',
+        id: o.id,
+        name: o.name,
+        profiles: [],
+        domain: '',
+        info: {
+          status: '',
+          expiryDate: ''
+        }
+      };
+
+      Object.assign(org.profiles, o.profiles);
+      return org;
+    }) : [];
 
     // Version check
     if (version !== undefined) {
@@ -43,7 +64,11 @@ export class DbService {
         description: org.description,
         name: org.name,
         administrator: org.administrator,
-        domain: org.domain
+        domain: org.domain,
+        info: {
+          status: '',
+          expiryDate: null
+        }
       };
     });
   }

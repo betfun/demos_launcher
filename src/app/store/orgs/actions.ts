@@ -10,6 +10,10 @@ export class OrgSave {
   constructor(public payload: OrgModel) { }
 }
 
+export class UpdateOrgInfos {
+  public static readonly type = '[Orgs] Update Org in db';
+  constructor(public id: string, public info: {status: string; expiryDate: string}) { }
+}
 
 export class OrgsLoadAll {
   public static readonly type = '[Orgs] Load all';

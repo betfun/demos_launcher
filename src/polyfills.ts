@@ -46,7 +46,7 @@
  * Zone JS is required by default for Angular itself.
  */
 import 'zone.js';
-import { OrgModel, ProfileModel } from './app/store/orgs/model';
+import { OrgModel, OrgModelDTO, ProfileModel } from './app/store/orgs/model';
 import { SupportedBrowsers } from './app/store/config/model';
 
 (window as any).global = window;
@@ -66,7 +66,7 @@ declare global {
         kill(orgId: string): void;
       };
       database: {
-        load(): {version: string; orgs: OrgModel[] };
+        load(): {version: string; orgsDTO: OrgModelDTO[] };
         save(orgs: OrgModel[]): void;
       };
       salesforce: {

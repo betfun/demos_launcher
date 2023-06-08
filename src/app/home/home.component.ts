@@ -38,7 +38,7 @@ import { ConfirmDialogOptions, ConfirmDialogService } from '../core/componentes/
 })
 export class HomeComponent implements OnInit, AfterViewChecked {
   dataSource: MatTableDataSource<OrgModel>;
-  displayedColumns: string[] = ['position', 'id', 'name', 'actions'];
+  displayedColumns: string[] = ['position', 'id', 'name', 'status', 'actions'];
   expandedElement: any | null;
 
   constructor(

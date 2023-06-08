@@ -196,7 +196,11 @@ export class OrgSetupComponent implements OnInit {
         login: formProfile.login,
         pwd: formProfile.pwd,
         loginType: formProfile.loginType
-      }))
+      })),
+      info: {
+        status: '',
+        expiryDate: null
+      }
     };
 
     return org;

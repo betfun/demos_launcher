@@ -17,6 +17,32 @@ export interface OrgModel {
   domain: string;
   administrator: { login: string; pwd: string };
   profiles: ProfileModel[];
+  info: {
+    status: string;
+    expiryDate: string;
+  };
+}
+
+export class OrgModelDTO {
+  id: string;
+  name: string;
+  administrator: { login: string; pwd: string };
+  profiles: ProfileModel[];
+
+  static fromModelView(org: OrgModel): OrgModelDTO {
+    console.log(org);
+    const dto = new OrgModelDTO();
+    dto.administrator = {
+      login: org.administrator?.login ?? '',
+      pwd: org.administrator?.pwd ?? ''
+    };
+    dto.profiles = [];
+    Object.assign(dto.profiles, org.profiles);
+    dto.id = org.id;
+    dto.name = org.name;
+
+    return dto;
+  }
 }
 
 export class OrgExtensions

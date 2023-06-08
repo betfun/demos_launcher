@@ -24,7 +24,7 @@
         <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
-      <ng-container matColumnDef="id" class="mat-column-name">
+      <ng-container hidden matColumnDef="id" class="mat-column-name">
         <th mat-header-cell *matHeaderCellDef hidden>Ids</th>
         <td mat-cell *matCellDef="let element" hidden>{{ element.id }}</td>
         <td mat-footer-cell *matFooterCellDef hidden></td>
@@ -34,6 +34,24 @@
         <th mat-header-cell *matHeaderCellDef>Names</th>
         <td mat-cell *matCellDef="let element">{{ element.name }}</td>
         <td mat-footer-cell *matFooterCellDef>Total: {{dataSource.data.length}} environments</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.info?.status === 'true'">
+            <mat-icon color="primary" matTooltip="OK">done</mat-icon>
+            <span>{{element.info?.expiryDate ? (element.info?.expiryDate | date) : 'unknown'}}</span>
+          </div>
+          <div *ngIf="element.info?.status === 'false'">
+            <mat-icon color="accent" matTooltip="Cannot connect">warning</mat-icon>
+          </div>
+          <div *ngIf="element.info?.status === 'NOT ADMIN'">
+            <mat-icon color="warn" matTooltip="Administrator user is not defined">error</mat-icon>
+          </div>
+
+        </td>
+        <td mat-footer-cell *matFooterCellDef hidden></td>
       </ng-container>
 
       <ng-container matColumnDef="actions">

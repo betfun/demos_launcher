@@ -1,6 +1,6 @@
-const { contextBridge, ipcRenderer } = require('electron');
-import * as jsForce from 'jsforce';
-import { OrgModel, ProfileModel } from './src/app/store/orgs/model';
+import { contextBridge, ipcRenderer } from 'electron';
+import { Connection } from 'jsforce';
+import { OrgModel, OrgModelDTO, ProfileModel } from './src/app/store/orgs/model';
 import { SupportedBrowsers } from './src/app/store/config/model';
 
 contextBridge.exposeInMainWorld('electron', {
@@ -20,20 +20,22 @@ contextBridge.exposeInMainWorld('electron', {
   database: {
     load: () => {
       const fn = `db.json`;
-      const orgs: any[] = ipcRenderer.sendSync('db:read', fn, 'orgs');
+      const orgs: OrgModelDTO[] = ipcRenderer.sendSync('db:read', fn, 'orgs');
       const version: string = ipcRenderer.sendSync('db:read', fn, 'version');
 
-      return { orgs, version };
+      return { orgsDTO: orgs, version };
     },
     save: (orgs: OrgModel[]) => {
-      ipcRenderer.sendSync('db:write', orgs, 'db.json', 'orgs');
+      const dtos = orgs.map(o => OrgModelDTO.fromModelView(o));
+
+      ipcRenderer.sendSync('db:write', dtos, 'db.json', 'orgs');
       ipcRenderer.sendSync('db:write', 2, 'db.json', 'version');
     }
   },
   salesforce:
   {
     connect: async (login: string, pwd: string) => {
-      const connection = new jsForce.Connection({});
+      const connection = new Connection({});
 
       try {
         await connection.login(login, pwd);
@@ -42,12 +44,14 @@ contextBridge.exposeInMainWorld('electron', {
 
         const users = (await connection.query('SELECT Id, Username, Name FROM User')).records;
         const communities = (await connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')).records;
+        const expiryDate = ((await connection.query('Select TrialExpirationDate from Organization')).records[0] as any).TrialExpirationDate;
 
         return {
           connected: true,
           name: res.display_name,
           users,
-          communities
+          communities,
+          expiryDate
         };
       }
       catch (err) {

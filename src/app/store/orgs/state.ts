@@ -1,9 +1,10 @@
 import { State, Action, StateContext, Store, NgxsOnInit, Actions, ofActionSuccessful, ActionType } from '@ngxs/store';
-import { OrgDelete, OrgSave, OrgsLoadAll, OrgsReorder } from './actions';
+import { OrgDelete, OrgSave, OrgsLoadAll, OrgsReorder, UpdateOrgInfos } from './actions';
 import { OrgsStateModel, OrgModel } from './model';
 import { DbService } from '../../core/services';
 import { Injectable } from '@angular/core';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { stat } from 'fs';
 
 @State<OrgsStateModel>({
   name: 'orgs',
@@ -21,6 +22,19 @@ export class OrgsState implements NgxsOnInit {
   @Action(OrgsLoadAll)
   loadAll(ctx: StateContext<OrgsStateModel>): void {
     ctx.setState(patch({ orgs: DbService.getOrgs() }));
+  }
+
+  @Action(UpdateOrgInfos)
+  update(ctx: StateContext<OrgsStateModel>, { id, info }: UpdateOrgInfos): void {
+    const stateModel = ctx.getState();
+
+    const org = stateModel.orgs.find(o => o.id === id);
+    org.info = {
+      status: info.status,
+      expiryDate: info.expiryDate
+    };
+
+    patch({ orgs: updateItem<OrgModel>(o => o.id === id, org) });
   }
 
   @Action(OrgSave)
