@@ -8,9 +8,6 @@ export interface LaunchOptions {
   useHomepage: boolean | true;
 }
 
-const sleep = (waitTimeInMs: number) =>
-  new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
-
 @Injectable({
   providedIn: 'root',
 })

@@ -3,6 +3,14 @@ import { Connection } from 'jsforce';
 import { OrgModel, OrgModelDTO, ProfileModel } from './src/app/store/orgs/model';
 import { SupportedBrowsers } from './src/app/store/config/model';
 
+function timeoutAfter(seconds: number) {
+  return new Promise((_resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error('request timed-out'));
+    }, seconds * 1000);
+  });
+}
+
 contextBridge.exposeInMainWorld('electron', {
   config:
   {
@@ -46,40 +54,34 @@ contextBridge.exposeInMainWorld('electron', {
       };
 
       try {
-        const log = await connection.login(login, pwd);
+        await connection.login(login, pwd);
 
-        Promise.race([
-          await Promise.all([
+        await Promise.race([
+          Promise.all([
             connection.identity()
               .then(result => retValue.name = result.display_name)
-              .catch(_err => {}),
+              .catch(_err => { }),
 
-            Promise.race(
-              [connection.query('SELECT Id, Username, Name FROM User')
-                .then(result => retValue.users = result.records)
-                .catch(_err => {}),
+            connection.query('SELECT Id, Username, Name FROM User')
+              .then(result => retValue.users = result.records)
+              .catch(_err => { }),
 
-              setTimeout(null, 50000)]),
+            connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')
+              .then(result => retValue.communities = result.records)
+              .catch(_err => { }),
 
-            Promise.race(
-              [connection.query('SELECT Id, UrlPathPrefix, Name FROM Network')
-                .then(result => retValue.communities = result.records)
-                .catch(_err => {}),
-
-              setTimeout(null, 50000)]),
-
-            Promise.race(
-              [connection.query('Select TrialExpirationDate from Organization')
-                .then(result => retValue.expiryDate = (result.records[0] as any).TrialExpirationDate)
-                .catch(_err => {}),
-
-              setTimeout(null, 50000)]),
-
-          ]), setTimeout(null, 5 * 60 * 1000)]);
+            connection.query('Select TrialExpirationDate from Organization')
+              .then(result => {
+                retValue.expiryDate = (result.records[0] as any).TrialExpirationDate;
+              })
+              .catch(_err => console.log(_err)),
+          ]),
+          timeoutAfter(40 /* seconds */)]);
 
         retValue.connected = true;
       } catch { }
 
+      console.log(login);
       return retValue;
     }
   }
